@@ -1,0 +1,49 @@
+.container {
+	display: grid;
+	grid-template-columns: 256px auto;
+	grid-template-rows: 64px auto;
+	height: 100%;
+}
+
+.topbar {
+	grid-column-start: 1;
+	grid-column-end: 3;
+    background-color: lightblue;
+}
+
+.sidebar {
+	background-color: lightcoral;
+}
+
+.content {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	justify-content: center;
+	overflow: auto;
+}
+
+.item {
+	width: 300px;
+	height: 200px;
+	background-color: green;
+	margin: 5px;
+	text-align: center;
+}
+
+@media only screen and (max-width: 767px) {
+    .container {
+        grid-template-columns: auto;
+    }
+
+	.topbar {
+		grid-column-start: 0;
+		grid-column-end: 1;
+	}
+
+	.sidebar {
+		grid-row-start: 2;
+		grid-row-end: 3;
+	}
+  }
