@@ -1,3 +1,7 @@
+@use "@material/list";
+
+@include list.core-styles;
+
 body {
     margin: 0px;
 }

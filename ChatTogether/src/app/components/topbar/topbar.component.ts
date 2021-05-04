@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MDCTopAppBar } from '@material/top-app-bar';
 import { MDCRipple } from '@material/ripple';
@@ -10,7 +10,7 @@ import { MDCRipple } from '@material/ripple';
 })
 export class TopbarComponent implements OnInit {
 
-  title: string = '';
+  @Input() topBarTitle: string = '';
 
   constructor(private router: Router) { }
 
@@ -23,7 +23,7 @@ export class TopbarComponent implements OnInit {
 
     switch (this.router.url) {
       case '/':
-        this.title = "Pokoje";
+        this.topBarTitle = "Pokoje";
         break;
     }
   }

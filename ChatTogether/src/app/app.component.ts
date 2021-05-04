@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { SidebarItem } from './components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'ChatTogether';
+  public siderbarItems: SidebarItem[] = [
+    new SidebarItem('Pokoje', 'inbox', '/'),
+    new SidebarItem('Pokoje2', 'send', '/'),
+    new SidebarItem('Pokoje3', 'drafts', '/')
+  ]
 }

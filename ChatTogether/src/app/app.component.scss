@@ -8,11 +8,6 @@
 .topbar {
 	grid-column-start: 1;
 	grid-column-end: 3;
-    background-color: lightblue;
-}
-
-.sidebar {
-	background-color: lightcoral;
 }
 
 .content {
@@ -22,14 +17,16 @@
 	align-content: flex-start;
 	justify-content: center;
 	overflow: auto;
+	margin: 5px;
 }
 
 .item {
-	width: 300px;
-	height: 200px;
-	background-color: green;
+	min-width: 317.2px;
+	min-height: 200px;
 	margin: 5px;
 	text-align: center;
+	background-color: green;
+	flex-grow: 1;
 }
 
 @media only screen and (max-width: 767px) {
@@ -43,8 +40,8 @@
 	}
 
 	.sidebar {
-		grid-row-start: 2;
-		grid-row-end: 3;
+		grid-row-start: 0;
+		grid-row-end: 1;
 	}
   }
 
