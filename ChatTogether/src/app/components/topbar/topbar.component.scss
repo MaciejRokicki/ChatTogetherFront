@@ -1,0 +1,23 @@
+@use "@material/icon-button";
+@use "@material/top-app-bar/mdc-top-app-bar";
+@use "@material/top-app-bar/mixins";
+
+@include icon-button.core-styles;
+
+.mdc-top-app-bar {
+    @include mixins.fill-color(white);
+    @include mixins.ink-color(black);
+    border-bottom-style: solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    border-bottom-width: 1px;
+}
+
+.mdc-icon-button {
+    color: black !important;
+}
+
+@media only screen and (min-width: 767px) {
+    .mdc-icon-button {
+        display: none;
+    }
+  }
