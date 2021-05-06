@@ -1,0 +1,8 @@
+@use "@material/data-table/data-table";
+
+@include data-table.core-styles;
+@include data-table.theme-baseline;
+
+.mdc-data-table {
+    display: flex;
+}
