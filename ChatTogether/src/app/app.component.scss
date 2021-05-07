@@ -10,33 +10,14 @@
 	grid-column-end: 3;
 }
 
-.content {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
-	align-content: flex-start;
-	justify-content: center;
+.main {
 	overflow: auto;
-	margin: 5px 0px 0px 5px;
-}
-
-.item {
-	min-width: 317.2px;
-	min-height: 200px;
-	margin: 5px;
-	text-align: center;
-	background-color: green;
-	flex-grow: 1;
-}
-
-.table {
-	width: 100%;
 }
 
 @media only screen and (max-width: 767px) {
     .container {
         grid-template-columns: auto;
-		height: unset;
+		height: auto;
     }
 
 	.topbar {
