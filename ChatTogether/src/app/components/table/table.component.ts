@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { MDCDataTable } from '@material/data-table';
+import { TableData } from './Interfaces/tableData';
 
 @Component({
   selector: 'app-table',
@@ -8,9 +9,7 @@ import { MDCDataTable } from '@material/data-table';
   styleUrls: ['./table.component.scss']
 })
 export class TableComponent implements OnInit {
-
-  @Input() data: Array<any> = [];
-  @Input() columns: Array<string> = [];
+  @Input() tableData?: TableData;
 
   constructor() { }
 

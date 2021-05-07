@@ -11,13 +11,7 @@ export class RoomService {
             let maxPeople : number = (Math.random() * (50-5 + 1)) + 5;
             let currentPeople : number = (Math.random() * (maxPeople - 0 + 1)) + 0;
 
-            rooms.push(
-                {
-                    id: i,
-                    name: `Pokój ${i}`,
-                    currentPeople: Math.floor(currentPeople),
-                    maxPeople: Math.floor(maxPeople)
-                });
+            rooms.push(new Room(i, `Pokój ${i}`, Math.floor(currentPeople), Math.floor(maxPeople)));
         }
 
         sub.next(rooms);
