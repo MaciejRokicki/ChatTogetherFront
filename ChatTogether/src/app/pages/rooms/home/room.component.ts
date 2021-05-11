@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { map } from 'rxjs/operators';
 import { ColumnProperty } from 'src/app/components/table/Interfaces/columnProperty';
@@ -31,7 +32,10 @@ export class RoomComponent implements OnInit {
     showOrdinalNumbers: true
   };
 
-  constructor(private roomProvider : RoomProvider) { }
+  constructor(
+    private roomProvider : RoomProvider,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.roomProvider.getRooms();
@@ -41,6 +45,10 @@ export class RoomComponent implements OnInit {
         this.tableData.data = result;
       })
     ).subscribe();
+  }
+
+  public onRowClick(index: number) {
+    this.router.navigate(['conversation', this.tableData.data[index].Id])
   }
 
 }

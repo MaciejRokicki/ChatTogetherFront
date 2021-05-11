@@ -52,4 +52,16 @@ export class SidebarComponent implements OnInit {
 
     return false;
   }
+
+  public CloseModal():void {
+    if (window.innerWidth < 767) {
+      var drawerElement = document.getElementsByClassName('mdc-drawer mdc-drawer--modal')[0] as Element;
+      var drawer = MDCDrawer.attachTo(drawerElement);
+
+      if(drawer.open)
+        drawer.open = false;
+
+      drawer.destroy();
+    }
+  }
 }

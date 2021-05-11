@@ -5,6 +5,14 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/rooms/room.module').then(x => x.RoomModule),
+  },
+  {
+    path: 'conversation/:id',
+    loadChildren: () => import('./pages/conversation/conversation.module').then(x => x.ConversationModule),
+  },
+  {
+    path: '**',
+    redirectTo: ''
   }
 ];
 

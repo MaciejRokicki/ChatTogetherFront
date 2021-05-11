@@ -13,7 +13,7 @@
             </thead>
             <tbody class="mdc-data-table__content">
                 <ng-template ngFor let-item [ngForOf]="tableData?.data" let-i="index">
-                    <tr class="mdc-data-table__row" (click)="onRowClick(i)">
+                    <tr class="mdc-data-table__row" (click)="method(i)">
                         <ng-template [ngIf]="tableData?.showOrdinalNumbers">
                             <th class="mdc-data-table__cell" scope="row">{{ i + 1 }}</th>
                         </ng-template>

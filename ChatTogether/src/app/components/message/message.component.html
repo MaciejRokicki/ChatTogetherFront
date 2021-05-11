@@ -1,0 +1,15 @@
+<div class="messageContainer">
+    <div class="item" [ngClass]="{'left': Message?.Author !== 'Ja', 'right': Message?.Author === 'Ja'}">
+        <div class="topContainer">
+            <div class="topLeft">
+                {{ Message?.GetTimeString() }}
+            </div>
+            <div class="topRight">
+                {{ Message?.Author }}
+            </div>
+        </div>
+        <div class="msg">
+            {{ Message?.Text }}
+        </div>
+    </div>
+</div>

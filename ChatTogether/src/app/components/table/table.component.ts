@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { MDCDataTable } from '@material/data-table';
 import { TableData } from './Interfaces/tableData';
@@ -10,15 +11,13 @@ import { TableData } from './Interfaces/tableData';
 })
 export class TableComponent implements OnInit {
   @Input() tableData?: TableData;
+  @Input() method: Function = () => {};
 
-  constructor() { }
+  constructor(
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     const dataTable = new MDCDataTable(document.querySelector('.mdc-data-table') as Element);
   }
-
-  public onRowClick(index: number): void {
-    console.log(index);
-  }
-
 }

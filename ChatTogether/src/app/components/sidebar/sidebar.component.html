@@ -12,7 +12,7 @@
     <nav class="mdc-list">
       <ng-template ngFor let-item [ngForOf]="items" let-isFirst="first">
         <a class="mdc-list-item" [ngClass]="{'mdc-list-item--activated': isFirst}" href="#" tabindex="-1"
-          routerLink='{{ item.route }}'>
+          routerLink='{{ item.route }}' (click)="CloseModal()">
           <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic">{{ item.icon }}</i>
           <span class="mdc-list-item__text">{{ item.text }}</span>
