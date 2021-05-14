@@ -17,7 +17,7 @@ export class RoomService {
         sub.next(rooms);
     });
 
-    getRooms(): Observable<Room[]> {
+    public getRooms(): Observable<Room[]> {
         return this.allRooms;
     }
 }

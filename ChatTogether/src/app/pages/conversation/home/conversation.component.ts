@@ -1,8 +1,14 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
+import {MDCTextField} from '@material/textfield';
+import {MDCRipple} from '@material/ripple';
+
 import { Subscription } from 'rxjs';
-import { Message } from 'src/app/components/message/interfaces/message';
+import { map } from 'rxjs/operators';
+
+import { Message } from 'src/app/entities/message';
+import { MessageProvider } from 'src/app/providers/message.provider';
 
 @Component({
   selector: 'app-conversation',
@@ -10,29 +16,19 @@ import { Message } from 'src/app/components/message/interfaces/message';
   styleUrls: ['./conversation.component.scss']
 })
 export class ConversationComponent implements OnInit, OnDestroy {
+  @ViewChild('scroll') messagesContent!: ElementRef;
 
   id: number = 0;
   private id$ = new Subscription();
 
-  Messages: Message[] =  [
-    new Message(1, 'Ja', new Date(2021, 4, 11, 10, 19, 10), 'test0 ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss'),
-    new Message(2, 'User1', new Date(2021, 4, 11, 10, 19, 14), 'test1 ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss'),
-    new Message(3, 'User2', new Date(2021, 4, 11, 10, 19, 20), 'test2'),
-    new Message(4, 'Ja', new Date(2021, 4, 11, 10, 19, 32), 'test3'),
-    new Message(5, 'User2', new Date(2021, 4, 11, 10, 19, 36), 'test4'),
-    new Message(6, 'User3', new Date(2021, 4, 11, 10, 19, 40), 'test5'),
-    new Message(7, 'User1', new Date(2021, 4, 11, 10, 19, 44), 'test6'),
-    new Message(8, 'Ja', new Date(2021, 4, 11, 10, 20, 6), 'test7'),
-    new Message(9, 'User2', new Date(2021, 4, 11, 10, 20, 15), 'test8'),
-    new Message(10, 'User1', new Date(2021, 4, 11, 10, 20, 20), 'test9'),
-    new Message(11, 'User1', new Date(2021, 4, 11, 10, 20, 23), 'test10'),
-    new Message(12, 'Ja', new Date(2021, 4, 11, 10, 20, 25), 'test11'),
-    new Message(13, 'User2', new Date(2021, 4, 11, 10, 20, 33), 'test12'),
-    new Message(14, 'User1', new Date(2021, 4, 11, 10, 20, 40), 'test13'),
-  ]
+  messages: Message[] =  []
+
+  msgText: string = '';
 
   constructor(
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private messageProvider: MessageProvider,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -41,6 +37,44 @@ export class ConversationComponent implements OnInit, OnDestroy {
     });
 
     console.log(this.id);
+
+    const textField = new MDCTextField(document.querySelector('.mdc-text-field') as Element);
+
+    const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button') as Element);
+    iconButtonRipple.unbounded = true;
+
+    this.messageProvider.getMessages();
+    this.messageProvider.messages$.pipe(
+      map((data: Message[]) => {
+        this.messages = data;
+      })
+    ).subscribe();
+  }
+
+  ngAfterViewInit() {
+    this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
+  }
+
+  onSubmit() {
+    var message: Message = new Message(0, 'Ja', new Date(), this.msgText);
+    
+    this.messageProvider.sendMessage(message);
+
+    this.msgText = '';
+
+    this.ref.detectChanges();
+
+    var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
+    var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
+    var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
+    var maxScrollPos = scrollHeight - offsetHeight;
+    var lastMessageHeight = this.messagesContent.nativeElement['lastElementChild']['clientHeight'];
+
+    if(maxScrollPos - currentScrollPos == lastMessageHeight) {
+      this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
+    } else {
+      //ikonka do przewiajania na sam dol i z info ze sa nowe wiadomosci
+    }   
   }
 
   ngOnDestroy() {

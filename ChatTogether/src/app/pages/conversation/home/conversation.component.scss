@@ -1,3 +1,13 @@
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
+@use "@material/textfield";
+
+@use "@material/icon-button";
+
+@include textfield.core-styles;
+@include icon-button.core-styles;
+
 .messageContainer {
     background-color: yellow;
     height: 100%;
@@ -20,6 +30,20 @@
     min-height: 60px;
     margin: 50px;
     margin-top: 0px;
+    display: flex;
+    align-items: center;
+}
+
+.mdc-text-field {
+    width: 100%;
+    margin: 10px 5px 10px 10px;
+    border-radius: 15px;
+    height: 40px;
+}
+
+.sendButton {
+    margin: 10px 10px 10px 5px;
+    color: white;
 }
 
 .left {

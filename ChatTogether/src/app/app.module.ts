@@ -8,6 +8,7 @@ import { TopbarComponent } from './components/topbar/topbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { RoomService } from './services/room.service';
+import { MessageService } from './services/message.service';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { RoomService } from './services/room.service';
     AppRoutingModule
   ],
   providers: [
-    RoomService
+    RoomService,
+    MessageService
   ],
   bootstrap: [AppComponent]
 })

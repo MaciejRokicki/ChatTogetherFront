@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ConversationComponent } from './home/conversation.component';
 import { ConversationRoutingModule } from './conversation-routing.module';
 import { MessageComponent } from 'src/app/components/message/message.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
     declarations: [
@@ -11,6 +12,7 @@ import { MessageComponent } from 'src/app/components/message/message.component';
         MessageComponent
     ],
     imports: [
+        FormsModule,
         CommonModule,
         ConversationRoutingModule
     ],

@@ -1,5 +1,5 @@
 <div class="messageContainer">
-    <div class="messagesContent">
+    <div #scroll class="messagesContent">
         <!-- <div class="item left">
             item1
         </div>
@@ -83,9 +83,20 @@
             item22
         </div>
     </div> -->
-        <app-message *ngFor="let message of Messages" [Message]="message"></app-message>
+        <app-message *ngFor="let message of messages" [Message]="message"></app-message>
     </div>
-    <div class="messageInput">
-
-    </div>
+    <form class="messageInput" #messageForm="ngForm" (ngSubmit)="onSubmit()">
+        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label">
+            <span class="mdc-text-field__ripple"></span>
+            <input class="mdc-text-field__input" 
+                   required
+                   type="text" 
+                   autocomplete="off"
+                   placeholder="Aa"
+                   [(ngModel)]="msgText"
+                   name="msgTxt">           
+        </label>
+        <button class="mdc-icon-button material-icons sendButton" 
+                [disabled]="!messageForm.valid">send</button>
+    </form>
 </div>

@@ -25,6 +25,7 @@
     "@material/list": "^10.0.0",
     "@material/ripple": "^10.0.0",
     "@material/select": "^10.0.0",
+    "@material/textfield": "^11.0.0",
     "@material/top-app-bar": "^10.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
