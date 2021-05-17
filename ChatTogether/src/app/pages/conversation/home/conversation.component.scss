@@ -46,6 +46,18 @@
     color: white;
 }
 
+.scrollDownButton {
+    border-radius: 25px;
+    background-color: lightblue;
+    position: absolute;
+    align-self: center;
+    bottom: 70px;
+}
+
+.scrollDownButton-hide {
+    display: none;
+}
+
 .left {
     align-self: flex-start;
     border-radius: 5px 25px 25px 25px;

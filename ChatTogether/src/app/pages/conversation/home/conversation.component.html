@@ -84,6 +84,9 @@
         </div>
     </div> -->
         <app-message *ngFor="let message of messages" [Message]="message"></app-message>
+        <button class="mdc-icon-button material-icons"
+        [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
+        (click)="scrollDown()">south</button>
     </div>
     <form class="messageInput" #messageForm="ngForm" (ngSubmit)="onSubmit()">
         <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label">

@@ -17,11 +17,18 @@ export class MessageProvider {
 
     constructor(private messageService: MessageService) { }
 
-    public getMessages(): void {
-        this.messageService.getMessages().pipe(
+    public getMessages(lastMessageDate: Date = new Date()): void {
+        this.messageService.getMessages(lastMessageDate).pipe(
             tap((data: Message[]) => {
-                this.messages = data;
-                this.messages$.next(data);
+                data = data.filter((msg: Message) => {
+                    if(msg.Time <= lastMessageDate)
+                        return true;
+                    return false;
+                }).slice(-10);
+                
+                console.log(data);
+                this.messages.unshift(...data);
+                this.messages$.next(this.messages);
             })
         ).subscribe();
     }

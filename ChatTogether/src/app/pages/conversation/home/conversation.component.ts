@@ -4,7 +4,7 @@ import { ActivatedRoute, Params } from '@angular/router';
 import {MDCTextField} from '@material/textfield';
 import {MDCRipple} from '@material/ripple';
 
-import { Subscription } from 'rxjs';
+import { fromEvent, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Message } from 'src/app/entities/message';
@@ -22,8 +22,11 @@ export class ConversationComponent implements OnInit, OnDestroy {
   private id$ = new Subscription();
 
   messages: Message[] =  []
-
   msgText: string = '';
+
+  scroll$: Observable<Event> = new Observable();
+  showScrollDownButton: boolean = false;
+  loadNextMessages: boolean = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -49,9 +52,40 @@ export class ConversationComponent implements OnInit, OnDestroy {
         this.messages = data;
       })
     ).subscribe();
+
+    fromEvent(document.querySelector('.messagesContent') as Element, 'scroll').pipe(
+      map(() => {
+        var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
+        var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
+        var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
+
+        var maxScrollPos = scrollHeight - offsetHeight;       
+
+        // przycisk do scrollowania w dol
+        if(maxScrollPos - currentScrollPos >= 50) {
+          this.showScrollDownButton = true;
+        } else {
+          this.showScrollDownButton = false;
+        }  
+
+        // if(this.loadNextMessages && maxScrollPos - currentScrollPos >= maxScrollPos * 0.8) {
+        //   this.loadNextMessages = false;
+        //   //console.log(scrollHeight);
+        //   console.log("up");
+        //   scrollHeighTmp = this.messagesContent.nativeElement.scrollHeight
+        //   // ladowac nastepne wiadomosci
+        //   this.messageProvider.getMessages(this.messages[0].Time);        
+        //   console.log(scrollHeighTmp);
+        // }
+      })
+    ).subscribe();
   }
 
   ngAfterViewInit() {
+    this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
+  }
+
+  scrollDown() {
     this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
   }
 
@@ -67,14 +101,13 @@ export class ConversationComponent implements OnInit, OnDestroy {
     var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
     var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
     var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
+
     var maxScrollPos = scrollHeight - offsetHeight;
-    var lastMessageHeight = this.messagesContent.nativeElement['lastElementChild']['clientHeight'];
+    var lastMessageHeight = this.messagesContent.nativeElement.children[this.messagesContent.nativeElement.children.length-2].clientHeight;
 
     if(maxScrollPos - currentScrollPos == lastMessageHeight) {
       this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
-    } else {
-      //ikonka do przewiajania na sam dol i z info ze sa nowe wiadomosci
-    }   
+    }  
   }
 
   ngOnDestroy() {
