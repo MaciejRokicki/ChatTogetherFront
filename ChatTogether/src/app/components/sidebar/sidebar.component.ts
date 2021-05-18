@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MDCDrawer, MDCDismissibleDrawerFoundation } from "@material/drawer";
 import { MDCList } from "@material/list";
+import { fromEvent, Subscription } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 export class SidebarItem {
   constructor(
@@ -15,9 +17,10 @@ export class SidebarItem {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss']
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input() items: SidebarItem[] = [];
+  resizeEvent$: Subscription = new Subscription();
 
   constructor() { }
 
@@ -39,10 +42,13 @@ export class SidebarComponent implements OnInit {
       drawer.open = !drawer.open;
     });
 
-    window.addEventListener('resize', () => {
-      if (drawerFoundation)
-        drawerFoundation.close();
-    })
+    this.resizeEvent$ = fromEvent(window, 'resize').pipe(
+      tap(() => {
+        if(drawerFoundation) {
+          drawerFoundation.close();
+        }
+      })
+    ).subscribe();
   }
 
   public IsModalAvailable(): boolean {
@@ -63,5 +69,9 @@ export class SidebarComponent implements OnInit {
 
       drawer.destroy();
     }
+  }
+
+  ngOnDestroy() {
+    this.resizeEvent$.unsubscribe();
   }
 }

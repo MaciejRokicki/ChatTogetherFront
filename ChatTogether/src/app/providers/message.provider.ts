@@ -24,16 +24,15 @@ export class MessageProvider {
                     if(msg.Time <= lastMessageDate)
                         return true;
                     return false;
-                }).slice(-10);
-                
-                console.log(data);
+                }).slice(-20);
+
                 this.messages.unshift(...data);
                 this.messages$.next(this.messages);
             })
         ).subscribe();
     }
 
-    public sendMessage = (message: Message) => {
+    public sendMessage = (message: Message): void => {
         this.messages.push(message);
         this.messages$.next(this.messages);
     }

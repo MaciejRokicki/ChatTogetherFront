@@ -4,8 +4,8 @@ import { ActivatedRoute, Params } from '@angular/router';
 import {MDCTextField} from '@material/textfield';
 import {MDCRipple} from '@material/ripple';
 
-import { fromEvent, Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { fromEvent, of, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
 
 import { Message } from 'src/app/entities/message';
 import { MessageProvider } from 'src/app/providers/message.provider';
@@ -19,12 +19,15 @@ export class ConversationComponent implements OnInit, OnDestroy {
   @ViewChild('scroll') messagesContent!: ElementRef;
 
   id: number = 0;
-  private id$ = new Subscription();
+  id$: Subscription = new Subscription();
+
+  observer: MutationObserver = new MutationObserver(()=>{});
 
   messages: Message[] =  []
+  messages$: Subscription = new Subscription();
   msgText: string = '';
 
-  scroll$: Observable<Event> = new Observable();
+  scroll$: Subscription = new Subscription();
   showScrollDownButton: boolean = false;
   loadNextMessages: boolean = true;
 
@@ -47,42 +50,68 @@ export class ConversationComponent implements OnInit, OnDestroy {
     iconButtonRipple.unbounded = true;
 
     this.messageProvider.getMessages();
-    this.messageProvider.messages$.pipe(
+    this.messages$ = this.messageProvider.messages$.pipe(
       map((data: Message[]) => {
         this.messages = data;
       })
     ).subscribe();
 
-    fromEvent(document.querySelector('.messagesContent') as Element, 'scroll').pipe(
-      map(() => {
+    this.scroll$ = fromEvent(document.querySelector('.messagesContent') as Element, 'scroll').pipe(
+      mergeMap(() => {
         var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
         var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
         var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
 
-        var maxScrollPos = scrollHeight - offsetHeight;       
+        var maxScrollPos = scrollHeight - offsetHeight; 
 
+        return of({
+          currentScrollPos,
+          scrollHeight,
+          offsetHeight,
+          maxScrollPos
+        });
+      }),
+      tap((scroll) => {
         // przycisk do scrollowania w dol
-        if(maxScrollPos - currentScrollPos >= 50) {
+        if(scroll.maxScrollPos - scroll.currentScrollPos >= 50) {
           this.showScrollDownButton = true;
         } else {
           this.showScrollDownButton = false;
-        }  
-
-        // if(this.loadNextMessages && maxScrollPos - currentScrollPos >= maxScrollPos * 0.8) {
-        //   this.loadNextMessages = false;
-        //   //console.log(scrollHeight);
-        //   console.log("up");
-        //   scrollHeighTmp = this.messagesContent.nativeElement.scrollHeight
-        //   // ladowac nastepne wiadomosci
-        //   this.messageProvider.getMessages(this.messages[0].Time);        
-        //   console.log(scrollHeighTmp);
-        // }
+        } 
+      }),
+      debounceTime(500),
+      tap((scroll) => {
+        // moment, w ktorym scroll jest na samej gorze
+        if(this.loadNextMessages && scroll.maxScrollPos - scroll.currentScrollPos >= scroll.maxScrollPos) {
+          this.messageProvider.getMessages(this.messages[0].Time);
+        }
       })
     ).subscribe();
   }
 
   ngAfterViewInit() {
     this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
+
+    const observer = new MutationObserver((mutations: MutationRecord[]) => {
+      var height = 0;
+      mutations.filter((mutation: MutationRecord) => {
+        if((mutation.addedNodes[0] as Element).localName === 'app-message') {
+          return true;
+        }
+
+        return false;
+      }).forEach((mutation: MutationRecord) => {        
+        height += (mutation.addedNodes[0] as Element).clientHeight;
+      })
+
+      this.messagesContent.nativeElement.scrollTop = height;
+    });
+    
+    observer.observe(document.querySelector('.messagesContent') as Element, {
+      attributes: true,
+      childList: true,
+      characterData: true
+    });
   }
 
   scrollDown() {
@@ -91,27 +120,37 @@ export class ConversationComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     var message: Message = new Message(0, 'Ja', new Date(), this.msgText);
-    
     this.messageProvider.sendMessage(message);
-
     this.msgText = '';
 
     this.ref.detectChanges();
 
-    var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
+    // var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
     var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
-    var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
+    //var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
+    // var maxScrollPos = scrollHeight - offsetHeight;
+    // var lastMessageHeight = this.messagesContent.nativeElement.children[this.messagesContent.nativeElement.children.length-2].clientHeight;
 
-    var maxScrollPos = scrollHeight - offsetHeight;
-    var lastMessageHeight = this.messagesContent.nativeElement.children[this.messagesContent.nativeElement.children.length-2].clientHeight;
+    const messages = this.messagesContent.nativeElement.children;
+    var height = 0;
 
-    if(maxScrollPos - currentScrollPos == lastMessageHeight) {
+    for(let i = 0; i < messages.length; i++) {
+      height += messages[i].clientHeight;
+    }
+
+    //console.log(`${height} - ${scrollHeight}`);
+
+    // if(height <= scrollHeight || maxScrollPos - currentScrollPos <= offsetHeight) {
+    if(height <= scrollHeight) {
       this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
     }  
   }
 
   ngOnDestroy() {
     this.id$.unsubscribe();
+    this.observer.disconnect();
+    this.messages$.unsubscribe();
+    this.scroll$.unsubscribe();
   }
 
 }
