@@ -17,14 +17,14 @@ export class MessageProvider {
 
     constructor(private messageService: MessageService) { }
 
-    public getMessages(lastMessageDate: Date = new Date()): void {
+    public getMessages(lastMessageDate: Date = new Date(), messagesCount: number = 20): void {
         this.messageService.getMessages(lastMessageDate).pipe(
             tap((data: Message[]) => {
                 data = data.filter((msg: Message) => {
                     if(msg.Time <= lastMessageDate)
                         return true;
                     return false;
-                }).slice(-20);
+                }).slice(-messagesCount);
 
                 this.messages.unshift(...data);
                 this.messages$.next(this.messages);

@@ -43,13 +43,16 @@ export class ConversationComponent implements OnInit, OnDestroy {
     });
 
     console.log(this.id);
+    
+    const height = (document.querySelector('.messagesContent') as Element).clientHeight;
+    const messagesCount = Math.ceil(height / 71 * 2);
 
     const textField = new MDCTextField(document.querySelector('.mdc-text-field') as Element);
 
     const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button') as Element);
     iconButtonRipple.unbounded = true;
 
-    this.messageProvider.getMessages();
+    this.messageProvider.getMessages(undefined, messagesCount);
     this.messages$ = this.messageProvider.messages$.pipe(
       map((data: Message[]) => {
         this.messages = data;
