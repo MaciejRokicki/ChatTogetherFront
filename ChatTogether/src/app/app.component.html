@@ -1,10 +1,13 @@
-<div class="container">
+<div class="container" *ngIf="user$ | async; else loginPage">
   <app-topbar class="topbar"></app-topbar>
-  <app-sidebar 
-    class="sidebar"
-    [items]="siderbarItems"
-    ></app-sidebar>
+  <app-sidebar class="sidebar" [user]="user$ | async" [items]="siderbarItems"></app-sidebar>
   <div class="main">
     <router-outlet></router-outlet>
   </div>
 </div>
+<ng-template #loginPage>
+  <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  </head>
+  <router-outlet></router-outlet>
+</ng-template>

@@ -23,7 +23,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
 
   observer: MutationObserver = new MutationObserver(()=>{});
 
-  messages: Message[] =  []
+  messages: Message[] = []
   messages$: Subscription = new Subscription();
   msgText: string = '';
 

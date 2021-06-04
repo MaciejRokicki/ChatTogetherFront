@@ -3,6 +3,7 @@ import { MDCDrawer, MDCDismissibleDrawerFoundation } from "@material/drawer";
 import { MDCList } from "@material/list";
 import { fromEvent, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { User } from 'src/app/entities/user';
 
 export class SidebarItem {
   constructor(
@@ -19,6 +20,7 @@ export class SidebarItem {
 })
 export class SidebarComponent implements OnInit, OnDestroy {
 
+  @Input() user: User;
   @Input() items: SidebarItem[] = [];
   resizeEvent$: Subscription = new Subscription();
 

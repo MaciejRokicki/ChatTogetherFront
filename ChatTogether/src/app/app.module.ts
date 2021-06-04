@@ -9,6 +9,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { RoomService } from './services/room.service';
 import { MessageService } from './services/message.service';
+import { AuthService } from './services/auth.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { MessageService } from './services/message.service';
   ],
   providers: [
     RoomService,
-    MessageService
+    MessageService,
+    AuthService
   ],
   bootstrap: [AppComponent]
 })

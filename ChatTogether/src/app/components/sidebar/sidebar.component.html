@@ -3,9 +3,8 @@
 </head>
 <aside class="mdc-drawer" [ngClass]="{'mdc-drawer--modal': IsModalAvailable()}">
   <div class="mdc-drawer__header">
-    <h2 style="font-family: 'Roboto', sans-serif;">TEST</h2>
-    <h3 class="mdc-drawer__title">Mail</h3>
-    <h6 class="mdc-drawer__subtitle">email@material.io</h6>
+    <h3 class="mdc-drawer__title">{{ user.Nickname }}</h3>
+    <h6 class="mdc-drawer__subtitle">{{ user.Email }}</h6>
   </div>
   <hr class="mdc-list-divider">
   <div class="mdc-drawer__content">
