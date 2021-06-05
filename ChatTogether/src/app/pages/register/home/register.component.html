@@ -1,0 +1,67 @@
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<div class="container">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <img src="../../../../assets/logo.png" class="logo">
+        <div *ngIf="errorMessage" class="error">
+            {{ errorMessage }}
+        </div>
+        <div class="infoContainer">
+            <label class="mdc-text-field mdc-text-field--outlined" id="nicknameField">
+                <span class="mdc-notched-outline">
+                    <span class="mdc-notched-outline__leading"></span>
+                    <span class="mdc-notched-outline__notch">
+                        <span class="mdc-floating-label" id="my-label-id">Nazwa użytkownika</span>
+                    </span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="text" formControlName="nickname" class="mdc-text-field__input" (focus)="showNicknameInfo()"
+                    (blur)="clearInfo()">
+            </label>
+            <div class="info" *ngIf="nicknameInfo">
+                {{ nicknameInfo }}
+            </div>
+        </div>
+        <label class="mdc-text-field mdc-text-field--outlined" id="emailField">
+            <span class="mdc-notched-outline">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__notch">
+                    <span class="mdc-floating-label" id="my-label-id">Adres email</span>
+                </span>
+                <span class="mdc-notched-outline__trailing"></span>
+            </span>
+            <input type="text" formControlName="email" class="mdc-text-field__input">
+        </label>
+        <div class="infoContainer">
+            <label class="mdc-text-field mdc-text-field--outlined" id="passwordField">
+                <span class="mdc-notched-outline">
+                    <span class="mdc-notched-outline__leading"></span>
+                    <span class="mdc-notched-outline__notch">
+                        <span class="mdc-floating-label" id="my-label-id">Hasło</span>
+                    </span>
+                    <span class="mdc-notched-outline__trailing"></span>
+                </span>
+                <input type="password" formControlName="password" class="mdc-text-field__input"
+                    (focus)="showPasswordInfo()" (blur)="clearInfo()">
+            </label>
+            <div class="info" *ngIf="passwordInfo">
+                {{ passwordInfo }}
+            </div>
+        </div>
+        <label class="mdc-text-field mdc-text-field--outlined" id="confirmPasswordField">
+            <span class="mdc-notched-outline">
+                <span class="mdc-notched-outline__leading"></span>
+                <span class="mdc-notched-outline__notch">
+                    <span class="mdc-floating-label" id="my-label-id">Powtórz hasło</span>
+                </span>
+                <span class="mdc-notched-outline__trailing"></span>
+            </span>
+            <input type="password" formControlName="confirmPassword" class="mdc-text-field__input">
+        </label>
+        <button class="mdc-button mdc-button--raised" id="registerButton" type="submit" [disabled]="!validForm()">
+            <span class="mdc-button__ripple"></span>
+            <span class="mdc-button__label">Stwórz konto</span>
+            <i class="material-icons mdc-button__icon">login</i>
+        </button>
+    </form>
+</div>

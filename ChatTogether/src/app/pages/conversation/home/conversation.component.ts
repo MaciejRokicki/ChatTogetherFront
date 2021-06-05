@@ -30,6 +30,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
   scroll$: Subscription = new Subscription();
   showScrollDownButton: boolean = false;
   loadNextMessages: boolean = true;
+  stopScroll: boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -87,6 +88,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
         // moment, w ktorym scroll jest na samej gorze
         if(this.loadNextMessages && scroll.maxScrollPos - scroll.currentScrollPos >= scroll.maxScrollPos) {
           this.messageProvider.getMessages(this.messages[0].Time);
+          this.stopScroll = true;
         }
       })
     ).subscribe();
@@ -107,7 +109,11 @@ export class ConversationComponent implements OnInit, OnDestroy {
         height += (mutation.addedNodes[0] as Element).clientHeight;
       })
 
-      this.messagesContent.nativeElement.scrollTop = height;
+      if(this.stopScroll) {
+        this.messagesContent.nativeElement.scrollTop = height;
+        this.stopScroll = false;
+      }
+
     });
     
     observer.observe(document.querySelector('.messagesContent') as Element, {

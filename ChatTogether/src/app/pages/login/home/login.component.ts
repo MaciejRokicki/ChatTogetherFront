@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { MDCRipple } from '@material/ripple';
 
+import { MDCRipple } from '@material/ripple';
 import { MDCTextField } from '@material/textfield';
+
 import { AuthProvider } from 'src/app/providers/auth.provider';
+import { DigitExistValidator } from 'src/app/validators/digitExistValidator';
+import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidator';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +17,7 @@ import { AuthProvider } from 'src/app/providers/auth.provider';
 export class LoginComponent implements OnInit {
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6), UpperCaseCharValidator(), DigitExistValidator()]),
   });
 
   errorMessage: string = "";
@@ -22,8 +25,8 @@ export class LoginComponent implements OnInit {
   constructor(private authProvider: AuthProvider, private router: Router) { }
 
   ngOnInit(): void {
-    new MDCTextField(document.querySelector('.emailField') as Element);
-    new MDCTextField(document.querySelector('.passwordField') as Element);
+    new MDCTextField(document.getElementById('emailField') as Element);
+    new MDCTextField(document.getElementById('passwordField') as Element);
     new MDCRipple(document.getElementById("registerButton") as Element);
   }
 
@@ -32,9 +35,8 @@ export class LoginComponent implements OnInit {
     this.router.navigate(['']);
   }
 
-  test() {
-    this.errorMessage = "Nieprawidłowy adres email lub hasło.";
-    console.log("register");
+  navigateToRegisterPage() {
+    this.router.navigate(['register']);
   }
 
 }

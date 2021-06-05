@@ -14,7 +14,11 @@ export class AuthProvider {
 
     constructor(private authService: AuthService) { }
 
-    login = (email: string, password: string): void => {
+    register(nickname: string, email: string, password: string): void {
+        this.authService.register(nickname, email, password);
+    }
+
+    login(email: string, password: string): void {
         this.authService.login(email, password).pipe(
             tap((user: User) => {
                 this.user.next(user);
@@ -22,7 +26,7 @@ export class AuthProvider {
         ).subscribe();
     }
 
-    logout = (): void => {
+    logout(): void {
         this.user.next(null);
     }
 }

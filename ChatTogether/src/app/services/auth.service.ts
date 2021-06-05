@@ -9,11 +9,15 @@ import { User } from "../entities/user";
 export class AuthService {
     constructor() {}
 
-    login = (email: string, password: string): Observable<User> => {
+    register(nickname: string, email: string, password: string): void {
+        console.log("register");
+    }
+
+    login(email: string, password: string): Observable<User> {
         return of(new User(1, "Nickname", email));
     }
 
-    logout = (): boolean => {
+    logout(): boolean {
         return false;
     }
 }

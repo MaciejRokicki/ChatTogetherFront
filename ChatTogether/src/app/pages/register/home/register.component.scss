@@ -16,11 +16,30 @@
 form {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+    max-width: 300px;
 }
 
 label {
+    margin: 5px 0px 0px 0px;
+    min-width: 300px;
+}
+
+.infoContainer {
     margin: 5px 0px 5px 0px;
+    display: flex;
+    flex-direction: column;
+}
+
+.info {
+    min-width: 300px;
+    display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    align-items: center;
+    background-color: whitesmoke;
+    height: 50px;
+    border-radius: 0px 0px 15px 15px;
+    text-align: center;
 }
 
 .separator {
@@ -28,8 +47,8 @@ label {
     margin: 5px 0px 5px 0px;
 }
 
-.logo {
-    margin: 0px 0px 5px 0px;
+button {
+    margin: 5px 0px 5px 0px;
 }
 
 .error {
@@ -44,3 +63,4 @@ label {
     font-family: 'Roboto', sans-serif;
     font-size: 15px;
 }
+
