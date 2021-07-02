@@ -26,7 +26,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   constructor() { }
 
-  ngOnInit(): void { }
+  ngOnInit(): void { 
+    console.log("SIDEBAR");
+  }
 
   ngAfterViewInit(): void {
     const list = MDCList.attachTo(document.querySelector('.mdc-list') as Element);

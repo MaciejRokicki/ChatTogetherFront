@@ -1,31 +1,40 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
-import { map } from 'rxjs/operators';
+import { map, skip } from 'rxjs/operators';
 import { ColumnProperty } from 'src/app/components/table/Interfaces/columnProperty';
 import { TableData } from 'src/app/components/table/Interfaces/tableData';
 
 import { Room } from 'src/app/entities/room';
 import { RoomProvider } from 'src/app/providers/room.provider';
+import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
   styleUrls: ['./room.component.scss']
 })
-export class RoomComponent implements OnInit {
+export class RoomComponent implements OnInit, OnDestroy {
+
+  roomsSub$: Subscription = new Subscription();
 
   public tableData: TableData = {
     data: [], 
     properties: <ColumnProperty[]>[
       {
-        propertyName: 'Name',
+        propertyName: 'name',
         displayName: 'Nazwa',
         isNumeric: false
       },
       {
-        propertyName: 'Occupancy',
-        displayName: 'Obłożenie',
+        propertyName: 'currentPeople',
+        displayName: 'Użytkownicy',
+        isNumeric: true     
+      },
+      {
+        propertyName: 'maxPeople',
+        displayName: 'Rozmiar pokoju',
         isNumeric: true     
       }
     ],
@@ -34,21 +43,32 @@ export class RoomComponent implements OnInit {
 
   constructor(
     private roomProvider : RoomProvider,
-    private router: Router
+    private router: Router,
+    private topbarTitleService: TopbarTitleService
   ) { }
 
   ngOnInit(): void {
-    this.roomProvider.getRooms();
+    this.topbarTitleService.setTitle("Pokoje");
 
-    this.roomProvider.allRooms.pipe(
-      map((result: Room[]) => {
-        this.tableData.data = result;
+    this.roomsSub$ = this.roomProvider.rooms.pipe(
+      map((rooms: Room[]) => {
+        if(rooms.length === 0) {
+          this.roomProvider.getRooms();
+        }
+
+        console.log(rooms);
+        this.tableData.data = rooms;
       })
     ).subscribe();
   }
 
   public onRowClick(index: number) {
-    this.router.navigate(['conversation', this.tableData.data[index].Id])
+    this.router.navigate(['conversation', this.tableData.data[index].id])
+  }
+
+  ngOnDestroy(): void {
+    console.log("T");
+    this.roomsSub$.unsubscribe();
   }
 
 }

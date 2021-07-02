@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { MDCRipple } from '@material/ripple';
 import { MDCTextField } from '@material/textfield';
+import { RegistrationModel } from 'src/app/entities/Security/RegistrationModel';
 
 import { AuthProvider } from 'src/app/providers/auth.provider';
 import { DigitExistValidator } from 'src/app/validators/digitExistValidator';
@@ -37,9 +38,13 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    this.authProvider.register(this.registerForm.get("nickname").value, 
-                               this.registerForm.get("email").value, 
-                               this.registerForm.get("password").value);
+
+    let registrationModel: RegistrationModel = new RegistrationModel(
+      this.registerForm.get("email").value,
+      this.registerForm.get("password").value, 
+      this.registerForm.get("nickname").value);
+
+    this.authProvider.register(registrationModel);
     this.router.navigate(['']);
   }
 

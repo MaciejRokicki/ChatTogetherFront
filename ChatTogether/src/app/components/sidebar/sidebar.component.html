@@ -3,14 +3,14 @@
 </head>
 <aside class="mdc-drawer" [ngClass]="{'mdc-drawer--modal': IsModalAvailable()}">
   <div class="mdc-drawer__header">
-    <h3 class="mdc-drawer__title">{{ user.Nickname }}</h3>
-    <h6 class="mdc-drawer__subtitle">{{ user.Email }}</h6>
+    <h3 class="mdc-drawer__title">{{ user.nickname }}</h3>
+    <div class="mdc-drawer__subtitle">{{ user.firstName }} {{ user.lastName }}</div>
   </div>
-  <hr class="mdc-list-divider">
+  <!-- <hr class="mdc-list-divider"> -->
   <div class="mdc-drawer__content">
-    <nav class="mdc-list">
-      <ng-template ngFor let-item [ngForOf]="items" let-isFirst="first">
-        <a class="mdc-list-item" [ngClass]="{'mdc-list-item--activated': isFirst}" href="#" tabindex="-1"
+    <nav class="mdc-list" id="test">
+      <ng-template ngFor let-item [ngForOf]="items" let-id="index">
+        <a class="mdc-list-item" [ngClass]="{'mdc-list-item--activated': id == 1}" href="#" tabindex="0"
           routerLink='{{ item.route }}' (click)="CloseModal()">
           <span class="mdc-list-item__ripple"></span>
           <i class="material-icons mdc-list-item__graphic">{{ item.icon }}</i>

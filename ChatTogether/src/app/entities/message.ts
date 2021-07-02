@@ -1,35 +1,37 @@
 import { formatDate } from "@angular/common";
+import { Guid } from "guid-typescript";
 
 export class Message {
-    Id: number;
-    Author: string;
-    Time: Date;
-    Text: string;
+    id: Guid;
+    message: string;
+    nickname: string;
+    roomId: number;
+    sendTime: Date;
+    receivedTime: Date;
 
     constructor(
-        id: number,
-        author: string,
-        time: Date,
-        text: string
+        message: string,
+        nickname: string,
+        roomId: number,
+        sendTime: Date,
     ) {
-        this.Id = id;
-        this.Author = author;
-        this.Time = time;
-        this.Text = text;
+        this.message = message;
+        this.nickname = nickname;
+        this.roomId = roomId;
+        this.sendTime = sendTime;
     }
 
     public GetTimeString(): string {
         var days = ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'];
 
-        var day = new Date(this.Time);
+        var day = new Date(this.sendTime);
         day.setDate(day.getDate() + 7);
 
         if(day < new Date())
         {
-            return formatDate(this.Time, 'dd.MM.yyyy HH:mm', 'en-US');
+            return formatDate(this.sendTime, 'dd.MM.yyyy HH:mm', 'en-US');
         } 
 
-        return `${days[this.Time.getDay()]}, ${this.Time.getHours()}:${this.Time.getMinutes()}`
+        return `${days[this.sendTime.getDay()]}, ${this.sendTime.getHours()}:${this.sendTime.getMinutes()}`
     }
-
 }

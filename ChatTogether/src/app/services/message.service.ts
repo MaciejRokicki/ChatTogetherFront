@@ -1,37 +1,21 @@
 import { Message } from "../entities/message";
 import { Observable } from 'rxjs';
+import { environment } from "src/environments/environment.prod";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
+@Injectable({
+    providedIn: 'root'
+})
 export class MessageService {
 
-    private allMessages: Observable<Message[]> = new Observable(sub => {
-        let messages: Message[] = []
+    readonly url = `${environment.apiUrl}/Message`;
+    readonly timezoneOffset = new Date().getTimezoneOffset();
 
-        for(let i = 100; i >= 0; i--) {
-            let user = Math.floor(Math.random() * (10 - 0 + 1) + 0);
-            let userStr = 'Ja';
+    constructor(private http: HttpClient) { }
 
-            if(user != 0) {
-                userStr = `User${user}`;
-            }
-            
-            let date = new Date();
-            date.setMinutes(date.getMinutes() - i);
-
-            messages.push(new Message(i, userStr, date, `test${i}`));
-        }
-
-        sub.next(messages);
-    });
-
-    public getMessages(lastMessageDate: Date): Observable<Message[]> {
-        return this.allMessages;
-    }
-
-    public sendMessage(message: Message): Observable<Message> {
-        this.allMessages.subscribe(sub => {
-            sub.push(message);
-        });
-
-        return new Observable<Message>();
+    //TODO: pomyslec nad Date, zeby nie robic toisostring -> moze wrzucac w body i dac jako post <???>
+    getMessages(roomId: number, size: number, lastMessageDate: Date): Observable<Message[]> {
+        return this.http.get<Message[]>(`${this.url}/GetMessages?roomId=${roomId}&size=${size}&timezoneOffset=${this.timezoneOffset}&lastMessageDate=${lastMessageDate.toISOString()}`);
     }
 }

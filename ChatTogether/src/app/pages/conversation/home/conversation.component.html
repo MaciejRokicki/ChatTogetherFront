@@ -1,6 +1,6 @@
 <div class="messageContainer">
     <div #scroll class="messagesContent">
-        <app-message *ngFor="let message of messages" [Message]="message"></app-message>
+        <app-message *ngFor="let message of messages" [Message]="message" [LeftDirection]="userNickname !== message.nickname"></app-message>
         <button class="mdc-icon-button material-icons"
         [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
         (click)="scrollDown()">south</button>

@@ -1,17 +1,11 @@
 export class User {
-
-    public Id: number;
-    public Nickname: string;
-    public Email: string;
-
     constructor(
-        id: number,
-        nickname: string,
-        email : string,
-    ) {
-        this.Id = id;
-        this.Nickname = nickname;
-        this.Email = email;
-    }
+        public nickname: string,
+        public firstName: string,
+        public lastName: string,
+        public birthDate: Date,
+        public city: string,
+        public description: string
+    ) { }
 
 }

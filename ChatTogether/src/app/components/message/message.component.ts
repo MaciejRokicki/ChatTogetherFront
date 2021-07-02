@@ -10,6 +10,7 @@ import { Message } from 'src/app/entities/message';
 export class MessageComponent implements OnInit {
 
   @Input() Message?: Message;
+  @Input() LeftDirection: boolean = true;
 
   constructor() { }
 

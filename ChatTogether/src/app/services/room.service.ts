@@ -1,23 +1,18 @@
 import { Room } from "../entities/room";
 import { Observable } from 'rxjs';
+import { environment } from "src/environments/environment.prod";
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 
+@Injectable({
+    providedIn: 'root'
+})
 export class RoomService {
+    readonly url = `${environment.apiUrl}/Room`;
 
-    allRooms: Observable<Room[]> = new Observable(sub => {
-        let rooms: Room[] = []
+    constructor(private http: HttpClient) { }
 
-        for(let i = 1; i < 32; i++)
-        {
-            let maxPeople : number = (Math.random() * (50-5 + 1)) + 5;
-            let currentPeople : number = (Math.random() * (maxPeople - 0 + 1)) + 0;
-
-            rooms.push(new Room(i, `Pokój ${i}`, Math.floor(currentPeople), Math.floor(maxPeople)));
-        }
-
-        sub.next(rooms);
-    });
-
-    public getRooms(): Observable<Room[]> {
-        return this.allRooms;
+    getRoom(id: number): Observable<Room> {
+        return this.http.get<Room>(`${this.url}/GetRoom?id=${id}`);
     }
 }

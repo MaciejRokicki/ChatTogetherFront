@@ -1,14 +1,19 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import {MDCTextField} from '@material/textfield';
-import {MDCRipple} from '@material/ripple';
+import { MDCTextField } from '@material/textfield';
+import { MDCRipple } from '@material/ripple';
 
 import { fromEvent, of, Subscription } from 'rxjs';
-import { debounceTime, map, mergeMap, tap } from 'rxjs/operators';
+import { debounceTime, map, mergeMap, skip, tap } from 'rxjs/operators';
 
 import { Message } from 'src/app/entities/message';
 import { MessageProvider } from 'src/app/providers/message.provider';
+import { RoomProvider } from 'src/app/providers/room.provider';
+import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
+import { Room } from 'src/app/entities/room';
+import { AuthProvider } from 'src/app/providers/auth.provider';
+import { User } from 'src/app/entities/user';
 
 @Component({
   selector: 'app-conversation',
@@ -21,6 +26,12 @@ export class ConversationComponent implements OnInit, OnDestroy {
   id: number = 0;
   id$: Subscription = new Subscription();
 
+  userNickname: string;
+  user$: Subscription = new Subscription();
+
+  room: Room;
+  roomSub$: Subscription = new Subscription();
+
   observer: MutationObserver = new MutationObserver(()=>{});
 
   messages: Message[] = []
@@ -32,40 +43,71 @@ export class ConversationComponent implements OnInit, OnDestroy {
   loadNextMessages: boolean = true;
   stopScroll: boolean;
 
+  height: number;
+
   constructor(
     private route: ActivatedRoute,
+    private authProvider: AuthProvider,
+    private roomProvider: RoomProvider,
     private messageProvider: MessageProvider,
-    private ref: ChangeDetectorRef
-  ) { }
-
-  ngOnInit(): void {
+    private ref: ChangeDetectorRef,
+    private topbarTitleService: TopbarTitleService
+  ) { 
     this.id$ = this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
     });
+  }
 
-    console.log(this.id);
-    
+  ngOnInit(): void {
+
+    //TODO: zaznaczony element w sidebarze
+    (document.getElementById('test') as Element).children[1].classList.remove('mdc-list-item--activated');
+
+    this.authProvider.user.pipe(
+      tap((user: User) => {
+        this.userNickname = user.nickname
+      })
+    ).subscribe();
+
+    this.roomProvider.getRoom(this.id);
+    this.roomSub$ = this.roomProvider.room.pipe(
+      tap((room: Room) => {
+          this.room = room;
+          this.topbarTitleService.setTitle(this.room.name);
+      })
+    ).subscribe();
+
+    this.roomProvider.onRoomEnter(this.id);
+    this.messageProvider.setListeningOnNewMessages();
+
     const height = (document.querySelector('.messagesContent') as Element).clientHeight;
     const messagesCount = Math.ceil(height / 71 * 2);
+
+    this.messageProvider.getMessages(this.id, messagesCount);
+    this.messages$ = this.messageProvider.messages.pipe(
+      skip(1),
+      map((data: Message[]) => {
+        if(data.length !== 0 && data.length === this.messages.length) {
+          this.stopScroll = false;
+          console.log("OUT"); //TODO: jakies info ze nie ma juz wiecej wiadomosci do pobrania
+        } 
+        if (data.length === 0) {
+          console.log("NULL") //TODO: jakies info zeby cos napisac bo nie ma wiadomosci
+        }
+        this.messages = data;
+      })
+    ).subscribe();
 
     const textField = new MDCTextField(document.querySelector('.mdc-text-field') as Element);
 
     const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button') as Element);
     iconButtonRipple.unbounded = true;
 
-    this.messageProvider.getMessages(undefined, messagesCount);
-    this.messages$ = this.messageProvider.messages$.pipe(
-      map((data: Message[]) => {
-        this.messages = data;
-      })
-    ).subscribe();
-
     this.scroll$ = fromEvent(document.querySelector('.messagesContent') as Element, 'scroll').pipe(
       mergeMap(() => {
         var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
         var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
         var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
-
         var maxScrollPos = scrollHeight - offsetHeight; 
 
         return of({
@@ -87,7 +129,7 @@ export class ConversationComponent implements OnInit, OnDestroy {
       tap((scroll) => {
         // moment, w ktorym scroll jest na samej gorze
         if(this.loadNextMessages && scroll.maxScrollPos - scroll.currentScrollPos >= scroll.maxScrollPos) {
-          this.messageProvider.getMessages(this.messages[0].Time);
+          this.messageProvider.getMessages(this.id, undefined, new Date(this.messages[0].receivedTime));
           this.stopScroll = true;
         }
       })
@@ -95,25 +137,38 @@ export class ConversationComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
-    this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
-
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
-      var height = 0;
-      mutations.filter((mutation: MutationRecord) => {
-        if((mutation.addedNodes[0] as Element).localName === 'app-message') {
-          return true;
-        }
+      const messages = this.messagesContent.nativeElement.children;       //wszystkie elementy app-message
+      var scrollHeight = this.messagesContent.nativeElement.scrollHeight; //rozmiar scrolla calego messageContentu (roznica jest wysokosc buttona do scrollowania w dol)
+      var heightAllMessages = 0;                                          //wysokosc wszystkich elementow app-message
 
-        return false;
-      }).forEach((mutation: MutationRecord) => {        
-        height += (mutation.addedNodes[0] as Element).clientHeight;
-      })
-
-      if(this.stopScroll) {
-        this.messagesContent.nativeElement.scrollTop = height;
-        this.stopScroll = false;
+      for(let i = 0; i < messages.length; i++) {
+        heightAllMessages += messages[i].clientHeight;
       }
 
+      //jak scroll jest na samym dole, to przy nowych wiadomosciach, niech nadal pozostaje na samym dole
+      if(heightAllMessages <= scrollHeight) {
+        this.messagesContent.nativeElement.scrollTop = scrollHeight;
+      }
+
+      //po zaladaowaniu nowych wiadomosci, ustawia scroll w miejscu ostatniej wiadomosci przed wczytaniem
+      if(this.stopScroll) {
+        var heightNewMessages = 0;
+
+        //elementy, ktore sa wiadomosciami (app-message)
+        mutations.filter((mutation: MutationRecord) => {
+          if((mutation.addedNodes[0] as Element).localName === 'app-message') {
+            return true;
+          }
+  
+          return false;
+        }).forEach((mutation: MutationRecord) => {        
+          heightNewMessages += (mutation.addedNodes[0] as Element).clientHeight; //sumowanie wysokosci wszystkich nowych wiadomosci
+        })
+
+        this.messagesContent.nativeElement.scrollTop = heightNewMessages; //ustawienia scrolla
+        this.stopScroll = false; //moment, w ktorym scroll jest na samej gorze
+      }
     });
     
     observer.observe(document.querySelector('.messagesContent') as Element, {
@@ -128,38 +183,20 @@ export class ConversationComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    var message: Message = new Message(0, 'Ja', new Date(), this.msgText);
+    var message: Message = new Message(this.msgText, this.userNickname, this.id, new Date());
     this.messageProvider.sendMessage(message);
     this.msgText = '';
 
     this.ref.detectChanges();
-
-    // var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
-    var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
-    //var offsetHeight = this.messagesContent.nativeElement.offsetHeight;
-    // var maxScrollPos = scrollHeight - offsetHeight;
-    // var lastMessageHeight = this.messagesContent.nativeElement.children[this.messagesContent.nativeElement.children.length-2].clientHeight;
-
-    const messages = this.messagesContent.nativeElement.children;
-    var height = 0;
-
-    for(let i = 0; i < messages.length; i++) {
-      height += messages[i].clientHeight;
-    }
-
-    //console.log(`${height} - ${scrollHeight}`);
-
-    // if(height <= scrollHeight || maxScrollPos - currentScrollPos <= offsetHeight) {
-    if(height <= scrollHeight) {
-      this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
-    }  
   }
 
   ngOnDestroy() {
+    this.messageProvider.clearMessages();
+    this.roomProvider.onRoomExit(this.id);
     this.id$.unsubscribe();
+    this.roomSub$.unsubscribe();
     this.observer.disconnect();
     this.messages$.unsubscribe();
     this.scroll$.unsubscribe();
   }
-
 }

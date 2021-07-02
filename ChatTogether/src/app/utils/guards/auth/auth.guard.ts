@@ -9,18 +9,23 @@ import { AuthProvider } from "src/app/providers/auth.provider";
 })
 
 export class AuthGuard implements CanActivate {
-    constructor(private authProvider: AuthProvider, private router: Router) { }
+    constructor(private authProvider: AuthProvider, private router: Router) {
+        console.log("AUTH_GUARD");
+        //authProvider.validate();
+     }
 
-    canActivate = () => 
-        this.authProvider.user$.pipe(
+    canActivate() {      
+        return this.authProvider.user.pipe(
             take(1),
             map((user: User) => {
                 if(user) {
                     return true;
                 } else {
-                    this.router.navigate(['/login']);
+                    //this.router.navigate(['/login']);
                     return false;
                 }
             })
         ) 
+    } 
+
 }

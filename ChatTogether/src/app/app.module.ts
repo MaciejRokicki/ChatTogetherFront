@@ -10,6 +10,11 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { RoomService } from './services/room.service';
 import { MessageService } from './services/message.service';
 import { AuthService } from './services/auth.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Hub } from './Hub';
+import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
+import { TopbarTitleService } from './services/topbarTitle.service';
+import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor';
 
 @NgModule({
   declarations: [
@@ -19,12 +24,25 @@ import { AuthService } from './services/auth.service';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CredentialsInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UnauthorizedInterceptor,
+      multi: true
+    },
     RoomService,
     MessageService,
-    AuthService
+    AuthService,
+    Hub,
+    TopbarTitleService
   ],
   bootstrap: [AppComponent]
 })

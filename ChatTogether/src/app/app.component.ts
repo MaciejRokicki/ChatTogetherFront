@@ -11,13 +11,18 @@ import { AuthProvider } from './providers/auth.provider';
 })
 export class AppComponent {
 
-  public user$: Observable<User> = this.authProvider.user$;
+  public user$: Observable<User> = this.authProvider.user;
 
   public siderbarItems: SidebarItem[] = [
-    new SidebarItem('Pokoje', 'inbox', '/'),
-    new SidebarItem('Pokoje2', 'send', '/'),
-    new SidebarItem('Pokoje3', 'drafts', '/')
+    new SidebarItem('Mój profil', 'account_circle', '/user/xyz'),
+    new SidebarItem('Pokoje', 'groups', '/'),
+    new SidebarItem('Wyloguj się', 'logout', '/signout')
   ]
 
-  constructor(private authProvider: AuthProvider) { }
+  constructor(
+    private authProvider: AuthProvider,
+    ) { 
+      authProvider.validate();
+      console.log("APP_COMPONENT");
+    }
 }
