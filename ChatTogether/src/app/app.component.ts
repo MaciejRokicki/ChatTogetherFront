@@ -16,7 +16,7 @@ export class AppComponent {
   public siderbarItems: SidebarItem[] = [
     new SidebarItem('Mój profil', 'account_circle', '/user/xyz'),
     new SidebarItem('Pokoje', 'groups', '/'),
-    new SidebarItem('Wyloguj się', 'logout', '/signout')
+    new SidebarItem('Wyloguj się', 'logout', 'security/signout')
   ]
 
   constructor(

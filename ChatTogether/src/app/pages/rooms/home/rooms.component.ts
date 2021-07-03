@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { map, skip } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ColumnProperty } from 'src/app/components/table/Interfaces/columnProperty';
 import { TableData } from 'src/app/components/table/Interfaces/tableData';
 
@@ -11,11 +11,11 @@ import { RoomProvider } from 'src/app/providers/room.provider';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 
 @Component({
-  selector: 'app-room',
-  templateUrl: './room.component.html',
-  styleUrls: ['./room.component.scss']
+  selector: 'app-rooms',
+  templateUrl: './rooms.component.html',
+  styleUrls: ['./rooms.component.scss']
 })
-export class RoomComponent implements OnInit, OnDestroy {
+export class RoomsComponent implements OnInit, OnDestroy {
 
   roomsSub$: Subscription = new Subscription();
 
@@ -63,7 +63,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   public onRowClick(index: number) {
-    this.router.navigate(['conversation', this.tableData.data[index].id])
+    this.router.navigate(['room', this.tableData.data[index].id])
   }
 
   ngOnDestroy(): void {

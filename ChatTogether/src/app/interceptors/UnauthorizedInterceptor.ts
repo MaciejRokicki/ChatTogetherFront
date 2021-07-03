@@ -22,7 +22,7 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
           console.log("401_UNAUTH");
           this.authProvider.user.next(null);
           this.authProvider.user.subscribe(x => console.log(x));
-          this.router.navigate(['/login']);
+          this.router.navigate(['/security/signin']);
         }
         return throwError(err);
       })

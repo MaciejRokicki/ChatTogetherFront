@@ -6,19 +6,19 @@ import { MDCRipple } from '@material/ripple';
 import { MDCTextField } from '@material/textfield';
 import { tap } from 'rxjs/operators';
 import { Result } from 'src/app/entities/Result';
-import { LoginModel } from 'src/app/entities/Security/LoginModel';
+import { SigninModel } from 'src/app/entities/Security/SigninModel';
 
 import { AuthProvider } from 'src/app/providers/auth.provider';
 import { DigitExistValidator } from 'src/app/validators/digitExistValidator';
 import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidator';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-signin',
+  templateUrl: './signin.component.html',
+  styleUrls: ['./signin.component.scss']
 })
-export class LoginComponent implements OnInit {
-  loginForm = new FormGroup({
+export class SigninComponent implements OnInit {
+  signinForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6), UpperCaseCharValidator(), DigitExistValidator()]),
   });
@@ -30,12 +30,12 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     new MDCTextField(document.getElementById('emailField') as Element);
     new MDCTextField(document.getElementById('passwordField') as Element);
-    new MDCRipple(document.getElementById("registerButton") as Element);
+    new MDCRipple(document.getElementById("signupButton") as Element);
   }
 
   onSubmit() {
-    let loginModel: LoginModel = new LoginModel(this.loginForm.get("email").value, this.loginForm.get("password").value);
-    this.authProvider.login(loginModel);
+    let signinModel: SigninModel = new SigninModel(this.signinForm.get("email").value, this.signinForm.get("password").value);
+    this.authProvider.login(signinModel);
     //TODO: pomyslec nad kodami zamiast na sztywno podawac tresc wiadomosci
     this.authProvider.result.pipe(
       tap((res: Result) => {
@@ -56,8 +56,8 @@ export class LoginComponent implements OnInit {
     ).subscribe();
   }
 
-  navigateToRegistrationPage() {
-    this.router.navigate(['register']);
+  navigateToSignUpPage() {
+    this.router.navigate(['security/signup']);
   }
 
 }

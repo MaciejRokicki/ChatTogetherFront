@@ -1,7 +1,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 <div class="container">
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <img src="../../../../assets/logo.png" class="logo">
         <div *ngIf="errorMessage" class="error">
             {{ errorMessage }}
@@ -58,7 +58,7 @@
             </span>
             <input type="password" formControlName="confirmPassword" class="mdc-text-field__input">
         </label>
-        <button class="mdc-button mdc-button--raised" id="registerButton" type="submit" [disabled]="!validForm()">
+        <button class="mdc-button mdc-button--raised" id="signupButton" type="submit" [disabled]="!validForm()">
             <span class="mdc-button__ripple"></span>
             <span class="mdc-button__label">Stwórz konto</span>
             <i class="material-icons mdc-button__icon">login</i>

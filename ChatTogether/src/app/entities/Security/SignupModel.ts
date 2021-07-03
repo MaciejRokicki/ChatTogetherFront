@@ -1,4 +1,4 @@
-export class RegistrationModel {
+export class SignupModel {
     constructor(
         public Email: string,
         public Password: string,

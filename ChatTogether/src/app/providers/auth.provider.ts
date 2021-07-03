@@ -3,8 +3,8 @@ import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
 import { Result } from "../entities/Result";
-import { LoginModel } from "../entities/Security/LoginModel";
-import { RegistrationModel } from "../entities/Security/RegistrationModel";
+import { SigninModel } from "../entities/Security/SigninModel";
+import { SignupModel } from "../entities/Security/SignupModel";
 import { User } from "../entities/user";
 import { AuthService } from "../services/auth.service";
 
@@ -18,12 +18,12 @@ export class AuthProvider {
 
     constructor(private authService: AuthService, private router: Router) { }
 
-    register(registrationModel: RegistrationModel): void {
-        this.authService.register(registrationModel);
+    register(signupModel: SignupModel): void {
+        this.authService.register(signupModel);
     }
 
-    login(loginModel: LoginModel): void {
-        this.authService.login(loginModel).pipe(
+    login(signinModel: SigninModel): void {
+        this.authService.login(signinModel).pipe(
             tap((user: User) => {
                 this.user.next(user);
             }),
@@ -53,7 +53,7 @@ export class AuthProvider {
             catchError(err => {
                 if(err.status === 401)
                 {
-                    this.router.navigate(['/login']);
+                    this.router.navigate(['/security/signin']);
                     this.user.next(null);
                 }
                 

@@ -16,11 +16,11 @@ import { AuthProvider } from 'src/app/providers/auth.provider';
 import { User } from 'src/app/entities/user';
 
 @Component({
-  selector: 'app-conversation',
-  templateUrl: './conversation.component.html',
-  styleUrls: ['./conversation.component.scss']
+  selector: 'app-room',
+  templateUrl: './room.component.html',
+  styleUrls: ['./room.component.scss']
 })
-export class ConversationComponent implements OnInit, OnDestroy {
+export class RoomComponent implements OnInit, OnDestroy {
   @ViewChild('scroll') messagesContent!: ElementRef;
 
   id: number = 0;
