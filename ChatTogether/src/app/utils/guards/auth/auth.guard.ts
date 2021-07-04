@@ -2,20 +2,20 @@ import { Injectable } from "@angular/core";
 import { CanActivate, Router } from "@angular/router";
 import { map, take } from "rxjs/operators";
 import { User } from "src/app/entities/user";
-import { AuthProvider } from "src/app/providers/auth.provider";
+import { SecurityProvider } from "src/app/providers/security.provider";
 
 @Injectable({
     providedIn: 'root'
 })
 
 export class AuthGuard implements CanActivate {
-    constructor(private authProvider: AuthProvider, private router: Router) {
+    constructor(private securityProvider: SecurityProvider, private router: Router) {
         console.log("AUTH_GUARD");
-        //authProvider.validate();
+        securityProvider.validate();
      }
 
     canActivate() {      
-        return this.authProvider.user.pipe(
+        return this.securityProvider.user.pipe(
             take(1),
             map((user: User) => {
                 if(user) {

@@ -9,7 +9,7 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 import { RoomService } from './services/room.service';
 import { MessageService } from './services/message.service';
-import { AuthService } from './services/auth.service';
+import { SecurityService } from './services/security.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Hub } from './Hub';
 import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
@@ -40,7 +40,7 @@ import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor'
     },
     RoomService,
     MessageService,
-    AuthService,
+    SecurityService,
     Hub,
     TopbarTitleService
   ],

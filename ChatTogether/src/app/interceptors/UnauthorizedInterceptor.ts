@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AuthProvider } from '../providers/auth.provider';
+import { SecurityProvider } from '../providers/security.provider';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private authProvider: AuthProvider) {
+  constructor(private router: Router, private securityProvider: SecurityProvider) {
     console.log("UNAUTH_INTER");
    }
 
@@ -20,8 +20,8 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       catchError((err: Error) => {
         if(err['status'] === 401) {
           console.log("401_UNAUTH");
-          this.authProvider.user.next(null);
-          this.authProvider.user.subscribe(x => console.log(x));
+          this.securityProvider.user.next(null);
+          this.securityProvider.user.subscribe(x => console.log(x));
           this.router.navigate(['/security/signin']);
         }
         return throwError(err);

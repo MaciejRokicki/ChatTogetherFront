@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -8,8 +8,9 @@ import { tap } from 'rxjs/operators';
 import { Result } from 'src/app/entities/Result';
 import { SigninModel } from 'src/app/entities/Security/SigninModel';
 
-import { AuthProvider } from 'src/app/providers/auth.provider';
+import { SecurityProvider } from 'src/app/providers/security.provider';
 import { DigitExistValidator } from 'src/app/validators/digitExistValidator';
+import { SpecialCharValidator } from 'src/app/validators/specialCharValidator';
 import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidator';
 
 @Component({
@@ -20,12 +21,18 @@ import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidato
 export class SigninComponent implements OnInit {
   signinForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6), UpperCaseCharValidator(), DigitExistValidator()]),
+    password: new FormControl('', [
+      Validators.required, 
+      Validators.minLength(6), 
+      UpperCaseCharValidator(), 
+      DigitExistValidator(),
+      SpecialCharValidator()
+    ]),
   });
 
   errorMessage: string = "";
   
-  constructor(private authProvider: AuthProvider, private router: Router) { }
+  constructor(private securityProvider: SecurityProvider, private router: Router) { }
 
   ngOnInit(): void {
     new MDCTextField(document.getElementById('emailField') as Element);
@@ -35,11 +42,11 @@ export class SigninComponent implements OnInit {
 
   onSubmit() {
     let signinModel: SigninModel = new SigninModel(this.signinForm.get("email").value, this.signinForm.get("password").value);
-    this.authProvider.login(signinModel);
+    this.securityProvider.signin(signinModel);
     //TODO: pomyslec nad kodami zamiast na sztywno podawac tresc wiadomosci
-    this.authProvider.result.pipe(
+    this.securityProvider.result.pipe(
       tap((res: Result) => {
-        if(!res.Success) {
+        if(res.Success === false) {
           switch(res.Message) {
             case "Incorrect data.":
               this.errorMessage = "Podano niepoprawne dane.";

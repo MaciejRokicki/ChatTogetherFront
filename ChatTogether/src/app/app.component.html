@@ -1,6 +1,6 @@
-<div class="container" *ngIf="user$ | async; else loginPage">
+<div class="container" *ngIf="user; else loginPage">
   <app-topbar class="topbar"></app-topbar>
-  <app-sidebar class="sidebar" [user]="user$ | async" [items]="siderbarItems"></app-sidebar>
+  <app-sidebar class="sidebar" [user]="user" [items]="siderbarItems"></app-sidebar>
   <div class="main">
     <router-outlet></router-outlet>
   </div>

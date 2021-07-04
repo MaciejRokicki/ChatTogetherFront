@@ -8,7 +8,7 @@
   </div>
   <!-- <hr class="mdc-list-divider"> -->
   <div class="mdc-drawer__content">
-    <nav class="mdc-list" id="test">
+    <nav class="mdc-list" id="nav_sidebar">
       <ng-template ngFor let-item [ngForOf]="items" let-id="index">
         <a class="mdc-list-item" [ngClass]="{'mdc-list-item--activated': id == 1}" href="#" tabindex="0"
           routerLink='{{ item.route }}' (click)="CloseModal()">

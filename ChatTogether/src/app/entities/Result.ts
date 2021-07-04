@@ -1,6 +1,6 @@
 export class Result {
     constructor(
-        public Success: boolean,
+        public Success: boolean | null,
         public Message: string | undefined
     ) {}
 }

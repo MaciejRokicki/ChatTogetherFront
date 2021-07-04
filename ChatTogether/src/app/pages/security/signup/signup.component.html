@@ -18,8 +18,8 @@
                 <input type="text" formControlName="nickname" class="mdc-text-field__input" (focus)="showNicknameInfo()"
                     (blur)="clearInfo()">
             </label>
-            <div class="info" *ngIf="nicknameInfo">
-                {{ nicknameInfo }}
+            <div class="infoBorder" *ngIf="nicknameInfo">
+                <p class="info">{{ nicknameInfo }}</p>
             </div>
         </div>
         <label class="mdc-text-field mdc-text-field--outlined" id="emailField">
@@ -44,8 +44,8 @@
                 <input type="password" formControlName="password" class="mdc-text-field__input"
                     (focus)="showPasswordInfo()" (blur)="clearInfo()">
             </label>
-            <div class="info" *ngIf="passwordInfo">
-                {{ passwordInfo }}
+            <div class="infoBorder" *ngIf="passwordInfo">
+                <p class="info">{{ passwordInfo }}</p>
             </div>
         </div>
         <label class="mdc-text-field mdc-text-field--outlined" id="confirmPasswordField">

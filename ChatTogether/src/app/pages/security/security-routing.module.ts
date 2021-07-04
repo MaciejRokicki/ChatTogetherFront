@@ -13,9 +13,13 @@ const routes: Routes = [
         path: 'signup',
         component: SignupComponent
     },
-    { //TODO: zrobic page dla signout
+    {
         path: 'signout',
         component: SignoutComponent
+    },
+    {
+        path: 'password',
+        loadChildren: () => import('./password/password.module').then(x => x.PasswordModule)
     }
 ];
 

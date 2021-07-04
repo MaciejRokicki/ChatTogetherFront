@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit, OnDestroy {
+export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   roomsSub$: Subscription = new Subscription();
 
@@ -46,6 +46,10 @@ export class RoomsComponent implements OnInit, OnDestroy {
     private router: Router,
     private topbarTitleService: TopbarTitleService
   ) { }
+  
+  ngAfterViewInit(): void {
+    (document.getElementById('nav_sidebar') as Element).children[1]?.classList.add('mdc-list-item--activated');
+  }
 
   ngOnInit(): void {
     this.topbarTitleService.setTitle("Pokoje");

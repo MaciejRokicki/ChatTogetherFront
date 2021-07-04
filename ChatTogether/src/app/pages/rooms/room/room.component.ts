@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { MDCTextField } from '@material/textfield';
 import { MDCRipple } from '@material/ripple';
@@ -12,7 +12,7 @@ import { MessageProvider } from 'src/app/providers/message.provider';
 import { RoomProvider } from 'src/app/providers/room.provider';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 import { Room } from 'src/app/entities/room';
-import { AuthProvider } from 'src/app/providers/auth.provider';
+import { SecurityProvider } from 'src/app/providers/security.provider';
 import { User } from 'src/app/entities/user';
 
 @Component({
@@ -47,7 +47,8 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private authProvider: AuthProvider,
+    private router: Router,
+    private securityProvider: SecurityProvider,
     private roomProvider: RoomProvider,
     private messageProvider: MessageProvider,
     private ref: ChangeDetectorRef,
@@ -59,11 +60,9 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    (document.getElementById('nav_sidebar') as Element).children[1].classList.remove('mdc-list-item--activated');
 
-    //TODO: zaznaczony element w sidebarze
-    (document.getElementById('test') as Element).children[1].classList.remove('mdc-list-item--activated');
-
-    this.authProvider.user.pipe(
+    this.securityProvider.user.pipe(
       tap((user: User) => {
         this.userNickname = user.nickname
       })

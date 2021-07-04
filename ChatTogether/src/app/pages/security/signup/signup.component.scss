@@ -30,7 +30,7 @@ label {
     flex-direction: column;
 }
 
-.info {
+.infoBorder {
     min-width: 300px;
     display: flex;
     font-family: 'Roboto', sans-serif;
@@ -40,6 +40,10 @@ label {
     height: 50px;
     border-radius: 0px 0px 15px 15px;
     text-align: center;
+}
+
+.info {
+    width: 100%;
 }
 
 .separator {

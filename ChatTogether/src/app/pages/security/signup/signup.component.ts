@@ -4,10 +4,13 @@ import { Router } from '@angular/router';
 
 import { MDCRipple } from '@material/ripple';
 import { MDCTextField } from '@material/textfield';
+import { tap } from 'rxjs/operators';
+import { Result } from 'src/app/entities/Result';
 import { SignupModel } from 'src/app/entities/Security/SignupModel';
 
-import { AuthProvider } from 'src/app/providers/auth.provider';
+import { SecurityProvider } from 'src/app/providers/security.provider';
 import { DigitExistValidator } from 'src/app/validators/digitExistValidator';
+import { SpecialCharValidator } from 'src/app/validators/specialCharValidator';
 import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidator';
 
 @Component({
@@ -20,14 +23,20 @@ export class SignupComponent implements OnInit {
     nickname: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required, Validators.minLength(6), UpperCaseCharValidator(), DigitExistValidator()]),
-    confirmPassword: new FormControl('', [Validators.required, Validators.minLength(6), UpperCaseCharValidator(), DigitExistValidator()]),
+    confirmPassword: new FormControl('', [
+      Validators.required, 
+      Validators.minLength(6), 
+      UpperCaseCharValidator(), 
+      DigitExistValidator(),
+      SpecialCharValidator()
+    ]),
   });
 
   errorMessage: string = "";
   nicknameInfo: string = "";
   passwordInfo: string = "";
   
-  constructor(private authProvider: AuthProvider, private router: Router) { }
+  constructor(private securityProvider: SecurityProvider, private router: Router) { }
 
   ngOnInit(): void {
     new MDCTextField(document.getElementById('emailField') as Element);
@@ -44,16 +53,33 @@ export class SignupComponent implements OnInit {
       this.signupForm.get("password").value, 
       this.signupForm.get("nickname").value);
 
-    this.authProvider.register(signupModel);
+    this.securityProvider.signup(signupModel);
+    this.securityProvider.result.pipe(
+      tap((res: Result) => {
+        if(res.Success === false) {
+          switch(res.Message) {
+            case "Email is in use.":
+              this.errorMessage = "Podany adres email jest zajęty.";
+              break;
+            case "Invalid data.":
+              this.errorMessage = "Nieprawidłowy format danych.";
+              break;
+            case "Nickname is in use.":
+              this.errorMessage = "Podana nazwa użytkownika jest zajęta.";
+              break;
+          }
+        }
+      })
+    ).subscribe();
     this.router.navigate(['']);
   }
 
   showNicknameInfo(): void {
-    this.nicknameInfo = "Nazwa użytkownika musi składać sie z przynajmniej 3 znaków.";
+    this.nicknameInfo = "Przynajmniej 3 znaki.";
   }
 
   showPasswordInfo(): void {
-    this.passwordInfo = "Hasło musi się składać z przynajmniej 6 znaków, jednej wielkiej litery i jednej cyfry.";
+    this.passwordInfo = "Przynajmniej 6 znaków, jedna wielka litera, jedna cyfra i jeden znak specjalny.";
   }
 
   clearInfo(): void {
