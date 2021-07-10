@@ -15,6 +15,7 @@ import { Hub } from './Hub';
 import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
 import { TopbarTitleService } from './services/topbarTitle.service';
 import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor'
     RoomService,
     MessageService,
     SecurityService,
+    UserService,
     Hub,
     TopbarTitleService
   ],

@@ -1,69 +1,45 @@
-<div class="content">
-    <p class="item">user works! {{ nickname }}</p>
-    <div class="item">
-        item1
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<div class="container">
+    <div class="card user-card">
+        <div class="title">
+            <h5>{{ nickname }}</h5>
+            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser.nickname" id="userEdit" (click)="userEdit()">edit</button>
+        </div>
+        <div class="card-content">
+            <p>Imię: {{ user?.firstName ? user.firstName : "---" }}</p>
+            <p>Nazwisko: {{ user?.lastName ? user.lastName : "---" }}</p>
+            <p>Data urodzenia: {{ user?.birthDate ? user.birthDate : "---" }}</p>
+            <p>Miasto: {{ user?.city ? user.city : "---" }}</p>
+        </div>
     </div>
-    <div class="item">
-        item2
+    <div class="card aboutMe-card">
+        <div class="title">
+            <h5>O mnie</h5>
+            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser.nickname" id="aboutMeEdit" (click)="aboutMeEdit()">edit</button>
+        </div>
+        <div class="card-content">
+            <p>{{ user?.description ? user.description : "---" }}</p>
+        </div>
     </div>
-    <div class="item">
-        item3
-    </div>
-    <div class="item">
-        item4
-    </div>
-    <div class="item">
-        item5
-    </div>
-    <div class="item">
-        item6
-    </div>
-    <div class="item">
-        item7
-    </div>
-    <div class="item">
-        item8
-    </div>
-    <div class="item">
-        item9
-    </div>
-    <div class="item">
-        item10
-    </div>
-    <div class="item">
-        item11
-    </div>
-    <div class="item">
-        item12
-    </div>
-    <div class="item">
-        item13
-    </div>
-    <div class="item">
-        item14
-    </div>
-    <div class="item">
-        item15
-    </div>
-    <div class="item">
-        item16
-    </div>
-    <div class="item">
-        item17
-    </div>
-    <div class="item">
-        item18
-    </div>
-    <div class="item">
-        item19
-    </div>
-    <div class="item">
-        item20
-    </div>
-    <div class="item">
-        item21
-    </div>
-    <div class="item">
-        item22
+    <div class="card account-card" *ngIf="nickname == authUser.nickname">
+        <div class="title">
+            <h5>Konto</h5>
+        </div>
+        <div class="card-content">
+            <button type="button" class="mdc-button mdc-button--raised account-button account-button" id="changeNickname" (click)="changeNickname()">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">Zmień pseudonim</span>
+            </button>
+            <button type="button" class="mdc-button mdc-button--raised account-button" id="changeEmail" (click)="changeEmail()">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">Zmień adres email</span>
+            </button>
+            <button type="button" class="mdc-button mdc-button--raised account-button" id="changePassword" (click)="changePassword()">
+                <span class="mdc-button__ripple"></span>
+                <span class="mdc-button__label">Zmień hasło</span>
+            </button>
+        </div>
     </div>
 </div>

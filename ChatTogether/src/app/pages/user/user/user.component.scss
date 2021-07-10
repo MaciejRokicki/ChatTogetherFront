@@ -1,8 +1,75 @@
-.item {
-	min-width: 317.2px;
-	min-height: 200px;
-	margin: 5px;
-	text-align: center;
-	background-color: green;
-	flex-grow: 1;
+@use "@material/icon-button";
+@use "@material/floating-label/mdc-floating-label";
+@use "@material/line-ripple/mdc-line-ripple";
+@use "@material/notched-outline/mdc-notched-outline";
+@use "@material/button/styles";
+
+@include icon-button.core-styles;
+
+.card {
+	background-color: whitesmoke;
+	margin: 25px;
+	border-radius: 25px;
+	padding: 0px 0px 20px 20px;
+	min-width: 300px;
 }
+
+.title {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 0px;
+	min-height: 48px;
+}
+
+h5 {
+	font-family: 'Roboto', sans-serif;
+    font-size: 22px;
+	margin: 0px;
+	align-self: center;
+}
+
+p {
+	margin: 5px 0px 5px 0px;
+	font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+}
+
+.card-content {
+	display: flex;
+	flex-direction: column;
+	padding: 0px 20px 0px 0px;
+}
+
+.account-button {
+	margin: 0px 0px 10px 0px;
+	width: 100%;
+	max-width: 300px;
+	align-self: center;
+}
+
+@media only screen and (min-width: 1200px) {
+	.container {
+		display: grid;
+		grid-template-columns: 425px auto;
+		grid-template-rows: auto 246px;
+	}
+
+	.aboutMe-card {
+		grid-column-start: 2;
+		grid-column-end: 3;
+		grid-row-start: 1;
+		grid-row-end: 3;
+	}
+}
+
+@media only screen and (max-width: 1199px) {
+	.container {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+	}
+	
+	.account-card {
+		max-width: 320px;
+	}
+  }
