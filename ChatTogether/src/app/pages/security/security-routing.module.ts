@@ -20,6 +20,10 @@ const routes: Routes = [
     {
         path: 'password',
         loadChildren: () => import('./password/password.module').then(x => x.PasswordModule)
+    },
+    {
+        path: 'email',
+        loadChildren: () => import('./email/email.module').then(x => x.EmailModule)
     }
 ];
 

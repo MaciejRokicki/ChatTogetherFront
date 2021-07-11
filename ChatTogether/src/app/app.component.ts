@@ -29,7 +29,7 @@ export class AppComponent {
         tap((user: User) => {
           this.user = user;
           if(user) {
-            let userItem = this.siderbarItems.find(item => item.route === '/user/');
+            let userItem = this.siderbarItems.find(item => item.text === 'Mój profil');
             if(userItem) {
               userItem.route = `/user/${this.user.nickname}`;
             }

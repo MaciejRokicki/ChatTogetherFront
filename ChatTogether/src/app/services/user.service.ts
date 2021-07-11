@@ -16,4 +16,12 @@ export class UserService {
     getUser(nickname: string): Observable<User> {
         return this.http.get<User>(`${this.url}/GetUser?nickname=${nickname}`);
     }
+
+    changeNickname(nickname: string): Observable<void> {
+        return this.http.put<void>(`${this.url}/ChangeNickname`, new Object(nickname));
+    }
+
+    changeUserData(user: User): Observable<User> {
+        return this.http.put<User>(`${this.url}/ChangeUserData`, user);
+    }
 }

@@ -1,45 +1,211 @@
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 <div class="container">
     <div class="card user-card">
         <div class="title">
             <h5>{{ nickname }}</h5>
-            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser.nickname" id="userEdit" (click)="userEdit()">edit</button>
+            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="userEdit"
+                (click)="userEditOpenModal()">edit</button>
         </div>
         <div class="card-content">
-            <p>Imię: {{ user?.firstName ? user.firstName : "---" }}</p>
-            <p>Nazwisko: {{ user?.lastName ? user.lastName : "---" }}</p>
-            <p>Data urodzenia: {{ user?.birthDate ? user.birthDate : "---" }}</p>
-            <p>Miasto: {{ user?.city ? user.city : "---" }}</p>
+            <p *ngIf="user?.firstName; else nameExists">
+                Imię: {{user.firstName}}
+            </p>
+            <ng-template #nameExists>
+                <p>Imię: <i>brak</i></p>
+            </ng-template>
+            <p *ngIf="user?.lastName; else lastNameExists">
+                Nazwisko: {{user.lastName}}
+            </p>
+            <ng-template #lastNameExists>
+                <p>Nazwisko: <i>brak</i></p>
+            </ng-template>
+            <p *ngIf="user?.birthDate; else dateExists">
+                Data urodzenia: {{user.birthDate | date:'dd.MM.yyyy'}}
+            </p>
+            <ng-template #dateExists>
+                <p>Data urodzenia: <i>brak</i></p>
+            </ng-template>
+            <p *ngIf="user?.city; else cityExists">
+                Miasto: {{user.city}}
+            </p>
+            <ng-template #cityExists>
+                <p>Miasto: <i>brak</i></p>
+            </ng-template>
         </div>
     </div>
     <div class="card aboutMe-card">
         <div class="title">
             <h5>O mnie</h5>
-            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser.nickname" id="aboutMeEdit" (click)="aboutMeEdit()">edit</button>
+            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="aboutMeEdit"
+                (click)="aboutMeEditOpenModal()">edit</button>
         </div>
         <div class="card-content">
-            <p>{{ user?.description ? user.description : "---" }}</p>
+            <p *ngIf="user?.description; else descriptionExists">
+                {{user.description}}
+            </p>
+            <ng-template #descriptionExists>
+                <p><i>brak</i></p>
+            </ng-template>
         </div>
     </div>
-    <div class="card account-card" *ngIf="nickname == authUser.nickname">
+    <div class="card account-card" *ngIf="nickname == authUser?.nickname">
         <div class="title">
             <h5>Konto</h5>
         </div>
         <div class="card-content">
-            <button type="button" class="mdc-button mdc-button--raised account-button account-button" id="changeNickname" (click)="changeNickname()">
+            <button type="button" class="mdc-button mdc-button--raised account-button account-button"
+                id="changeNickname" (click)="changeNicknameOpenModal()">
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">Zmień pseudonim</span>
             </button>
-            <button type="button" class="mdc-button mdc-button--raised account-button" id="changeEmail" (click)="changeEmail()">
+            <button type="button" class="mdc-button mdc-button--raised account-button" id="changeEmail"
+                (click)="changeEmail()">
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">Zmień adres email</span>
             </button>
-            <button type="button" class="mdc-button mdc-button--raised account-button" id="changePassword" (click)="changePassword()">
+            <button type="button" class="mdc-button mdc-button--raised account-button" id="changePassword"
+                (click)="changePassword()">
                 <span class="mdc-button__ripple"></span>
                 <span class="mdc-button__label">Zmień hasło</span>
             </button>
         </div>
     </div>
+</div>
+<div class="mdc-snackbar">
+    <div class="mdc-snackbar__surface" role="status" aria-relevant="additions">
+        <div class="mdc-snackbar__label" aria-atomic="false"></div>
+        <div class="mdc-snackbar__actions" aria-atomic="true">
+            <button class="mdc-icon-button mdc-snackbar__dismiss material-icons" title="Zamknij">close</button>
+        </div>
+    </div>
+</div>
+
+<div class="mdc-dialog" id="userEditModal">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
+            aria-describedby="my-dialog-content">
+            <h2 class="mdc-dialog__title">
+                Zmień pseudonim
+            </h2>
+            <form [formGroup]="userEditForm" (ngSubmit)="userEdit()">
+                <div class="mdc-dialog__content" id="my-dialog-content">
+                    <label class="mdc-text-field mdc-text-field--outlined userEditFormInput" id="firstNameField">
+                        <span class="mdc-notched-outline">
+                            <span class="mdc-notched-outline__leading"></span>
+                            <span class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="my-label-id">Imię</span>
+                            </span>
+                            <span class="mdc-notched-outline__trailing"></span>
+                        </span>
+                        <input type="text" formControlName="firstName" class="mdc-text-field__input">
+                    </label>
+                    <label class="mdc-text-field mdc-text-field--outlined userEditFormInput" id="lastNameField">
+                        <span class="mdc-notched-outline">
+                            <span class="mdc-notched-outline__leading"></span>
+                            <span class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="my-label-id">Nazwisko</span>
+                            </span>
+                            <span class="mdc-notched-outline__trailing"></span>
+                        </span>
+                        <input type="text" formControlName="lastName" class="mdc-text-field__input">
+                    </label>
+                    <label class="mdc-text-field mdc-text-field--outlined userEditFormInput" id="cityField">
+                        <span class="mdc-notched-outline">
+                            <span class="mdc-notched-outline__leading"></span>
+                            <span class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="my-label-id">Miasto</span>
+                            </span>
+                            <span class="mdc-notched-outline__trailing"></span>
+                        </span>
+                        <input type="text" formControlName="city" class="mdc-text-field__input">
+                    </label>
+                </div>
+                <div class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Anuluj</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept"
+                        type="submit">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Zmień</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+<div class="mdc-dialog" id="aboutMeEditModal">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
+            aria-describedby="my-dialog-content">
+            <h2 class="mdc-dialog__title">
+                Edytuj opis
+            </h2>
+            <form [formGroup]="aboutMeEditForm" (ngSubmit)="aboutMeEdit()">
+                <div class="mdc-dialog__content" id="my-dialog-content">
+                    <label
+                        class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea mdc-text-field--no-label" id="aboutMeTextArea">
+                        <span class="mdc-text-field__ripple"></span>
+                            <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"
+                                id="aboutMeField" formControlName="aboutMe"></textarea>
+                        <span class="mdc-line-ripple"></span>
+                    </label>
+                </div>
+                <div class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Anuluj</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept"
+                        type="submit">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Zmień</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
+</div>
+
+<div class="mdc-dialog" id="changeNicknameModal">
+    <div class="mdc-dialog__container">
+        <div class="mdc-dialog__surface" role="alertdialog" aria-modal="true" aria-labelledby="my-dialog-title"
+            aria-describedby="my-dialog-content">
+            <h2 class="mdc-dialog__title">
+                Zmień pseudonim
+            </h2>
+            <form [formGroup]="changeNicknameForm" (ngSubmit)="changeNickname()">
+                <div class="mdc-dialog__content" id="my-dialog-content">
+                    <label class="mdc-text-field mdc-text-field--outlined" id="nicknameField">
+                        <span class="mdc-notched-outline">
+                            <span class="mdc-notched-outline__leading"></span>
+                            <span class="mdc-notched-outline__notch">
+                                <span class="mdc-floating-label" id="my-label-id">Nazwa użytkownika</span>
+                            </span>
+                            <span class="mdc-notched-outline__trailing"></span>
+                        </span>
+                        <input type="text" formControlName="nickname" class="mdc-text-field__input">
+                    </label>
+                    <div style="margin-top: 5px;">
+                        Po zmianie zostaniesz wylogowany.
+                    </div>
+                </div>
+                <div class="mdc-dialog__actions">
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="cancel">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Anuluj</span>
+                    </button>
+                    <button type="button" class="mdc-button mdc-dialog__button" data-mdc-dialog-action="accept"
+                        type="submit" [disabled]="!changeNicknameForm.valid">
+                        <div class="mdc-button__ripple"></div>
+                        <span class="mdc-button__label">Zmień</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="mdc-dialog__scrim"></div>
 </div>

@@ -30,6 +30,7 @@ export class SigninComponent implements OnInit {
     ]),
   });
 
+  infoMessage: string = "";
   errorMessage: string = "";
   
   constructor(private securityProvider: SecurityProvider, private router: Router) { }
@@ -38,6 +39,20 @@ export class SigninComponent implements OnInit {
     new MDCTextField(document.getElementById('emailField') as Element);
     new MDCTextField(document.getElementById('passwordField') as Element);
     new MDCRipple(document.getElementById("signupButton") as Element);
+  }
+
+  resendConfirmationEmail(): void {
+    this.securityProvider.resendConfirmationEmail(this.signinForm.get('email').value);
+    this.securityProvider.result.pipe(
+      tap((res: Result) => {
+        if(res.Success === false) {
+            this.errorMessage = "Coś poszło nie tak :(";
+        } else {
+          this.errorMessage = "";
+          this.infoMessage = "Link potwierdzający został wysłany ponownie.";
+        }
+      })
+    ).subscribe();
   }
 
   onSubmit() {

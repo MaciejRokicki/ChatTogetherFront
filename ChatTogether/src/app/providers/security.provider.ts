@@ -77,7 +77,15 @@ export class SecurityProvider {
     }
 
     changeEmail(token: string, newEmail: string): void {
-        this.securityService.changeEmail(token, newEmail);
+        this.securityService.changeEmail(token, newEmail).pipe(
+            tap(() => {
+                this.result.next(new Result(true, undefined))
+            }),
+            catchError(err => {
+                this.result.next(new Result(false, err.error));
+                return throwError(err);       
+            })
+        ).subscribe();
         //TODO: podmienic email w user
     }
 
@@ -106,18 +114,34 @@ export class SecurityProvider {
     }
 
     confirmEmail(email: string, token: string): void {
-        this.securityService.confirmEmail(email, token);
+        this.securityService.confirmEmail(email, token).pipe(
+            tap(() => {
+                this.result.next(new Result(true, undefined));
+            }),
+            catchError(err => {
+                this.result.next(new Result(false, err.error));
+                return throwError(err);
+            })
+        ).subscribe();;
     }
 
     resendConfirmationEmail(email: string): void {
-        this.securityService.resendConfirmationEmail(email);
+        this.securityService.resendConfirmationEmail(email).pipe(
+            tap(() => {
+                this.result.next(new Result(true, undefined));
+            }),
+            catchError(err => {
+                this.result.next(new Result(false, err.error));
+                return throwError(err);
+            })
+        ).subscribe();
     }
 
     changeEmailRequest(): void {
-        this.securityService.changeEmailRequest();
+        this.securityService.changeEmailRequest().subscribe();
     }
 
     changePasswordRequest(): void {
-        this.securityService.changePasswordRequest();
+        this.securityService.changePasswordRequest().subscribe();
     }
 }

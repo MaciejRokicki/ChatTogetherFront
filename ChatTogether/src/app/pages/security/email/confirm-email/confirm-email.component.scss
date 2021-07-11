@@ -13,32 +13,43 @@
     align-items: center;
 }
 
-form {
+.content {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+}
+
+p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 36px;
+    text-align: center;
+    margin: 0px 0px 10px 0px;
+}
+
+.fromGroup {
+    border: 1px solid lightgray;
+    border-radius: 10px;
+    background-color: whitesmoke;
+    padding: 20px;
+}
+
+.infoField {
+    width: 100%;
+    margin-bottom: 10px;
+    font-family: 'Roboto', sans-serif;
+}
+
+form {
+    align-items: center;
+    width: 100%;
 }
 
 label {
     margin: 5px 0px 5px 0px;
+    width: 100%;
 }
 
-.separator {
-    align-self: center;
-    margin: 5px 0px 5px 0px;
-}
-
-.logo {
-    margin: 0px 0px 5px 0px;
-}
-
-a {
-    margin: 0px 0px 5px 0px;
-}
-
-.resend {
-    cursor: pointer;
-    color: blue;
+button {
+    width: 100%;
 }
 
 .infoMessage {
@@ -60,9 +71,10 @@ a {
     justify-content: center;
     align-items: center;
     min-height: 50px;
-    margin: 5px 0px 4px 0px;
+    margin-bottom: 10px;
     background-color: whitesmoke;
     color: darkred;
+    border: 1px solid lightgray;
     border-radius: 20px;
     font-family: 'Roboto', sans-serif;
     font-size: 15px;

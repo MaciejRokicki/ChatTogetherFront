@@ -32,9 +32,8 @@ export class SecurityService {
         return this.http.get<User>(`${this.url}/Validate`);
     }
 
-    //TODO: .
     changeEmail(token: string, newEmail: string): Observable<void> {
-        return this.http.get<void>(`${this.url}/ChangeEmail?token=${token}&newEmail=${newEmail}`);
+        return this.http.put<void>(`${this.url}/ChangeEmail?token=${token}&newEmail=${newEmail}`, new Object(newEmail));
     }
 
     changePassword(token: string, newPassword: string): Observable<void> {
@@ -45,23 +44,19 @@ export class SecurityService {
         return this.http.post<void>(`${this.url}/ForgotPassword?email=${email}`, null);
     }
 
-    //TODO: .
     confirmEmail(email: string, token: string): Observable<void> {
-        return this.http.get<void>(`${this.url}/ConfirmEmail?email=${email}&token=${token}`);
+        return this.http.put<void>(`${this.url}/ConfirmEmail?email=${email}&token=${token}`, null);
     }
 
-    //TODO: .
     resendConfirmationEmail(email: string): Observable<void> {
-        return this.http.get<void>(`${this.url}/ResendConfirmationEmail?email${email}`);
+        return this.http.post<void>(`${this.url}/ResendConfirmationEmail?email=${email}`, null);
     }
 
-    //TODO: .
     changeEmailRequest(): Observable<void> {
-        return this.http.get<void>(`${this.url}/ChangeEmailRequest`);
+        return this.http.post<void>(`${this.url}/ChangeEmailRequest`, null);
     }
 
-    //TODO: .
     changePasswordRequest(): Observable<void> {
-        return this.http.get<void>(`${this.url}/ChangePasswordRequest`);
+        return this.http.post<void>(`${this.url}/ChangePasswordRequest`, null);
     }
 }

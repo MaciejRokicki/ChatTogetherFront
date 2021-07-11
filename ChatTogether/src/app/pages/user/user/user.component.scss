@@ -3,8 +3,15 @@
 @use "@material/line-ripple/mdc-line-ripple";
 @use "@material/notched-outline/mdc-notched-outline";
 @use "@material/button/styles";
+@use "@material/textfield";
+
+@use "@material/dialog";
+
+@use "@material/snackbar/mdc-snackbar";
 
 @include icon-button.core-styles;
+@include dialog.core-styles;
+@include textfield.core-styles;
 
 .card {
 	background-color: whitesmoke;
@@ -32,6 +39,7 @@ p {
 	margin: 5px 0px 5px 0px;
 	font-family: 'Roboto', sans-serif;
     font-size: 15px;
+	white-space: pre-line;
 }
 
 .card-content {
@@ -45,6 +53,22 @@ p {
 	width: 100%;
 	max-width: 300px;
 	align-self: center;
+}
+
+.mdc-snackbar__dismiss {
+	color: hsla(0,0%,100%,.87)
+}
+
+.mdc-dialog__content {
+	width: 400px;
+}
+
+.mdc-text-field {
+	width: 100%;
+}
+
+.userEditFormInput {
+	margin: 5px 0px 5px 0px;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -73,3 +97,9 @@ p {
 		max-width: 320px;
 	}
   }
+
+@media only screen and (max-width: 767px) {
+	.mdc-dialog__content {
+		width: 100%;
+	}
+}

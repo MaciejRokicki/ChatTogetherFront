@@ -3,8 +3,18 @@
 <div class="container">
         <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
             <img src="../../../../assets/logo.png" class="logo">
+            <div *ngIf="infoMessage" class="infoMessage">
+                <div>{{ infoMessage }}</div>
+            </div>
             <div *ngIf="errorMessage" class="error">
-                {{ errorMessage }}
+                <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
+                    {{ errorMessage }}
+                    <br>
+                    Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
+                </p>
+                <ng-template #confirmed>
+                    {{ errorMessage }}
+                </ng-template>
             </div>
             <label class="mdc-text-field mdc-text-field--outlined" id="emailField">
                 <span class="mdc-notched-outline">
