@@ -1,72 +1,74 @@
-<div class="container">
-    <div class="card user-card">
-        <div class="title">
-            <h5>{{ nickname }}</h5>
-            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="userEdit"
-                (click)="userEditOpenModal()">edit</button>
+<div class="wrapper">
+    <div class="container">
+        <div class="card user-card">
+            <div class="title">
+                <h5>{{ nickname }}</h5>
+                <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="userEdit"
+                    (click)="userEditOpenModal()">edit</button>
+            </div>
+            <div class="card-content">
+                <p *ngIf="user?.firstName; else nameExists">
+                    Imię: {{user.firstName}}
+                </p>
+                <ng-template #nameExists>
+                    <p>Imię: <i>brak</i></p>
+                </ng-template>
+                <p *ngIf="user?.lastName; else lastNameExists">
+                    Nazwisko: {{user.lastName}}
+                </p>
+                <ng-template #lastNameExists>
+                    <p>Nazwisko: <i>brak</i></p>
+                </ng-template>
+                <p *ngIf="user?.birthDate; else dateExists">
+                    Data urodzenia: {{user.birthDate | date:'dd.MM.yyyy'}}
+                </p>
+                <ng-template #dateExists>
+                    <p>Data urodzenia: <i>brak</i></p>
+                </ng-template>
+                <p *ngIf="user?.city; else cityExists">
+                    Miasto: {{user.city}}
+                </p>
+                <ng-template #cityExists>
+                    <p>Miasto: <i>brak</i></p>
+                </ng-template>
+            </div>
         </div>
-        <div class="card-content">
-            <p *ngIf="user?.firstName; else nameExists">
-                Imię: {{user.firstName}}
-            </p>
-            <ng-template #nameExists>
-                <p>Imię: <i>brak</i></p>
-            </ng-template>
-            <p *ngIf="user?.lastName; else lastNameExists">
-                Nazwisko: {{user.lastName}}
-            </p>
-            <ng-template #lastNameExists>
-                <p>Nazwisko: <i>brak</i></p>
-            </ng-template>
-            <p *ngIf="user?.birthDate; else dateExists">
-                Data urodzenia: {{user.birthDate | date:'dd.MM.yyyy'}}
-            </p>
-            <ng-template #dateExists>
-                <p>Data urodzenia: <i>brak</i></p>
-            </ng-template>
-            <p *ngIf="user?.city; else cityExists">
-                Miasto: {{user.city}}
-            </p>
-            <ng-template #cityExists>
-                <p>Miasto: <i>brak</i></p>
-            </ng-template>
+        <div class="card aboutMe-card">
+            <div class="title">
+                <h5>O mnie</h5>
+                <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="aboutMeEdit"
+                    (click)="aboutMeEditOpenModal()">edit</button>
+            </div>
+            <div class="card-content">
+                <p *ngIf="user?.description; else descriptionExists">
+                    {{user.description}}
+                </p>
+                <ng-template #descriptionExists>
+                    <p><i>brak</i></p>
+                </ng-template>
+            </div>
         </div>
-    </div>
-    <div class="card aboutMe-card">
-        <div class="title">
-            <h5>O mnie</h5>
-            <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="aboutMeEdit"
-                (click)="aboutMeEditOpenModal()">edit</button>
-        </div>
-        <div class="card-content">
-            <p *ngIf="user?.description; else descriptionExists">
-                {{user.description}}
-            </p>
-            <ng-template #descriptionExists>
-                <p><i>brak</i></p>
-            </ng-template>
-        </div>
-    </div>
-    <div class="card account-card" *ngIf="nickname == authUser?.nickname">
-        <div class="title">
-            <h5>Konto</h5>
-        </div>
-        <div class="card-content">
-            <button type="button" class="mdc-button mdc-button--raised account-button account-button"
-                id="changeNickname" (click)="changeNicknameOpenModal()">
-                <span class="mdc-button__ripple"></span>
-                <span class="mdc-button__label">Zmień pseudonim</span>
-            </button>
-            <button type="button" class="mdc-button mdc-button--raised account-button" id="changeEmail"
-                (click)="changeEmail()">
-                <span class="mdc-button__ripple"></span>
-                <span class="mdc-button__label">Zmień adres email</span>
-            </button>
-            <button type="button" class="mdc-button mdc-button--raised account-button" id="changePassword"
-                (click)="changePassword()">
-                <span class="mdc-button__ripple"></span>
-                <span class="mdc-button__label">Zmień hasło</span>
-            </button>
+        <div class="card account-card" *ngIf="nickname == authUser?.nickname">
+            <div class="title">
+                <h5>Konto</h5>
+            </div>
+            <div class="card-content">
+                <button type="button" class="mdc-button mdc-button--raised account-button account-button"
+                    id="changeNickname" (click)="changeNicknameOpenModal()">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="mdc-button__label">Zmień pseudonim</span>
+                </button>
+                <button type="button" class="mdc-button mdc-button--raised account-button" id="changeEmail"
+                    (click)="changeEmail()">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="mdc-button__label">Zmień adres email</span>
+                </button>
+                <button type="button" class="mdc-button mdc-button--raised account-button" id="changePassword"
+                    (click)="changePassword()">
+                    <span class="mdc-button__ripple"></span>
+                    <span class="mdc-button__label">Zmień hasło</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -146,10 +148,11 @@
             <form [formGroup]="aboutMeEditForm" (ngSubmit)="aboutMeEdit()">
                 <div class="mdc-dialog__content" id="my-dialog-content">
                     <label
-                        class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea mdc-text-field--no-label" id="aboutMeTextArea">
+                        class="mdc-text-field mdc-text-field--filled mdc-text-field--textarea mdc-text-field--no-label"
+                        id="aboutMeTextArea">
                         <span class="mdc-text-field__ripple"></span>
-                            <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label"
-                                id="aboutMeField" formControlName="aboutMe"></textarea>
+                        <textarea class="mdc-text-field__input" rows="8" cols="40" aria-label="Label" id="aboutMeField"
+                            formControlName="aboutMe"></textarea>
                         <span class="mdc-line-ripple"></span>
                     </label>
                 </div>

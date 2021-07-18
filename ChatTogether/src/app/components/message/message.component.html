@@ -1,11 +1,11 @@
 <div class="messageContainer">
     <div class="item" [ngClass]="{'left': LeftDirection, 'right': !LeftDirection}">
         <div class="topContainer">
-            <!-- <div class="topLeft">
-                {{ Message?.GetTimeString() }}
-            </div> -->
+            <div class="topLeft">
+                <i>{{ Message?.sendTimeStr }}</i>
+            </div>
             <div class="topRight">
-                {{ Message?.nickname }}
+                <b>{{ Message?.nickname }}</b>
             </div>
         </div>
         <div class="msg">

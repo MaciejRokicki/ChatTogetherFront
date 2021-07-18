@@ -8,14 +8,11 @@ import { Injectable } from "@angular/core";
     providedIn: 'root'
 })
 export class MessageService {
-
     readonly url = `${environment.apiUrl}/Message`;
-    readonly timezoneOffset = new Date().getTimezoneOffset();
 
     constructor(private http: HttpClient) { }
 
-    //TODO: pomyslec nad Date, zeby nie robic toisostring -> moze wrzucac w body i dac jako post <???>
     getMessages(roomId: number, size: number, lastMessageDate: Date): Observable<Message[]> {
-        return this.http.get<Message[]>(`${this.url}/GetMessages?roomId=${roomId}&size=${size}&timezoneOffset=${this.timezoneOffset}&lastMessageDate=${lastMessageDate.toISOString()}`);
+        return this.http.get<Message[]>(`${this.url}/GetMessages?roomId=${roomId}&size=${size}&lastMessageDate=${lastMessageDate.toISOString()}`);
     }
 }

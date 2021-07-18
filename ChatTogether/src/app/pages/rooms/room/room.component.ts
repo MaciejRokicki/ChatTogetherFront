@@ -60,8 +60,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    (document.getElementById('nav_sidebar') as Element).children[1].classList.remove('mdc-list-item--activated');
-
     this.securityProvider.user.pipe(
       tap((user: User) => {
         this.userNickname = user.nickname

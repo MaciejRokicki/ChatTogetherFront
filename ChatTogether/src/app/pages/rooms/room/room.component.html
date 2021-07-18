@@ -1,22 +1,19 @@
 <div class="messageContainer">
-    <div #scroll class="messagesContent">
-        <app-message *ngFor="let message of messages" [Message]="message" [LeftDirection]="userNickname !== message.nickname"></app-message>
-        <button class="mdc-icon-button material-icons"
-        [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
-        (click)="scrollDown()">south</button>
+    <div class="messages">
+        <div #scroll class="messagesContent">
+            <app-message *ngFor="let message of messages" [Message]="message"
+                [LeftDirection]="userNickname !== message.nickname"></app-message>
+            <button class="mdc-icon-button material-icons"
+                [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
+                (click)="scrollDown()">south</button>
+        </div>
     </div>
     <form class="messageInput" #messageForm="ngForm" (ngSubmit)="onSubmit()">
-        <label class="mdc-text-field mdc-text-field--filled mdc-text-field--no-label">
+        <label class="test mdc-text-field mdc-text-field--filled mdc-text-field--no-label">
             <span class="mdc-text-field__ripple"></span>
-            <input class="mdc-text-field__input" 
-                   required
-                   type="text" 
-                   autocomplete="off"
-                   placeholder="Aa"
-                   [(ngModel)]="msgText"
-                   name="msgTxt">           
+            <input class="mdc-text-field__input" required type="text" autocomplete="off" placeholder="Aa"
+                [(ngModel)]="msgText" name="msgTxt">
         </label>
-        <button class="mdc-icon-button material-icons sendButton" 
-                [disabled]="!messageForm.valid">send</button>
+        <button class="mdc-icon-button material-icons sendButton" [disabled]="!messageForm.valid">send</button>
     </form>
 </div>
