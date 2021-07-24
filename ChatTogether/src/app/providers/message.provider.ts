@@ -7,7 +7,6 @@ import { map, tap } from "rxjs/operators";
 import { Message } from "../entities/message";
 import { Hub } from "../Hub";
 import { MessageService } from "../services/message.service";
-import { DateConverter } from "../utils/DateConverter";
 
 @Injectable({
     providedIn: 'root'
@@ -22,7 +21,7 @@ export class MessageProvider {
         ) { }
 
     public getMessages(roomId: number, size: number = 20, lastMessageDate: Date = new Date()): void {
-        this.messageService.getMessages(roomId, size, DateConverter.DateToUTC(lastMessageDate)).pipe(
+        this.messageService.getMessages(roomId, size, lastMessageDate).pipe(
             map((messages: Message[]) => {
                 return messages.map((message: Message) => {
                     message.sendTimeStr = this.GetTimeString(message, true);

@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 
 import { MDCTextField } from '@material/textfield';
 import { MDCRipple } from '@material/ripple';
@@ -24,7 +24,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   @ViewChild('scroll') messagesContent!: ElementRef;
 
   id: number = 0;
-  id$: Subscription = new Subscription();
 
   userNickname: string;
   user$: Subscription = new Subscription();
@@ -47,16 +46,15 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private securityProvider: SecurityProvider,
     private roomProvider: RoomProvider,
     private messageProvider: MessageProvider,
     private ref: ChangeDetectorRef,
     private topbarTitleService: TopbarTitleService
   ) { 
-    this.id$ = this.route.params.subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
-    });
+    }).unsubscribe();
   }
 
   ngOnInit(): void {
@@ -190,7 +188,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.messageProvider.clearMessages();
     this.roomProvider.onRoomExit(this.id);
-    this.id$.unsubscribe();
     this.roomSub$.unsubscribe();
     this.observer.disconnect();
     this.messages$.unsubscribe();

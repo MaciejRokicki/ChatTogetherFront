@@ -58,6 +58,7 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
       map((rooms: Room[]) => {
         if(rooms.length === 0) {
           this.roomProvider.getRooms();
+          console.log("TEST@#T#T");
         }
 
         console.log(rooms);
@@ -67,7 +68,13 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   public onRowClick(index: number) {
-    this.router.navigate(['room', this.tableData.data[index].id])
+    let room = this.tableData.data[index];
+    console.log(room);
+    if(room.currentPeople >= room.maxPeople) {
+      return;
+    }
+
+    this.router.navigate(['room', room.id])
   }
 
   ngOnDestroy(): void {

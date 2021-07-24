@@ -44,7 +44,7 @@ export class RoomProvider {
         this.hub.conn$.pipe(
             tap(() => {
                 this.hub.conn.invoke("EnterRoom", roomId);
-                this.hub.conn.off("GetRooms");
+                this.rooms.next([]);
             })
         ).subscribe();
     }
