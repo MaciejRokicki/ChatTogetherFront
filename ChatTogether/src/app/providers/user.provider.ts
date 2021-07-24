@@ -21,6 +21,12 @@ export class UserProvider {
     getUser(nickname: string): void {
         this.userService.getUser(nickname).pipe(
             tap((user: User) => {
+                if (user.birthDate) {
+                    let bd = new Date(user.birthDate)
+                    let timezoneOffset = bd.getTimezoneOffset();
+                    bd.setMinutes(bd.getMinutes() - timezoneOffset);
+                    user.birthDate = bd;
+                }
                this.user.next(user);
             })
         ).subscribe()

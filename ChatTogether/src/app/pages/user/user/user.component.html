@@ -110,6 +110,12 @@
                         </span>
                         <input type="text" formControlName="lastName" class="mdc-text-field__input">
                     </label>
+                    <mat-form-field class="inputField" appearance="outline">
+                        <mat-label>Data urodzenia</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="birthDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>                      
                     <label class="mdc-text-field mdc-text-field--outlined userEditFormInput" id="cityField">
                         <span class="mdc-notched-outline">
                             <span class="mdc-notched-outline__leading"></span>

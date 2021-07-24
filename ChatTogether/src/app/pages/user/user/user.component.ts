@@ -43,6 +43,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
   userEditForm = new FormGroup({
     firstName: new FormControl('', []),
     lastName: new FormControl('', []),
+    birthDate: new FormControl(),
     city: new FormControl('', []),
   });
 
@@ -150,6 +151,7 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     this.userEditForm.setValue({
       firstName: this.firstNameTextField.value,
       lastName: this.lastNameTextFields.value,
+      birthDate: this.user.birthDate ? this.user.birthDate : null,
       city: this.cityTextField.value,
     })
 
@@ -159,9 +161,10 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
   userEdit(): void {
     let firstName = this.userEditForm.get('firstName').value
     let lastName = this.userEditForm.get('lastName').value
+    let birthDate = this.userEditForm.get('birthDate').value
     let city = this.userEditForm.get('city').value
 
-    let user = new User(null, firstName, lastName, null, city, null);
+    let user = new User(null, firstName, lastName, birthDate, city, null);
 
     this.userProvider.changeUserData(user);
 
