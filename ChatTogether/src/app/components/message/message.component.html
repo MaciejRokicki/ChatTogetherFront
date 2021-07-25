@@ -5,7 +5,7 @@
                 <i>{{ Message?.sendTimeStr }}</i>
             </div>
             <div class="topRight">
-                <b>{{ Message?.nickname }}</b>
+                <a routerLink="/user/{{Message?.nickname}}">{{ Message?.nickname }}</a>
             </div>
         </div>
         <div class="msg">

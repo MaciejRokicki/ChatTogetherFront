@@ -1,6 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { MDCDrawer, MDCDismissibleDrawerFoundation } from "@material/drawer";
-import { MDCList } from "@material/list";
 import { fromEvent, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { User } from 'src/app/entities/user';
@@ -24,54 +22,43 @@ export class SidebarComponent implements OnInit, OnDestroy {
   @Input() items: SidebarItem[] = [];
   resizeEvent$: Subscription = new Subscription();
 
+  mode: 'over' | 'push' | 'side' = 'side';
+  isOpen: boolean = true;
+
   constructor() { }
 
-  ngOnInit(): void { 
-    console.log("SIDEBAR");
+  ngOnInit(): void {
+    if(window.innerWidth < 767) {
+      this.mode = 'over';
+      this.isOpen = false;
+    }
   }
 
   ngAfterViewInit(): void {
-    const list = MDCList.attachTo(document.querySelector('.mdc-list') as Element);
-    list.wrapFocus = false;
-    var drawerElement = document.querySelector('.mdc-drawer') as Element;
-
-    var drawer: MDCDrawer;
-    var drawerFoundation: MDCDismissibleDrawerFoundation;
     (document.getElementById('menuButton') as Element).addEventListener('click', () => {
-      if (!drawer) {
-        drawer = MDCDrawer.attachTo(drawerElement);
-        drawerFoundation = drawer.getDefaultFoundation();
-      }
-
-      drawer.open = !drawer.open;
+      this.isOpen = !this.isOpen;
     });
 
     this.resizeEvent$ = fromEvent(window, 'resize').pipe(
       tap(() => {
-        if(drawerFoundation) {
-          drawerFoundation.close();
+        if(window.innerWidth < 767) {
+          this.mode = 'over';
+          this.isOpen = false;
+        } else {
+          this.mode = 'side';
+          this.isOpen = true;
         }
       })
     ).subscribe();
   }
 
-  public IsModalAvailable(): boolean {
-    if (window.innerWidth < 767) {
-      return true;
-    }
-
-    return false;
+  openedChange(isOpen: boolean): void {
+    this.isOpen = isOpen;
   }
 
-  public CloseModal():void {
+  closeSidebar(): void {
     if (window.innerWidth < 767) {
-      var drawerElement = document.getElementsByClassName('mdc-drawer mdc-drawer--modal')[0] as Element;
-      var drawer = MDCDrawer.attachTo(drawerElement);
-
-      if(drawer.open)
-        drawer.open = false;
-
-      drawer.destroy();
+      this.isOpen = false;
     }
   }
 

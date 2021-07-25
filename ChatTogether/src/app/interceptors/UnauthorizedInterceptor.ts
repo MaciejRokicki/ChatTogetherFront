@@ -8,9 +8,7 @@ import { SecurityProvider } from '../providers/security.provider';
 
 @Injectable()
 export class UnauthorizedInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private securityProvider: SecurityProvider) {
-    console.log("UNAUTH_INTER");
-   }
+  constructor(private router: Router, private securityProvider: SecurityProvider) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
@@ -19,7 +17,6 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((err: Error) => {
         if(err['status'] === 401) {
-          console.log("401_UNAUTH");
           this.securityProvider.user.next(null);
           this.securityProvider.user.subscribe(x => console.log(x));
           this.router.navigate(['/security/signin']);

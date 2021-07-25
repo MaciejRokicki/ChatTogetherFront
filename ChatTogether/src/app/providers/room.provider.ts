@@ -22,7 +22,6 @@ export class RoomProvider {
     public getRoom(id: number): void {
         this.roomService.getRoom(id).pipe(
             tap((room: Room) => {
-                console.log("TEST");
                 this.room.next(room);
             })
         ).subscribe();
@@ -32,7 +31,6 @@ export class RoomProvider {
         this.hub.conn$.pipe(
             tap(() => {
                 this.hub.conn.on("GetRooms", (rooms: Room[]) => {
-                    console.log(rooms);
                     this.rooms.next(rooms);
                 })
                 this.hub.conn.invoke("GetRooms");

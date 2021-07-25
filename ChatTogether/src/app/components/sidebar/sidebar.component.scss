@@ -1,5 +1,27 @@
-@use "@material/drawer";
+mat-sidenav-container {
+	height: 100%;
+}
 
-@include drawer.core-styles;
-@include drawer.dismissible-core-styles;
-@include drawer.modal-core-styles;
+mat-sidenav {
+  width: 256px;
+}
+
+.sidenav-header {
+  margin: 10px;
+}
+
+.sidenav-title {
+  margin: 0px;
+}
+
+.sidenav-subtitle {
+  margin: 0px;
+}
+
+.nav-icon {
+  margin: 0px 15px 0px 0px;
+}
+
+mat-sidenav-content {
+  overflow: auto;
+} 

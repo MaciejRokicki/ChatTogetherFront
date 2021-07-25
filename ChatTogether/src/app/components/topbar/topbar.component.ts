@@ -1,7 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { MDCTopAppBar } from '@material/top-app-bar';
-import { MDCRipple } from '@material/ripple';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 
@@ -10,24 +8,21 @@ import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
   templateUrl: './topbar.component.html',
   styleUrls: ['./topbar.component.scss']
 })
-export class TopbarComponent implements OnInit {
+export class TopbarComponent implements OnInit, OnDestroy {
+  topBarTitle: string = '';
+  topBarTitle$: Subscription;
 
-  @Input() topBarTitle: string = '';
-
-  constructor(private topbarTitleService: TopbarTitleService, private router: Router) { }
+  constructor(private topbarTitleService: TopbarTitleService) { }
 
   ngOnInit(): void {
-    console.log("TOPBAR");
-    const topAppBarElement = document.querySelector('.mdc-top-app-bar') as Element;
-    const topAppBar = new MDCTopAppBar(topAppBarElement);
-
-    const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button') as Element);
-    iconButtonRipple.unbounded = true;
-
-    this.topbarTitleService.title$.pipe(
+    this.topBarTitle$ = this.topbarTitleService.title.pipe(
       tap((title: string) => {
         this.topBarTitle = title;
       })
     ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.topBarTitle$.unsubscribe();
   }
 }

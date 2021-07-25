@@ -1,12 +1,8 @@
 <div class="wrapper">
     <div class="container">
-        <div class="card user-card">
-            <div class="title">
-                <h5>{{ nickname }}</h5>
-                <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="userEdit"
-                    (click)="userEditOpenModal()">edit</button>
-            </div>
-            <div class="card-content">
+        <mat-card>
+            <mat-card-title>{{ nickname }}</mat-card-title>
+            <mat-card-content>
                 <p *ngIf="user?.firstName; else nameExists">
                     Imię: {{user.firstName}}
                 </p>
@@ -31,45 +27,40 @@
                 <ng-template #cityExists>
                     <p>Miasto: <i>brak</i></p>
                 </ng-template>
-            </div>
-        </div>
-        <div class="card aboutMe-card">
-            <div class="title">
-                <h5>O mnie</h5>
-                <button class="mdc-icon-button material-icons" *ngIf="nickname == authUser?.nickname" id="aboutMeEdit"
-                    (click)="aboutMeEditOpenModal()">edit</button>
-            </div>
-            <div class="card-content">
+            </mat-card-content>
+            <mat-card-actions *ngIf="nickname == authUser?.nickname">
+                <button mat-icon-button id="userEdit" (click)="userEditOpenModal()">
+                    <mat-icon>edit</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card>
+            <mat-card-title>O mnie</mat-card-title>
+            <mat-card-content>
                 <p *ngIf="user?.description; else descriptionExists">
                     {{user.description}}
                 </p>
                 <ng-template #descriptionExists>
                     <p><i>brak</i></p>
                 </ng-template>
-            </div>
-        </div>
-        <div class="card account-card" *ngIf="nickname == authUser?.nickname">
-            <div class="title">
-                <h5>Konto</h5>
-            </div>
-            <div class="card-content">
-                <button type="button" class="mdc-button mdc-button--raised account-button account-button"
-                    id="changeNickname" (click)="changeNicknameOpenModal()">
-                    <span class="mdc-button__ripple"></span>
-                    <span class="mdc-button__label">Zmień pseudonim</span>
+            </mat-card-content>
+            <mat-card-actions *ngIf="nickname == authUser?.nickname">
+                <button mat-icon-button id="aboutMeEdit" (click)="aboutMeEditOpenModal()">
+                    <mat-icon>edit</mat-icon>
                 </button>
-                <button type="button" class="mdc-button mdc-button--raised account-button" id="changeEmail"
-                    (click)="changeEmail()">
-                    <span class="mdc-button__ripple"></span>
-                    <span class="mdc-button__label">Zmień adres email</span>
-                </button>
-                <button type="button" class="mdc-button mdc-button--raised account-button" id="changePassword"
-                    (click)="changePassword()">
-                    <span class="mdc-button__ripple"></span>
-                    <span class="mdc-button__label">Zmień hasło</span>
-                </button>
-            </div>
-        </div>
+            </mat-card-actions>
+        </mat-card>
+        <mat-card *ngIf="nickname == authUser?.nickname">
+            <mat-card-title>Konto</mat-card-title>
+            <mat-card-content class="account-card-content">
+                <button mat-raised-button color="primary" class="account-button"
+                        id="changeNickname" (click)="changeNicknameOpenModal()">Zmień pseudonim</button>
+                <button mat-raised-button color="primary" class="account-button"
+                        id="changeEmail" (click)="changeEmail()">Zmień adres email</button>
+                <button mat-raised-button color="primary" class="account-button"
+                        id="changePassword" (click)="changePassword()">Zmień hasło</button>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>
 <div class="mdc-snackbar">

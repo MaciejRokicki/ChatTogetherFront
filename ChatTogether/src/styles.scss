@@ -1,16 +1,19 @@
-@use "@material/list";
-
-@include list.core-styles;
-
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
 
 html {
-    height: 100%;
+    height: calc(100% - 64px);
+	overflow: hidden;
+}
+
+app-root {
+	display: block;
+	height: 100%;
 }
 
 body {
     margin: 0px;
     height: 100%;
+	font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .content {
@@ -19,7 +22,11 @@ body {
 	flex-wrap: wrap;
 	align-content: flex-start;
 	justify-content: center;
-	//margin: 5px 0px 0px 5px;
 }
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+@media only screen and (max-width: 768px) {
+	html {
+		height: calc(100% - 56px);
+	}
+}

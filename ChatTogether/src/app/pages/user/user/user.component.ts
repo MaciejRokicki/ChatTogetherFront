@@ -1,11 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
-import { MDCRipple } from '@material/ripple';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { User } from 'src/app/entities/user';
 import { Subscription } from 'rxjs';
-import { last, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { UserProvider } from 'src/app/providers/user.provider';
 import { MDCSnackbar } from '@material/snackbar';
 import { MDCDialog } from '@material/dialog';
@@ -60,48 +59,41 @@ export class UserComponent implements OnInit, OnDestroy, AfterViewInit {
     private router: Router,
     private topbarTitleService: TopbarTitleService,
     private securityProvider: SecurityProvider,
-    private userProvider: UserProvider
-    ) { }
+    private userProvider: UserProvider,
+    ) {
+      this.nickname$ = this.route.params.pipe(
+        tap((params: Params) => {
+          this.nickname = params['nickname'];
+        }),
+        tap(() => {
+          this.userProvider.getUser(this.nickname);
+          this.user$ = this.userProvider.user.pipe(
+            tap((user: User) => {
+              this.user = user;
+            })
+          ).subscribe();
+        }),
+        tap(() => {
+          this.authUser$ = this.securityProvider.user.pipe(
+            tap((user: User) => {
+              this.authUser = user;
+              
+              if(this.nickname === this.authUser?.nickname) {
+                this.topbarTitleService.setTitle("Mój profil");
+              } else {
+                this.topbarTitleService.setTitle(this.nickname);
+              }
+            })
+          ).subscribe()
+        })
+      ).subscribe()
+    }
 
   ngOnInit(): void {
-    this.nickname$ = this.route.params.pipe(
-      tap((params: Params) => {
-        this.nickname = params['nickname'];
-      }),
-      tap(() => {
-        this.userProvider.getUser(this.nickname);
-        this.user$ = this.userProvider.user.pipe(
-          tap((user: User) => {
-            this.user = user;
-          })
-        ).subscribe();
-      }),
-      tap(() => {
-        this.authUser$ = this.securityProvider.user.pipe(
-          tap((user: User) => {
-            this.authUser = user;
-    
-            if(this.nickname === this.authUser?.nickname) {
-              this.topbarTitleService.setTitle("Mój profil");
-            } else {
-              this.topbarTitleService.setTitle(this.nickname);
-            }
-          })
-        ).subscribe()
-      })
-    ).subscribe()
+
   }
 
   ngAfterViewInit(): void {
-    const userEdit = new MDCRipple(document.getElementById('userEdit') as Element);
-    userEdit.unbounded = true;
-    const aboutMeEdit = new MDCRipple(document.getElementById("aboutMeEdit") as Element);
-    aboutMeEdit.unbounded = true;
-
-    new MDCRipple(document.getElementById("changeNickname") as Element);
-    new MDCRipple(document.getElementById("changeEmail") as Element);
-    new MDCRipple(document.getElementById("changePassword") as Element);
-
     this.snackbar = new MDCSnackbar(document.querySelector('.mdc-snackbar'));
     this.snackbar.timeoutMs = 10000;
 

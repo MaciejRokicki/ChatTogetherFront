@@ -55,20 +55,20 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
     }).unsubscribe();
-  }
-
-  ngOnInit(): void {
-    this.securityProvider.user.pipe(
-      tap((user: User) => {
-        this.userNickname = user.nickname
-      })
-    ).subscribe();
 
     this.roomProvider.getRoom(this.id);
     this.roomSub$ = this.roomProvider.room.pipe(
       tap((room: Room) => {
           this.room = room;
           this.topbarTitleService.setTitle(this.room.name);
+      })
+    ).subscribe();
+  }
+
+  ngOnInit(): void {
+    this.securityProvider.user.pipe(
+      tap((user: User) => {
+        this.userNickname = user.nickname
       })
     ).subscribe();
 

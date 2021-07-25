@@ -10,13 +10,13 @@
 
 .messageContainer {
     height: 100%;
-    display: grid;
-    grid-template-rows: auto 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 .messages {
+    height: 100%;
     border-radius: 20px 0px 0px 0px;
-    margin: 30px 30px 0px 30px;
     overflow: hidden;
     background-color: #f8f8f8;
 }
@@ -31,7 +31,6 @@
 
 .messageInput {
     min-height: 60px;
-    margin: 0px 30px 20px 30px;
     display: flex;
     align-items: center;
     background-color: #f8f8f8;
@@ -57,7 +56,7 @@
     color: rgba(98, 0, 238, 0.87);
     position: absolute;
     align-self: center;
-    bottom: 70px;
+    bottom: 60px;
 }
 
 .scrollDownButton-hide {
@@ -81,7 +80,6 @@
     }
 
     .messageInput {
-        margin: 0px;
         border-radius: 0px;
     }
 }

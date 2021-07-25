@@ -38,14 +38,13 @@ export class AppComponent {
       ).subscribe();
 
       //TODO: zrobic liste podstron, ktore maja sie wyswietlac bez topbara i sidebara
-      this.router.events.pipe(
-        filter(event => event instanceof NavigationEnd),
-        tap((event: Event) => {
-          console.log(event);
-        })
-      ).subscribe()
+      // this.router.events.pipe(
+      //   filter(event => event instanceof NavigationEnd),
+      //   tap((event: Event) => {
+      //     console.log(event);
+      //   })
+      // ).subscribe()
 
       //securityProvider.validate();
-      console.log("APP_COMPONENT");
     }
 }

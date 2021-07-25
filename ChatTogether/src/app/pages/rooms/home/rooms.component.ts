@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
@@ -15,7 +15,7 @@ import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
   templateUrl: './rooms.component.html',
   styleUrls: ['./rooms.component.scss']
 })
-export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class RoomsComponent implements OnInit, OnDestroy {
 
   roomsSub$: Subscription = new Subscription();
 
@@ -45,23 +45,17 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
     private roomProvider : RoomProvider,
     private router: Router,
     private topbarTitleService: TopbarTitleService
-  ) { }
-  
-  ngAfterViewInit(): void {
-    (document.getElementById('nav_sidebar') as Element).children[1]?.classList.add('mdc-list-item--activated');
-  }
+  ) {
+    this.topbarTitleService.setTitle("Pokoje");
+   }
 
   ngOnInit(): void {
-    this.topbarTitleService.setTitle("Pokoje");
-
     this.roomsSub$ = this.roomProvider.rooms.pipe(
       map((rooms: Room[]) => {
         if(rooms.length === 0) {
           this.roomProvider.getRooms();
-          console.log("TEST@#T#T");
         }
-
-        console.log(rooms);
+        
         this.tableData.data = rooms;
       })
     ).subscribe();
@@ -69,7 +63,6 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
 
   public onRowClick(index: number) {
     let room = this.tableData.data[index];
-    console.log(room);
     if(room.currentPeople >= room.maxPeople) {
       return;
     }
@@ -78,7 +71,6 @@ export class RoomsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    console.log("T");
     this.roomsSub$.unsubscribe();
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { CanActivate, Router } from "@angular/router";
+import { CanActivate } from "@angular/router";
 import { map, take } from "rxjs/operators";
 import { User } from "src/app/entities/user";
 import { SecurityProvider } from "src/app/providers/security.provider";
@@ -9,8 +9,7 @@ import { SecurityProvider } from "src/app/providers/security.provider";
 })
 
 export class AuthGuard implements CanActivate {
-    constructor(private securityProvider: SecurityProvider, private router: Router) {
-        console.log("AUTH_GUARD");
+    constructor(private securityProvider: SecurityProvider) {
         securityProvider.validate();
      }
 
@@ -21,7 +20,6 @@ export class AuthGuard implements CanActivate {
                 if(user) {
                     return true;
                 } else {
-                    //this.router.navigate(['/login']);
                     return false;
                 }
             })
