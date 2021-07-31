@@ -1,0 +1,27 @@
+<h1 mat-card-title>Edytuj dane</h1>
+<form [formGroup]="editUserForm" (ngSubmit)="editUser()">
+    <mat-dialog-content>
+        <mat-form-field appearance="outline">
+            <mat-label>Imię</mat-label>
+            <input matInput formControlName="firstName">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Nazwisko</mat-label>
+            <input matInput formControlName="lastName">
+        </mat-form-field>
+        <mat-form-field class="inputField" appearance="outline" (click)="picker.open()">
+            <mat-label>Data urodzenia</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="birthDate" readonly="readonly">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>                  
+        <mat-form-field appearance="outline">
+            <mat-label>Miasto</mat-label>
+            <input matInput formControlName="city">
+        </mat-form-field>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button type="button" (click)="close()">Anuluj</button>
+        <button mat-button type="submit">Zapisz</button>
+    </div>
+</form>

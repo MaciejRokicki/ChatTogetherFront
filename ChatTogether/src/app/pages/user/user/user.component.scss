@@ -1,20 +1,5 @@
-@use "@material/icon-button";
-@use "@material/floating-label/mdc-floating-label";
-@use "@material/line-ripple/mdc-line-ripple";
-@use "@material/notched-outline/mdc-notched-outline";
-@use "@material/button/styles";
-@use "@material/textfield";
-
-@use "@material/dialog";
-
-@use "@material/snackbar/mdc-snackbar";
-
-@include icon-button.core-styles;
-@include dialog.core-styles;
-@include textfield.core-styles;
-
 .container {
-	width: 60%;
+	width: 70%;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
@@ -40,18 +25,6 @@ p {
 .account-button {
 	width: 100%;
 	margin: 0px 5px 0px 5px;
-}
-
-.mdc-snackbar__dismiss {
-	color: hsla(0,0%,100%,.87)
-}
-
-.mdc-dialog__content {
-	width: 400px;
-}
-
-.mdc-text-field {
-	width: 100%;
 }
 
 .userEditFormInput {
@@ -83,9 +56,3 @@ p {
 		margin: 5px;
 	}
   }
-
-@media only screen and (max-width: 767px) {
-	.mdc-dialog__content {
-		width: 100%;
-	}
-}

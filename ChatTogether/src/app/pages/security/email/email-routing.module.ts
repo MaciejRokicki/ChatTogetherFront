@@ -5,7 +5,7 @@ import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
 
 const routes: Routes = [
     { 
-        path: 'confirm/:email/:token', 
+        path: 'confirm/:email/:token',
         component: ConfirmEmailComponent
     },
     {

@@ -12,10 +12,17 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
+import { EditAboutMeDialogComponent } from './edit-about-me-dialog/edit-about-me-dialog.component';
+import { ChangeNicknameDialogComponent } from './change-nickname-dialog/change-nickname-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
-        UserComponent
+        UserComponent,
+        EditUserDialogComponent,
+        EditAboutMeDialogComponent,
+        ChangeNicknameDialogComponent
   ],
     imports: [
         FormsModule,
@@ -28,7 +35,8 @@ import { MatIconModule } from '@angular/material/icon';
         MatNativeDateModule,
         MatButtonModule,
         MatCardModule,
-        MatIconModule
+        MatIconModule,
+        MatDialogModule
     ],
     exports: []
 })

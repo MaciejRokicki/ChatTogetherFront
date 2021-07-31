@@ -44,13 +44,4 @@ export class UserProvider {
             })
         ).subscribe();
     }
-
-    changeUserDescription(desc: string): void {
-        this.userService.changeUserData(new User(null, null, null, null, null, desc)).pipe(
-            tap((newUser: User) => {
-                this.user.next(newUser);
-                this.securityProvider.user.next(newUser);
-            })
-        ).subscribe();
-    }
 }

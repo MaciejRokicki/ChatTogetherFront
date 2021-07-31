@@ -1,0 +1,23 @@
+::ng-deep .snackbar-width {
+    max-width: unset;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+}
+
+.content {
+    align-self: center;
+    margin-right: 10px;
+}
+
+.close-button {
+    margin-left: auto;
+    min-width: unset;
+    line-height: unset;
+    padding: unset;
+    width: 24px;
+    height: 24px;
+    align-self: center;
+}

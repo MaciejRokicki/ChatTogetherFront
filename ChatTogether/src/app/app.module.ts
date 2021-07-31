@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TopbarComponent } from './components/topbar/topbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { SnackbarComponent } from './components/snackbar/snackbar.component';
 
 import { RoomService } from './services/room.service';
 import { MessageService } from './services/message.service';
@@ -29,13 +30,17 @@ import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor'
 import { UserService } from './services/user.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { registerLocaleData } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { SnakcbarService } from './services/snackbar.service';
 registerLocaleData(localePl, localePlExtra);
 
 @NgModule({
   declarations: [
     AppComponent,
     TopbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    SnackbarComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +54,9 @@ registerLocaleData(localePl, localePlExtra);
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    MatDividerModule
+    MatDividerModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
   providers: [
     {
@@ -71,7 +78,8 @@ registerLocaleData(localePl, localePlExtra);
     SecurityService,
     UserService,
     Hub,
-    TopbarTitleService
+    TopbarTitleService,
+    SnakcbarService
   ],
   bootstrap: [AppComponent]
 })
