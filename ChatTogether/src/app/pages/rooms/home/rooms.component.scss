@@ -1,11 +1,21 @@
-.item {
-	min-width: 317.2px;
-	min-height: 200px;
-	margin: 5px;
-	text-align: center;
-	flex-grow: 1;
+.container {
+	height: 100%;
+	overflow: auto;
+}
+  
+table {
+	width: 100%;
 }
 
-.table {
-	width: 100%;
+.mat-column-maxPeople, .mat-column-currentPeople {
+	width: 100px;
+	text-align: end;
+}
+
+tr.select-row:hover {
+	background: whitesmoke;
+}
+  
+tr.select-row:active {
+	background: #efefef;
 }

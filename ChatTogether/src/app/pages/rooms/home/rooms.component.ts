@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 import { map } from 'rxjs/operators';
-import { ColumnProperty } from 'src/app/components/table/Interfaces/columnProperty';
-import { TableData } from 'src/app/components/table/Interfaces/tableData';
 
 import { Room } from 'src/app/entities/room';
 import { RoomProvider } from 'src/app/providers/room.provider';
@@ -16,30 +14,10 @@ import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
   styleUrls: ['./rooms.component.scss']
 })
 export class RoomsComponent implements OnInit, OnDestroy {
+  dataSource: Room[] = []
+  displayedColumns = ['name', 'currentPeople', 'maxPeople']
 
   roomsSub$: Subscription = new Subscription();
-
-  public tableData: TableData = {
-    data: [], 
-    properties: <ColumnProperty[]>[
-      {
-        propertyName: 'name',
-        displayName: 'Nazwa',
-        isNumeric: false
-      },
-      {
-        propertyName: 'currentPeople',
-        displayName: 'Użytkownicy',
-        isNumeric: true     
-      },
-      {
-        propertyName: 'maxPeople',
-        displayName: 'Rozmiar pokoju',
-        isNumeric: true     
-      }
-    ],
-    showOrdinalNumbers: true
-  };
 
   constructor(
     private roomProvider : RoomProvider,
@@ -56,13 +34,12 @@ export class RoomsComponent implements OnInit, OnDestroy {
           this.roomProvider.getRooms();
         }
         
-        this.tableData.data = rooms;
+        this.dataSource = rooms;
       })
     ).subscribe();
   }
 
-  public onRowClick(index: number) {
-    let room = this.tableData.data[index];
+  public onRowClick(room: Room) {
     if(room.currentPeople >= room.maxPeople) {
       return;
     }

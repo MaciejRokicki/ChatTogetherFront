@@ -1,23 +1,26 @@
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 <div class="container">
     <div class="content">
-        <p><b>Potwierdzenie adres email</b></p>
-        <div *ngIf="infoMessage" class="infoMessage">
-            <div>{{ infoMessage }}, teraz możesz się <a [routerLink]="['security/signin']"> zalogować</a>.</div>
-        </div>
-        <div *ngIf="errorMessage" class="error">
-            {{ errorMessage }}
-        </div>
-        <div class="fromGroup">
-            <div class="infoField">
-                Kliknij w przycisk jeśli chcesz potwierdzić adres email.
+        <mat-card *ngIf="infoMessage" class="mat-card-info">
+            <div>
+                {{ infoMessage }}, teraz możesz się <a [routerLink]="['security/signin']"> zalogować</a>.
             </div>
-            <button class="button mdc-button mdc-button--raised" id="send" (click)="confirm()">
-                <span class="mdc-button__ripple"></span>
-                <span class="mdc-button__label">Potwierdź adres email</span>
-                <i class="material-icons mdc-button__icon">send</i>
-            </button>
-        </div>
+        </mat-card>
+        <mat-card *ngIf="errorMessage" class="mat-card-error">
+            {{ errorMessage }}
+        </mat-card>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>Potwierdzenie adres email</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="infoField">
+                    Kliknij w przycisk jeśli chcesz potwierdzić adres email.
+                </div>
+                <button mat-raised-button color="primary" (click)="confirm()">
+                    Potwierdź adres email
+                    <mat-icon>send</mat-icon>
+                </button>
+            </mat-card-content>
+        </mat-card>
     </div>
 </div>

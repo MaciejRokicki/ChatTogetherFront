@@ -1,67 +1,38 @@
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 <div class="container">
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <img src="../../../../assets/logo.png" class="logo">
-        <div *ngIf="errorMessage" class="error">
+        <div *ngIf="errorMessage" class="mat-card-error">
             {{ errorMessage }}
         </div>
         <div class="infoContainer">
-            <label class="mdc-text-field mdc-text-field--outlined" id="nicknameField">
-                <span class="mdc-notched-outline">
-                    <span class="mdc-notched-outline__leading"></span>
-                    <span class="mdc-notched-outline__notch">
-                        <span class="mdc-floating-label" id="my-label-id">Nazwa użytkownika</span>
-                    </span>
-                    <span class="mdc-notched-outline__trailing"></span>
-                </span>
-                <input type="text" formControlName="nickname" class="mdc-text-field__input" (focus)="showNicknameInfo()"
-                    (blur)="clearInfo()">
-            </label>
+            <mat-form-field appearance="outline">
+                <mat-label>Nazwa użytkownika</mat-label>
+                <input matInput formControlName="nickname" (focus)="showNicknameInfo()" (blur)="clearInfo()">
+            </mat-form-field>
             <div class="infoBorder" *ngIf="nicknameInfo">
                 <p class="info">{{ nicknameInfo }}</p>
             </div>
         </div>
-        <label class="mdc-text-field mdc-text-field--outlined" id="emailField">
-            <span class="mdc-notched-outline">
-                <span class="mdc-notched-outline__leading"></span>
-                <span class="mdc-notched-outline__notch">
-                    <span class="mdc-floating-label" id="my-label-id">Adres email</span>
-                </span>
-                <span class="mdc-notched-outline__trailing"></span>
-            </span>
-            <input type="text" formControlName="email" class="mdc-text-field__input">
-        </label>
+        <mat-form-field appearance="outline">
+            <mat-label>Adres email</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
         <div class="infoContainer">
-            <label class="mdc-text-field mdc-text-field--outlined" id="passwordField">
-                <span class="mdc-notched-outline">
-                    <span class="mdc-notched-outline__leading"></span>
-                    <span class="mdc-notched-outline__notch">
-                        <span class="mdc-floating-label" id="my-label-id">Hasło</span>
-                    </span>
-                    <span class="mdc-notched-outline__trailing"></span>
-                </span>
-                <input type="password" formControlName="password" class="mdc-text-field__input"
-                    (focus)="showPasswordInfo()" (blur)="clearInfo()">
-            </label>
+            <mat-form-field appearance="outline">
+                <mat-label>Hasło</mat-label>
+                <input matInput formControlName="password" (focus)="showPasswordInfo()" (blur)="clearInfo()">
+            </mat-form-field>
             <div class="infoBorder" *ngIf="passwordInfo">
                 <p class="info">{{ passwordInfo }}</p>
             </div>
         </div>
-        <label class="mdc-text-field mdc-text-field--outlined" id="confirmPasswordField">
-            <span class="mdc-notched-outline">
-                <span class="mdc-notched-outline__leading"></span>
-                <span class="mdc-notched-outline__notch">
-                    <span class="mdc-floating-label" id="my-label-id">Powtórz hasło</span>
-                </span>
-                <span class="mdc-notched-outline__trailing"></span>
-            </span>
-            <input type="password" formControlName="confirmPassword" class="mdc-text-field__input">
-        </label>
-        <button class="mdc-button mdc-button--raised" id="signupButton" type="submit" [disabled]="!validForm()">
-            <span class="mdc-button__ripple"></span>
-            <span class="mdc-button__label">Stwórz konto</span>
-            <i class="material-icons mdc-button__icon">login</i>
+        <mat-form-field appearance="outline">
+            <mat-label>Powtórz hasło</mat-label>
+            <input matInput formControlName="confirmPassword">
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!validForm()">
+            Zarejestruj się
+            <mat-icon>login</mat-icon>
         </button>
     </form>
 </div>

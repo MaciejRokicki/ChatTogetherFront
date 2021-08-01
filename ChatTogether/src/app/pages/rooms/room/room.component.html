@@ -3,17 +3,19 @@
         <div #scroll class="messagesContent">
             <app-message *ngFor="let message of messages" [Message]="message"
                 [LeftDirection]="userNickname !== message.nickname"></app-message>
-            <button class="mdc-icon-button material-icons"
-                [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
-                (click)="scrollDown()">south</button>
+                <button mat-mini-fab color="primary" 
+                    [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
+                    (click)="scrollDown()">
+                    <mat-icon>south</mat-icon>
+                </button>
         </div>
     </div>
-    <form class="messageInput" #messageForm="ngForm" (ngSubmit)="onSubmit()">
-        <label class="test mdc-text-field mdc-text-field--filled mdc-text-field--no-label">
-            <span class="mdc-text-field__ripple"></span>
-            <input class="mdc-text-field__input" required type="text" autocomplete="off" placeholder="Aa"
-                [(ngModel)]="msgText" name="msgTxt">
-        </label>
-        <button class="mdc-icon-button material-icons sendButton" [disabled]="!messageForm.valid">send</button>
+    <form class="messageInput" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="standard" class="form-field">
+            <input matInput formControlName="message" autocomplete="off" type="text" placeholder="Aa">
+        </mat-form-field>
+        <button mat-icon-button color="primary" class="sendButton" [disabled]="!messageForm.valid">
+            <mat-icon>send</mat-icon>
+        </button>
     </form>
 </div>

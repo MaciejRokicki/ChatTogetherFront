@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MDCRipple } from '@material/ripple';
-import { MDCTextField } from '@material/textfield';
 import { tap } from 'rxjs/operators';
 import { Result } from 'src/app/entities/Result';
 import { SecurityProvider } from 'src/app/providers/security.provider';
@@ -24,8 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    new MDCTextField(document.getElementById('emailField') as Element);
-    new MDCRipple(document.getElementById("send") as Element);
+  
   }
 
   onSubmit() {

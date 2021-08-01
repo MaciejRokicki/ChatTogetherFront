@@ -1,11 +1,3 @@
-@use "@material/floating-label/mdc-floating-label";
-@use "@material/line-ripple/mdc-line-ripple";
-@use "@material/notched-outline/mdc-notched-outline";
-@use "@material/textfield";
-@use "@material/button/styles";
-
-@include textfield.core-styles;
-
 .container {
     display: flex;
     height: 100%;
@@ -19,9 +11,8 @@ form {
     max-width: 300px;
 }
 
-label {
-    margin: 5px 0px 0px 0px;
-    min-width: 300px;
+::ng-deep .mat-form-field-wrapper {
+    padding-bottom: unset;
 }
 
 .infoContainer {
@@ -55,16 +46,14 @@ button {
     margin: 5px 0px 5px 0px;
 }
 
-.error {
+.mat-card-error {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 50px;
-    margin: 5px 0px 4px 0px;
+    margin: 5px 0px 15px 0px;
     background-color: whitesmoke;
     color: darkred;
-    border-radius: 20px;
-    font-family: 'Roboto', sans-serif;
+    border-radius: 10px;
     font-size: 15px;
 }
 

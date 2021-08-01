@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { MDCRipple } from '@material/ripple';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { Result } from 'src/app/entities/Result';
@@ -26,8 +25,6 @@ export class ConfirmEmailComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    new MDCRipple(document.getElementById("send") as Element);
-
     this.params$ = this.route.params.pipe(
       tap((params: Params) => {
         this.email = params['email'];

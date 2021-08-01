@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { MDCRipple } from '@material/ripple';
-import { MDCTextField } from '@material/textfield';
 import { tap } from 'rxjs/operators';
 import { Result } from 'src/app/entities/Result';
 import { SignupModel } from 'src/app/entities/Security/SignupModel';
@@ -39,15 +37,10 @@ export class SignupComponent implements OnInit {
   constructor(private securityProvider: SecurityProvider, private router: Router) { }
 
   ngOnInit(): void {
-    new MDCTextField(document.getElementById('emailField') as Element);
-    new MDCTextField(document.getElementById('passwordField') as Element);
-    new MDCTextField(document.getElementById('confirmPasswordField') as Element);
-    new MDCTextField(document.getElementById('nicknameField') as Element);
-    new MDCRipple(document.getElementById("signupButton") as Element);
+
   }
 
   onSubmit() {
-
     let signupModel: SignupModel = new SignupModel(
       this.signupForm.get("email").value,
       this.signupForm.get("password").value, 

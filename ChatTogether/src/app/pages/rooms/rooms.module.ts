@@ -3,22 +3,31 @@ import { CommonModule } from '@angular/common';
 
 import { RoomsComponent } from './home/rooms.component';
 import { RoomsRoutingModule } from './rooms-routing.module';
-import { TableComponent } from 'src/app/components/table/table.component';
 import { MessageComponent } from 'src/app/components/message/message.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RoomComponent } from './room/room.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
     declarations: [
         RoomsComponent,
-        TableComponent,
         RoomComponent,
         MessageComponent
     ],
     imports: [
         FormsModule,
         CommonModule,
-        RoomsRoutingModule
+        RoomsRoutingModule,
+        ReactiveFormsModule,
+        MatTableModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatButtonModule
     ],
     exports: []
 })

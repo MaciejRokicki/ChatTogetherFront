@@ -1,9 +1,6 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { MDCTextField } from '@material/textfield';
-import { MDCRipple } from '@material/ripple';
-
 import { fromEvent, of, Subscription } from 'rxjs';
 import { debounceTime, map, mergeMap, skip, tap } from 'rxjs/operators';
 
@@ -14,6 +11,7 @@ import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 import { Room } from 'src/app/entities/room';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { User } from 'src/app/entities/user';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-room',
@@ -22,6 +20,9 @@ import { User } from 'src/app/entities/user';
 })
 export class RoomComponent implements OnInit, OnDestroy {
   @ViewChild('scroll') messagesContent!: ElementRef;
+  messageForm = new FormGroup({
+    message: new FormControl('', [])
+  });
 
   id: number = 0;
 
@@ -34,8 +35,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   observer: MutationObserver = new MutationObserver(()=>{});
 
   messages: Message[] = []
-  messages$: Subscription = new Subscription();
-  msgText: string = '';
+  messages$: Subscription = new Subscription()
 
   scroll$: Subscription = new Subscription();
   showScrollDownButton: boolean = false;
@@ -92,11 +92,6 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.messages = data;
       })
     ).subscribe();
-
-    const textField = new MDCTextField(document.querySelector('.mdc-text-field') as Element);
-
-    const iconButtonRipple = new MDCRipple(document.querySelector('.mdc-icon-button') as Element);
-    iconButtonRipple.unbounded = true;
 
     this.scroll$ = fromEvent(document.querySelector('.messagesContent') as Element, 'scroll').pipe(
       mergeMap(() => {
@@ -178,9 +173,11 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    var message: Message = new Message(this.msgText, this.userNickname, this.id, new Date());
+    var message: Message = new Message(this.messageForm.get('message').value, this.userNickname, this.id, new Date());
     this.messageProvider.sendMessage(message);
-    this.msgText = '';
+    this.messageForm.setValue({
+      'message': ''
+    })
 
     this.ref.detectChanges();
   }

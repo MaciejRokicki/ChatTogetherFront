@@ -1,51 +1,35 @@
-<link rel="preconnect" href="https://fonts.gstatic.com">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 <div class="container">
-        <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
-            <img src="../../../../assets/logo.png" class="logo">
-            <div *ngIf="infoMessage" class="infoMessage">
-                <div>{{ infoMessage }}</div>
-            </div>
-            <div *ngIf="errorMessage" class="error">
-                <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
-                    {{ errorMessage }}
-                    <br>
-                    Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
-                </p>
-                <ng-template #confirmed>
-                    {{ errorMessage }}
-                </ng-template>
-            </div>
-            <label class="mdc-text-field mdc-text-field--outlined" id="emailField">
-                <span class="mdc-notched-outline">
-                    <span class="mdc-notched-outline__leading"></span>
-                    <span class="mdc-notched-outline__notch">
-                        <span class="mdc-floating-label" id="my-label-id">Adres email</span>
-                    </span>
-                    <span class="mdc-notched-outline__trailing"></span>
-                </span>
-                <input type="text" formControlName="email" class="mdc-text-field__input">
-            </label>
-            <label class="mdc-text-field mdc-text-field--outlined" id="passwordField">
-                <span class="mdc-notched-outline">
-                    <span class="mdc-notched-outline__leading"></span>
-                    <span class="mdc-notched-outline__notch">
-                        <span class="mdc-floating-label" id="my-label-id">Hasło</span>
-                    </span>
-                    <span class="mdc-notched-outline__trailing"></span>
-                </span>
-                <input type="password" formControlName="password" class="mdc-text-field__input">
-            </label>
-            <a [routerLink]="['/security/password/forgot']">Nie pamiętasz hasła?</a>
-            <button class="mdc-button mdc-button--raised" type="submit" [disabled]="!signinForm.valid">
-                <span class="mdc-button__ripple"></span>
-                <span class="mdc-button__label">Zaloguj się</span>
-                <i class="material-icons mdc-button__icon">login</i>
-            </button>
-            <span class="separator">lub</span>
-            <button type="button" class="mdc-button mdc-button--raised" id="signupButton" (click)="navigateToSignUpPage()">
-                <span class="mdc-button__ripple"></span>
-                <span class="mdc-button__label">Zarejestruj się</span>
-            </button>
-        </form>
+    <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
+        <img src="../../../../assets/logo.png" class="logo">
+        <mat-card *ngIf="infoMessage" class="mat-card-info">
+            <div>{{ infoMessage }}</div>
+        </mat-card>
+        <mat-card *ngIf="errorMessage" class="mat-card-error">
+            <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
+                {{ errorMessage }}
+                <br>
+                Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
+            </p>
+            <ng-template #confirmed>
+                {{ errorMessage }}
+            </ng-template>
+        </mat-card>
+        <mat-form-field appearance="outline">
+            <mat-label>Adres email</mat-label>
+            <input matInput formControlName="email">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Hasło</mat-label>
+            <input matInput type="password" formControlName="password">
+        </mat-form-field>
+        <a [routerLink]="['/security/password/forgot']">Nie pamiętasz hasła?</a>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
+            Zaloguj się
+            <mat-icon>login</mat-icon>
+        </button>
+        <span class="separator">lub</span>
+        <button mat-raised-button color="primary" (click)="navigateToSignUpPage()">
+            Zarejestruj się
+        </button>
+    </form>
 </div>

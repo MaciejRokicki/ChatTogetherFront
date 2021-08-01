@@ -37,11 +37,11 @@ export class SecurityService {
     }
 
     changePassword(token: string, newPassword: string): Observable<void> {
-        return this.http.post<void>(`${this.url}/ChangePassword?token=${token}`, new Object(newPassword));
+        return this.http.put<void>(`${this.url}/ChangePassword?token=${token}`, new Object(newPassword));
     }
     
     forgotPassword(email: string): Observable<void> {
-        return this.http.post<void>(`${this.url}/ForgotPassword?email=${email}`, null);
+        return this.http.put<void>(`${this.url}/ForgotPassword?email=${email}`, null);
     }
 
     confirmEmail(email: string, token: string): Observable<void> {

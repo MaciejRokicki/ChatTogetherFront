@@ -1,13 +1,3 @@
-@use "@material/floating-label/mdc-floating-label";
-@use "@material/line-ripple/mdc-line-ripple";
-@use "@material/notched-outline/mdc-notched-outline";
-@use "@material/textfield";
-
-@use "@material/icon-button";
-
-@include textfield.core-styles;
-@include icon-button.core-styles;
-
 .messageContainer {
     height: 100%;
     display: flex;
@@ -35,28 +25,26 @@
     align-items: center;
     background-color: #f8f8f8;
     border-radius: 0px 0px 20px 20px;
+    margin: 0px 0px 5px 0px;
 }
 
-.mdc-text-field {
+.form-field {
     width: 100%;
-    margin: 10px 5px 10px 10px;
-    border-radius: 15px;
-    height: 40px;
-    background-color: rgb(241, 231, 255) !important;
+    margin: 0px 0px 0px 10px;
+}
+
+::ng-deep .mat-form-field-wrapper {
+    width: 100%;
 }
 
 .sendButton {
     margin: 10px 10px 10px 5px;
-    color: rgba(98, 0, 238, 0.87);
 }
 
 .scrollDownButton {
-    border-radius: 25px;
-    background-color: rgb(241, 231, 255);
-    color: rgba(98, 0, 238, 0.87);
     position: absolute;
     align-self: center;
-    bottom: 60px;
+    bottom: 70px;
 }
 
 .scrollDownButton-hide {
