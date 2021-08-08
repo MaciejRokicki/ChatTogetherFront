@@ -19,22 +19,34 @@
     align-items: stretch;
 }
 
-.messageInput {
+.messageInputForm {
     min-height: 60px;
     display: flex;
     align-items: center;
     background-color: #f8f8f8;
-    border-radius: 0px 0px 20px 20px;
-    margin: 0px 0px 5px 0px;
 }
 
-.form-field {
+.messageInput {
     width: 100%;
+    height: 35px;
     margin: 0px 0px 0px 10px;
+    padding: 0px 0px 0px 10px;
+    border: unset;
+    border-radius: 10px;
+    outline-style: solid;
+    outline-color: #b4bbe4;
+    font-size: 16px;
 }
 
-::ng-deep .mat-form-field-wrapper {
-    width: 100%;
+.messageInput:hover {
+    outline-style: solid;
+    outline-color: #6877ca;
+}
+
+.messageInput:focus {
+    outline: unset;
+    outline-style: solid;
+    outline-color: #3f51b5;
 }
 
 .sendButton {
@@ -66,8 +78,10 @@
         margin: 0px;
         border-radius: 0px;
     }
+}
 
-    .messageInput {
-        border-radius: 0px;
+@media only screen and (min-width: 599px) and (max-width: 768px) {
+    .messageInputForm {
+        margin: 0px 0px 8px 0px;
     }
 }

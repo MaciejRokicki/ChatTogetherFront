@@ -10,10 +10,8 @@
                 </button>
         </div>
     </div>
-    <form class="messageInput" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="standard" class="form-field">
-            <input matInput formControlName="message" autocomplete="off" type="text" placeholder="Aa">
-        </mat-form-field>
+    <form class="messageInputForm" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+        <input class="messageInput" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required>
         <button mat-icon-button color="primary" class="sendButton" [disabled]="!messageForm.valid">
             <mat-icon>send</mat-icon>
         </button>
