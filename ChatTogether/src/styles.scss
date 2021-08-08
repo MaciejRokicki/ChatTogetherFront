@@ -24,6 +24,15 @@ body {
 	justify-content: center;
 }
 
+.snackbar-width {
+    max-width: unset !important;
+}
+
+.snackbar-error {
+	background-color: darkred !important;
+	color: whitesmoke !important;
+}
+
 @media only screen and (max-width: 768px) {
 	html {
 		height: calc(100% - 56px);

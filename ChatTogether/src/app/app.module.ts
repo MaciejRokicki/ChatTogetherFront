@@ -33,6 +33,7 @@ import { Hub } from './Hub';
 
 import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
 import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor';
+import { ExceptionHandlerInterceptor } from './interceptors/ExceptionHandlerInterceptor';
 
 registerLocaleData(localePl, localePlExtra);
 
@@ -66,6 +67,11 @@ registerLocaleData(localePl, localePlExtra);
     {
       provide: HTTP_INTERCEPTORS,
       useClass: UnauthorizedInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ExceptionHandlerInterceptor,
       multi: true
     },
     {
