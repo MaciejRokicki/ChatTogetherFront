@@ -1,21 +1,16 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UserComponent } from './user/user.component';
 import { UserRoutingModule } from './user-routing.module';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatNativeDateModule } from '@angular/material/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
+import { UserComponent } from './user/user.component';
 import { EditUserDialogComponent } from './edit-user-dialog/edit-user-dialog.component';
 import { EditAboutMeDialogComponent } from './edit-about-me-dialog/edit-about-me-dialog.component';
 import { ChangeNicknameDialogComponent } from './change-nickname-dialog/change-nickname-dialog.component';
+
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
+import { SharedModule } from 'src/app/components/shared/shared.module';
 
 @NgModule({
     declarations: [
@@ -25,17 +20,10 @@ import { MatDialogModule } from '@angular/material/dialog';
         ChangeNicknameDialogComponent
   ],
     imports: [
-        FormsModule,
-        CommonModule,
         UserRoutingModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
+        SharedModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatButtonModule,
-        MatCardModule,
-        MatIconModule,
         MatDialogModule
     ],
     exports: []
