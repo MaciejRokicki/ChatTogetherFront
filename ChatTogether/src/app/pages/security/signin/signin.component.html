@@ -1,10 +1,13 @@
 <div class="container">
     <form [formGroup]="signinForm" (ngSubmit)="onSubmit()">
         <img src="../../../../assets/logo.png" class="logo">
-        <mat-card *ngIf="infoMessage" class="mat-card-info">
+        <mat-card *ngIf="infoMessage" class="panel panel-info">
             <div>{{ infoMessage }}</div>
         </mat-card>
-        <mat-card *ngIf="errorMessage" class="mat-card-error">
+        <mat-card *ngIf="successMessage" class="panel panel-success">
+            <div>{{ successMessage }}</div>
+        </mat-card>
+        <mat-card *ngIf="errorMessage" class="panel panel-error">
             <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
                 {{ errorMessage }}
                 <br>

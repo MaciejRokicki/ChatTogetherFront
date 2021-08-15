@@ -33,6 +33,11 @@ body {
 	color: whitesmoke !important;
 }
 
+.snackbar-success {
+    background-color: darkgreen;
+    color: whitesmoke;  
+}
+
 @media only screen and (max-width: 768px) {
 	html {
 		height: calc(100% - 56px);

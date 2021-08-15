@@ -27,7 +27,7 @@ import { MessageService } from './services/message.service';
 import { SecurityService } from './services/security.service';
 import { UserService } from './services/user.service';
 import { TopbarTitleService } from './services/topbarTitle.service';
-import { SnakcbarService } from './services/snackbar.service';
+import { SnackbarService } from './services/snackbar.service';
 
 import { Hub } from './Hub';
 
@@ -84,7 +84,7 @@ registerLocaleData(localePl, localePlExtra);
     UserService,
     Hub,
     TopbarTitleService,
-    SnakcbarService
+    SnackbarService
   ],
   bootstrap: [AppComponent]
 })

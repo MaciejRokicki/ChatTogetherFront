@@ -10,7 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditUserDialogComponent } from '../edit-user-dialog/edit-user-dialog.component';
 import { EditAboutMeDialogComponent } from '../edit-about-me-dialog/edit-about-me-dialog.component';
 import { ChangeNicknameDialogComponent } from '../change-nickname-dialog/change-nickname-dialog.component';
-import { SnakcbarService } from 'src/app/services/snackbar.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 
 @Component({
   selector: 'app-user',
@@ -35,7 +36,7 @@ export class UserComponent implements OnInit, OnDestroy {
     private securityProvider: SecurityProvider,
     private userProvider: UserProvider,
     private dialog: MatDialog,
-    private snackbarService: SnakcbarService
+    private snackbarService: SnackbarService
     ) {
       this.nickname$ = this.route.params.pipe(
         tap((params: Params) => {
@@ -79,7 +80,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
     editUserDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
-        this.snackbarService.open("Pseudonim został zmieniony.");
+        this.snackbarService.open("Pseudonim został zmieniony.", 10000, SnackbarVariant.SUCCESS);
         this.securityProvider.signout();
         this.router.navigate(['security/signin']);
       }
@@ -111,7 +112,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
     editUserDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
-        this.snackbarService.open("Dane zostały zmienione.");
+        this.snackbarService.open("Dane zostały zmienione.", 10000, SnackbarVariant.SUCCESS);
       }
     });
   }

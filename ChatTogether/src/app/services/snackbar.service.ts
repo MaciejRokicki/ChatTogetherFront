@@ -6,7 +6,7 @@ import { SnackbarData, SnackbarVariant } from "../components/snackbar/snackbar.d
 @Injectable({
     providedIn: 'root'
 })
-export class SnakcbarService {
+export class SnackbarService {
     constructor(
         private snackbar: MatSnackBar
     ) { }
@@ -20,7 +20,8 @@ export class SnakcbarService {
             duration,
             panelClass: [
                 "snackbar-width", 
-                variant === SnackbarVariant.ERROR ? "snackbar-error" : null
+                variant === SnackbarVariant.ERROR ? "snackbar-error" : null,
+                variant === SnackbarVariant.SUCCESS ? "snackbar-success" : null
             ]
         })
     }

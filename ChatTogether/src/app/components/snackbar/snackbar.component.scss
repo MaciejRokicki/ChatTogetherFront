@@ -1,7 +1,3 @@
-// ::ng-deep .snackbar-width {
-//     max-width: unset;
-// }
-
 .container {
     display: flex;
     flex-direction: row;
@@ -21,9 +17,4 @@
     width: 24px;
     height: 24px;
     align-self: center;
-}
-
-.error {
-    background-color: darkred;
-    color: whitesmoke;
 }

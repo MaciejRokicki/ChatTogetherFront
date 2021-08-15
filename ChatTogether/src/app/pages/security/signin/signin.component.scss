@@ -36,25 +36,3 @@ a {
     cursor: pointer;
     color: blue;
 }
-
-.mat-card-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5px 0px 15px 0px;
-    background-color: whitesmoke;
-    color: darkgreen;
-    border-radius: 10px;
-    font-size: 15px;
-}
-
-.mat-card-error {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 5px 0px 15px 0px;
-    background-color: whitesmoke;
-    color: darkred;
-    border-radius: 10px;
-    font-size: 15px;
-}

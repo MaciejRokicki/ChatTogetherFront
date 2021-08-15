@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { Result } from "../entities/Result";
+import { Result, ResultStage } from "../entities/Result";
 import { SigninModel } from "../entities/Security/SigninModel";
 import { SignupModel } from "../entities/Security/SignupModel";
 import { User } from "../entities/user";
@@ -14,33 +14,37 @@ import { SecurityService } from "../services/security.service";
 
 export class SecurityProvider {
     public user = new BehaviorSubject<User>(null);
-    public result = new BehaviorSubject<Result>(new Result(null, undefined));
+    public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
     constructor(private securityService: SecurityService, private router: Router) { }
 
     signup(signupModel: SignupModel): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.signup(signupModel).pipe(
             tap(() => {
-                this.result.next(new Result(true, undefined));
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
     }
 
     signin(signinModel: SigninModel): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.signin(signinModel).pipe(
             tap((user: User) => {
-                this.result.next(new Result(true, undefined));
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
                 this.user.next(user);
             }),
             tap(() => {
                 this.router.navigate(['/']);
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
@@ -77,61 +81,70 @@ export class SecurityProvider {
     }
 
     changeEmail(token: string, newEmail: string): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.changeEmail(token, newEmail).pipe(
             tap(() => {
-                this.result.next(new Result(true, undefined))
+                this.result.next(new Result(ResultStage.SUCCESS, undefined))
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);       
             })
         ).subscribe();
-        //TODO: podmienic email w user
     }
 
     changePassword(token: string, newPassword: string): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.changePassword(token, newPassword).pipe(
             tap(() => {
-                this.result.next(new Result(true, undefined));
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
     }
     
     forgotPassword(email: string): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.forgotPassword(email).pipe(
             tap(() => {
-                this.result.next(new Result(true, undefined));
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();;
     }
 
     confirmEmail(email: string, token: string): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.confirmEmail(email, token).pipe(
             tap(() => {
-                this.result.next(new Result(true, undefined));
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();;
     }
 
     resendConfirmationEmail(email: string): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.securityService.resendConfirmationEmail(email).pipe(
             tap(() => {
-                this.result.next(new Result(true, undefined));
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(false, err.error));
+                this.result.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();

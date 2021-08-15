@@ -1,6 +1,13 @@
+export enum ResultStage {
+    INITIAL,
+    WAITING,
+    SUCCESS,
+    ERROR
+}
+
 export class Result {
     constructor(
-        public Success: boolean | null,
+        public Stage: ResultStage,
         public Message: string | undefined
     ) {}
 }

@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { tap } from 'rxjs/operators';
-import { Result } from 'src/app/entities/Result';
+import { Result, ResultStage } from 'src/app/entities/Result';
 import { SigninModel } from 'src/app/entities/Security/SigninModel';
 
 import { SecurityProvider } from 'src/app/providers/security.provider';
@@ -14,23 +14,24 @@ import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidato
 @Component({
   selector: 'app-signin',
   templateUrl: './signin.component.html',
-  styleUrls: ['./signin.component.scss']
+  styleUrls: ['../security.scss', './signin.component.scss']
 })
 export class SigninComponent implements OnInit {
   signinForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
-      Validators.required, 
-      Validators.minLength(6), 
-      UpperCaseCharValidator(), 
+      Validators.required,
+      Validators.minLength(6),
+      UpperCaseCharValidator(),
       DigitExistValidator(),
       SpecialCharValidator()
     ]),
   });
 
   infoMessage: string = "";
+  successMessage: string = "";
   errorMessage: string = "";
-  
+
   constructor(private securityProvider: SecurityProvider, private router: Router) { }
 
   ngOnInit(): void {
@@ -40,24 +41,38 @@ export class SigninComponent implements OnInit {
     this.securityProvider.resendConfirmationEmail(this.signinForm.get('email').value);
     this.securityProvider.result.pipe(
       tap((res: Result) => {
-        if(res.Success === false) {
+        this.infoMessage = "";
+        this.successMessage = "";
+        this.errorMessage = "";
+
+        switch (res.Stage) {
+          case ResultStage.SUCCESS:
+            this.successMessage = "Link potwierdzający został wysłany ponownie.";
+            break;
+
+          case ResultStage.ERROR:
             this.errorMessage = "Coś poszło nie tak :(";
-        } else {
-          this.errorMessage = "";
-          this.infoMessage = "Link potwierdzający został wysłany ponownie.";
+            break;
+
+          case ResultStage.WAITING:
+            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            break;
         }
       })
     ).subscribe();
   }
 
   onSubmit() {
+    this.infoMessage = "";
+    this.errorMessage = "";
+
     let signinModel: SigninModel = new SigninModel(this.signinForm.get("email").value, this.signinForm.get("password").value);
     this.securityProvider.signin(signinModel);
     //TODO: pomyslec nad kodami zamiast na sztywno podawac tresc wiadomosci
     this.securityProvider.result.pipe(
       tap((res: Result) => {
-        if(res.Success === false) {
-          switch(res.Message) {
+        if (res.Stage === ResultStage.ERROR) {
+          switch (res.Message) {
             case "Incorrect data.":
               this.errorMessage = "Podano niepoprawne dane.";
               break;

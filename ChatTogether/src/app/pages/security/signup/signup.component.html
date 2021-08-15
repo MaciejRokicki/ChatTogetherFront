@@ -1,7 +1,10 @@
 <div class="container">
     <form [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <img src="../../../../assets/logo.png" class="logo">
-        <div *ngIf="errorMessage" class="mat-card-error">
+        <mat-card *ngIf="infoMessage" class="panel panel-info">
+            <div>{{ infoMessage }}</div>
+        </mat-card>
+        <div *ngIf="errorMessage" class="panel panel-error">
             {{ errorMessage }}
         </div>
         <div class="infoContainer">
@@ -20,7 +23,7 @@
         <div class="infoContainer">
             <mat-form-field appearance="outline">
                 <mat-label>Hasło</mat-label>
-                <input matInput formControlName="password" (focus)="showPasswordInfo()" (blur)="clearInfo()">
+                <input matInput formControlName="password" type="password" (focus)="showPasswordInfo()" (blur)="clearInfo()">
             </mat-form-field>
             <div class="infoBorder" *ngIf="passwordInfo">
                 <p class="info">{{ passwordInfo }}</p>
@@ -28,7 +31,7 @@
         </div>
         <mat-form-field appearance="outline">
             <mat-label>Powtórz hasło</mat-label>
-            <input matInput formControlName="confirmPassword">
+            <input matInput formControlName="confirmPassword" type="password">
         </mat-form-field>
         <button mat-raised-button color="primary" type="submit" [disabled]="!validForm()">
             Zarejestruj się

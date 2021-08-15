@@ -2,10 +2,13 @@
     <div class="content">
         <div class="container">
             <div class="content">
-                <mat-card *ngIf="infoMessage" class="mat-card-info">
-                    {{ infoMessage }}
+                <mat-card *ngIf="infoMessage" class="panel panel-info">
+                    <div>{{ infoMessage }}</div>
                 </mat-card>
-                <mat-card *ngIf="errorMessage" class="mat-card-error">
+                <mat-card *ngIf="successMessage" class="panel panel-success">
+                    {{ successMessage }}
+                </mat-card>
+                <mat-card *ngIf="errorMessage" class="panel panel-error">
                     {{ errorMessage }}
                 </mat-card>
                 <mat-card>
