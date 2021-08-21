@@ -44,6 +44,9 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   height: number;
 
+  outOfMessages: boolean;
+  noMessages: boolean;
+
   constructor(
     private route: ActivatedRoute,
     private securityProvider: SecurityProvider,
@@ -84,11 +87,14 @@ export class RoomComponent implements OnInit, OnDestroy {
       map((data: Message[]) => {
         if(data.length !== 0 && data.length === this.messages.length) {
           this.stopScroll = false;
-          console.log("OUT"); //TODO: jakies info ze nie ma juz wiecej wiadomosci do pobrania
+          this.outOfMessages = true;
         } 
         if (data.length === 0) {
-          console.log("NULL") //TODO: jakies info zeby cos napisac bo nie ma wiadomosci
+          this.noMessages = true;
+        } else {
+          this.noMessages = false;
         }
+        
         this.messages = data;
       })
     ).subscribe();

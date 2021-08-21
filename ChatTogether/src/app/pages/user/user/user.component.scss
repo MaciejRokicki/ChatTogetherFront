@@ -1,5 +1,5 @@
 .container {
-	width: 70%;
+	width: 800px;
 	display: flex;
 	flex-direction: column;
 	flex-wrap: wrap;
@@ -8,6 +8,32 @@
 
 mat-card {
 	margin: 10px;
+}
+
+mat-card-title {
+	margin-bottom: 16px;
+}
+
+.formGroup {
+	display: flex;
+	flex-direction: row;
+	margin-top: 3px;
+	align-items: center;
+}
+
+.formLabel {
+	width: 140px;
+	text-transform: uppercase;
+	color: #5f6368;
+}
+
+.formControl {
+	font-size: 16px;
+}
+
+.custom-divider {
+	position: unset !important;
+	margin: 5px 0px 5px 0px;
 }
 
 p {

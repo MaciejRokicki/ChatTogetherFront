@@ -1,8 +1,18 @@
 <div class="messageContainer">
     <div class="messages">
         <div #scroll class="messagesContent">
+            <div *ngIf="noMessages" class="noMessagesContainer">
+                <p>Trochę tu pusto :(</p>
+                <p>Napisz coś!</p>
+            </div>
+            <div *ngIf="outOfMessages">
+                <div class="outOfMessagesContent">
+                    <p>To już koniec, dalej już nic nie ma :(</p>
+                </div>
+            </div>
             <app-message *ngFor="let message of messages" [Message]="message"
-                [LeftDirection]="userNickname !== message.nickname"></app-message>
+                [LeftDirection]="userNickname !== message.nickname">
+            </app-message>
                 <button mat-mini-fab color="primary" 
                     [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
                     (click)="scrollDown()">

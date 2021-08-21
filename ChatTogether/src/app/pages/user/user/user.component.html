@@ -3,30 +3,62 @@
         <mat-card>
             <mat-card-title>{{ nickname }}</mat-card-title>
             <mat-card-content>
-                <p *ngIf="user?.firstName; else nameExists">
-                    Imię: {{user.firstName}}
-                </p>
-                <ng-template #nameExists>
-                    <p>Imię: <i>brak</i></p>
-                </ng-template>
-                <p *ngIf="user?.lastName; else lastNameExists">
-                    Nazwisko: {{user.lastName}}
-                </p>
-                <ng-template #lastNameExists>
-                    <p>Nazwisko: <i>brak</i></p>
-                </ng-template>
-                <p *ngIf="user?.birthDate; else dateExists">
-                    Data urodzenia: {{user.birthDate | date:'dd.MM.yyyy'}}
-                </p>
-                <ng-template #dateExists>
-                    <p>Data urodzenia: <i>brak</i></p>
-                </ng-template>
-                <p *ngIf="user?.city; else cityExists">
-                    Miasto: {{user.city}}
-                </p>
-                <ng-template #cityExists>
-                    <p>Miasto: <i>brak</i></p>
-                </ng-template>
+                <div class="formGroup">
+                    <div class="formLabel">
+                        Imię
+                    </div>
+                    <div class="formControl">
+                        <div *ngIf="user?.firstName; else nameExists">
+                            {{user.firstName}}
+                        </div>
+                        <ng-template #nameExists>
+                            <i>brak</i>
+                        </ng-template>
+                    </div>
+                </div>
+                <mat-divider class="custom-divider"></mat-divider>
+                <div class="formGroup">
+                    <div class="formLabel">
+                        Nazwisko
+                    </div>
+                    <div class="formControl">
+                        <div *ngIf="user?.lastName; else lastNameExists">
+                            {{user.lastName}}
+                        </div>
+                        <ng-template #lastNameExists>
+                            <i>brak</i>
+                        </ng-template>
+                    </div>
+                </div>
+                <mat-divider class="custom-divider"></mat-divider>
+                <div class="formGroup">
+                    <div class="formLabel">
+                        Data urodzenia
+                    </div>
+                    <div class="formControl">
+                        <div *ngIf="user?.birthDate; else dateExists">
+                            {{user.birthDate | date:'dd.MM.yyyy'}}
+                        </div>
+                        <ng-template #dateExists>
+                            <i>brak</i>
+                        </ng-template>
+                    </div>
+                </div>
+                <mat-divider class="custom-divider"></mat-divider>
+                <div class="formGroup">
+                    <div class="formLabel">
+                        Miasto
+                    </div>
+                    <div class="formControl">
+                        <div *ngIf="user?.city; else cityExists">
+                            {{user.city}}
+                        </div>
+                        <ng-template #cityExists>
+                            <i>brak</i>
+                        </ng-template>
+                    </div>
+                </div>
+                <mat-divider class="custom-divider"></mat-divider>
             </mat-card-content>
             <mat-card-actions *ngIf="nickname == authUser?.nickname">
                 <button mat-icon-button id="userEdit" (click)="userEditOpenModal()">
@@ -37,12 +69,14 @@
         <mat-card>
             <mat-card-title>O mnie</mat-card-title>
             <mat-card-content>
-                <p *ngIf="user?.description; else descriptionExists">
-                    {{user.description}}
-                </p>
-                <ng-template #descriptionExists>
-                    <p><i>brak</i></p>
-                </ng-template>
+                <div class="formControl">
+                    <p *ngIf="user?.description; else descriptionExists">
+                        {{user.description}}
+                    </p>
+                    <ng-template #descriptionExists>
+                        <p><i>brak</i></p>
+                    </ng-template>
+                </div>
             </mat-card-content>
             <mat-card-actions *ngIf="nickname == authUser?.nickname">
                 <button mat-icon-button id="aboutMeEdit" (click)="aboutMeEditOpenModal()">

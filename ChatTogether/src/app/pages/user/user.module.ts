@@ -11,6 +11,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
         SharedModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatDialogModule
+        MatDialogModule,
+        MatDividerModule
     ],
     exports: []
 })
