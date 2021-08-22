@@ -1,0 +1,74 @@
+@import 'palettes.scss';
+
+$primary: mat-palette($mat-indigo);
+$accent: mat-palette($mat-pink, A200, A100, A400);
+$warn: mat-palette($mat-deep-orange);
+
+$message-nickname: mat-palette($black, 900);
+$message-nickname-hover: mat-palette($primary);
+$message-date: mat-palette($black, 200);
+
+$room-message-input: mat-palette($gray, 100);
+$room-message-input-hover: mat-palette($gray, 200);
+$room-message-info: mat-palette($light-gray, 300);
+
+$label: mat-palette($gray, 500);
+$row-select-hover: mat-palette($gray, 50);
+$row-select-active: mat-palette($gray, 100);
+
+$background: (
+  status-bar: map-get($mat-grey, 300),
+  app-bar: map-get($mat-grey, 100),
+  background: map-get($mat-grey, 50),
+  hover: rgba(black, 0.04),
+  card: white,
+  dialog: white,
+  disabled-button: rgba(black, 0.12),
+  raised-button: white,
+  focused-button: $dark-focused,
+  selected-button: map-get($mat-grey, 300),
+  selected-disabled-button: map-get($mat-grey, 400),
+  disabled-button-toggle: map-get($mat-grey, 200),
+  unselected-chip: map-get($mat-grey, 300),
+  disabled-list-option: map-get($mat-grey, 200),
+  tooltip: map-get($mat-grey, 700),
+);
+
+$foreground: (
+  base: black,
+  divider: $dark-dividers,
+  dividers: $dark-dividers,
+  disabled: $dark-disabled-text,
+  disabled-button: rgba(black, 0.26),
+  disabled-text: $dark-disabled-text,
+  elevation: black,
+  hint-text: $dark-disabled-text,
+  secondary-text: $dark-secondary-text,
+  icon: rgba(black, 0.54),
+  icons: rgba(black, 0.54),
+  text: rgba(black, 0.87),
+  slider-min: rgba(black, 0.87),
+  slider-off: rgba(black, 0.26),
+  slider-off-active: rgba(black, 0.38),
+);
+
+$light-theme: (
+  primary: $primary,
+  accent: $accent,
+  warn: $warn,
+  is-dark: false,
+  foreground: $foreground,
+  background: $background,
+
+  message-nickname: $message-nickname,
+  message-nickname-hover: $message-nickname-hover,
+  message-date: $message-date,
+
+  room-message-input: $room-message-input,
+  room-message-input-hover: $room-message-input-hover,
+  room-message-info: $room-message-info,
+
+  form-label: $label,
+  row-select-hover: $row-select-hover,
+  row-select-active: $row-select-active
+);

@@ -5,7 +5,7 @@
     </button>
     <span class="title">{{ topBarTitle }}</span>
     <button mat-icon-button (click)="toggleTheme()">
-      <mat-icon>dark_mode</mat-icon>
+      <mat-icon>{{ theme == "light" ? 'dark_mode' : 'light_mode' }}</mat-icon>
     </button>
   </div>
 </mat-toolbar>

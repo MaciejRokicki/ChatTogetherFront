@@ -78,8 +78,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.roomProvider.onRoomEnter(this.id);
     this.messageProvider.setListeningOnNewMessages();
 
-    const height = (document.querySelector('.messagesContent') as Element).clientHeight;
-    const messagesCount = Math.ceil(height / 71 * 2);
+    const height = (document.querySelector('.messages-content') as Element).clientHeight;
+    const messagesCount = Math.ceil(height / 81.5 * 2);
 
     this.messageProvider.getMessages(this.id, messagesCount);
     this.messages$ = this.messageProvider.messages.pipe(
@@ -96,10 +96,13 @@ export class RoomComponent implements OnInit, OnDestroy {
         }
         
         this.messages = data;
+      }),
+      tap(() => {
+        this.scrollDown();
       })
     ).subscribe();
 
-    this.scroll$ = fromEvent(document.querySelector('.messagesContent') as Element, 'scroll').pipe(
+    this.scroll$ = fromEvent(document.querySelector('.messages-content') as Element, 'scroll').pipe(
       mergeMap(() => {
         var currentScrollPos = this.messagesContent.nativeElement.scrollTop;
         var scrollHeight = this.messagesContent.nativeElement.scrollHeight;
@@ -137,7 +140,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       const messages = this.messagesContent.nativeElement.children;       //wszystkie elementy app-message
       var scrollHeight = this.messagesContent.nativeElement.scrollHeight; //rozmiar scrolla calego messageContentu (roznica jest wysokosc buttona do scrollowania w dol)
       var heightAllMessages = 0;                                          //wysokosc wszystkich elementow app-message
-
+      
       for(let i = 0; i < messages.length; i++) {
         heightAllMessages += messages[i].clientHeight;
       }
@@ -167,7 +170,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       }
     });
     
-    observer.observe(document.querySelector('.messagesContent') as Element, {
+    observer.observe(document.querySelector('.messages-content') as Element, {
       attributes: true,
       childList: true,
       characterData: true
@@ -176,6 +179,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   scrollDown() {
     this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
+    console.log("TEST");
   }
 
   onSubmit() {

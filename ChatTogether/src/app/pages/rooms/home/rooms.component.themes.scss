@@ -1,0 +1,13 @@
+@mixin rooms-component-theme($theme) {
+	$config: mat-get-color-config($theme);
+	$row-select-hover: map-get($config, row-select-hover);
+	$row-select-active: map-get($config, row-select-active);
+
+	tr.select-row:hover {
+		background: mat-color($row-select-hover);
+	}
+
+	tr.select-row:active {
+		background: mat-color($row-select-active);
+	}
+}

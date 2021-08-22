@@ -1,15 +1,12 @@
 <div class="messageContainer">
-    <div class="item" [ngClass]="{'left': LeftDirection, 'right': !LeftDirection}">
-        <div class="topContainer">
-            <div class="topLeft">
-                <i>{{ Message?.sendTimeStr }}</i>
-            </div>
-            <div class="topRight">
-                <a routerLink="/user/{{Message?.nickname}}">{{ Message?.nickname }}</a>
-            </div>
-        </div>
-        <div class="msg">
-            {{ Message?.message }}
-        </div>
+    <div class="topContainer">
+        <a routerLink="/user/{{Message?.nickname}}" 
+           class="nickname">
+            {{ Message?.nickname }}
+        </a>
+        <i class="date">{{ Message?.sendTimeStr }}</i>
+    </div>
+    <div class="msg">
+        {{ Message?.message }}
     </div>
 </div>

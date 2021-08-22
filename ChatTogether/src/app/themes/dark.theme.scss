@@ -1,0 +1,74 @@
+@import 'palettes.scss';
+
+$primary: mat-palette($mat-blue-grey, 500);
+$accent: mat-palette($mat-amber, A200, A100, A400);
+$warn: mat-palette($mat-deep-orange);
+
+$message-nickname: mat-palette($light-gray, 100);
+$message-nickname-hover: mat-palette($primary);
+$message-date: mat-palette($light-gray, 500);
+
+$room-message-input: mat-palette($gray);
+$room-message-input-hover: mat-palette($gray, 600);
+$room-message-info: mat-palette($light-gray);
+
+$label: mat-palette($gray, 100);
+$row-select-hover: mat-palette($gray, 700);
+$row-select-active: mat-palette($gray, 800);
+
+$background: (
+  status-bar: black,
+  app-bar: map-get($mat-grey, 900),
+  background: #303030,
+  hover: rgba(white, 0.04),
+  card: map-get($mat-grey, 800),
+  dialog: map-get($mat-grey, 800),
+  disabled-button: rgba(white, 0.12),
+  raised-button: map-get($mat-grey, 800),
+  focused-button: $light-focused,
+  selected-button: map-get($mat-grey, 900),
+  selected-disabled-button: map-get($mat-grey, 800),
+  disabled-button-toggle: black,
+  unselected-chip: map-get($mat-grey, 700),
+  disabled-list-option: black,
+  tooltip: map-get($mat-grey, 700),
+);
+
+$foreground: (
+  base: white,
+  divider: $light-dividers,
+  dividers: $light-dividers,
+  disabled: $light-disabled-text,
+  disabled-button: rgba(white, 0.3),
+  disabled-text: $light-disabled-text,
+  elevation: black,
+  hint-text: $light-disabled-text,
+  secondary-text: $light-secondary-text,
+  icon: white,
+  icons: white,
+  text: white,
+  slider-min: white,
+  slider-off: rgba(white, 0.3),
+  slider-off-active: rgba(white, 0.3),
+);
+
+$dark-theme: (
+  primary: $primary,
+  accent: $accent,
+  warn: $warn,
+  is-dark: true,
+  foreground: $foreground,
+  background: $background,
+
+  message-nickname: $message-nickname,
+  message-nickname-hover: $message-nickname-hover,
+  message-date: $message-date,
+
+  room-message-input: $room-message-input,
+  room-message-input-hover: $room-message-input-hover,
+  room-message-info: $room-message-info,
+
+  form-label: $label,
+  row-select-hover: $row-select-hover,
+  row-select-active: $row-select-active
+);

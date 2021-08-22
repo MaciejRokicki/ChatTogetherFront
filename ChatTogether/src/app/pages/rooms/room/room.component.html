@@ -1,12 +1,12 @@
-<div class="messageContainer">
+<div class="message-container">
     <div class="messages">
-        <div #scroll class="messagesContent">
-            <div *ngIf="noMessages" class="noMessagesContainer">
+        <div #scroll class="messagesContent messages-content">
+            <div *ngIf="noMessages" class="no-messages-container">
                 <p>Trochę tu pusto :(</p>
                 <p>Napisz coś!</p>
             </div>
             <div *ngIf="outOfMessages">
-                <div class="outOfMessagesContent">
+                <div class="out-of-messages-content">
                     <p>To już koniec, dalej już nic nie ma :(</p>
                 </div>
             </div>
@@ -14,16 +14,18 @@
                 [LeftDirection]="userNickname !== message.nickname">
             </app-message>
                 <button mat-mini-fab color="primary" 
-                    [ngClass]="{'scrollDownButton-hide': !showScrollDownButton, 'scrollDownButton': showScrollDownButton}"
+                    [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 'scroll-down-button': showScrollDownButton}"
                     (click)="scrollDown()">
                     <mat-icon>south</mat-icon>
                 </button>
         </div>
     </div>
-    <form class="messageInputForm" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-        <input class="messageInput" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required color="accent">
-        <button mat-icon-button color="primary" class="sendButton" [disabled]="!messageForm.valid">
-            <mat-icon>send</mat-icon>
-        </button>
+    <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+        <div class="message-input">
+            <input class="input-field" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required>
+            <button mat-icon-button color="accent" class="send-button" [disabled]="!messageForm.valid">
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
     </form>
 </div>

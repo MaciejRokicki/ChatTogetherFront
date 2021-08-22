@@ -1,0 +1,18 @@
+@mixin message-component-theme($theme) {
+	$config: mat-get-color-config($theme);
+	$message-nickname: map-get($config, message-nickname);
+    $message-nickname-hover: map-get($config, message-nickname-hover);
+    $message-date: map-get($config, message-date);
+
+    .nickname {
+        color: mat-color($message-nickname);
+    }
+
+    .nickname:hover {
+        color: mat-color($message-nickname-hover);
+    }
+
+    .date {
+        color: mat-color($message-date);
+    }
+}

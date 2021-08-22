@@ -1,0 +1,10 @@
+@mixin user-component-theme($theme) {
+	$config: mat-get-color-config($theme);
+	$form-label: map-get($config, form-label);
+
+    .formLabel {
+        width: 140px;
+        text-transform: uppercase;
+        color: mat-color($form-label);
+    }
+}
