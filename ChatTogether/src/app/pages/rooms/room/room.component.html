@@ -21,7 +21,7 @@
         </div>
     </div>
     <form class="messageInputForm" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-        <input class="messageInput" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required>
+        <input class="messageInput" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required color="accent">
         <button mat-icon-button color="primary" class="sendButton" [disabled]="!messageForm.valid">
             <mat-icon>send</mat-icon>
         </button>

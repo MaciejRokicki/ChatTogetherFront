@@ -1,6 +1,11 @@
 <mat-toolbar color="primary">
-  <button mat-icon-button id="menuButton">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>{{ topBarTitle }}</span>
+  <div class="topbar-container">
+    <button mat-icon-button id="menuButton">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span class="title">{{ topBarTitle }}</span>
+    <button mat-icon-button (click)="toggleTheme()">
+      <mat-icon>dark_mode</mat-icon>
+    </button>
+  </div>
 </mat-toolbar>

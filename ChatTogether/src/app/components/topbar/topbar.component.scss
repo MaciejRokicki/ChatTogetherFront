@@ -1,3 +1,14 @@
+.topbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    flex-grow: 1;
+}
+
 @media only screen and (min-width: 767px) {
     #menuButton {
         display: none;
