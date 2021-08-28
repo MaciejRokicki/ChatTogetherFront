@@ -1,15 +1,23 @@
-.messageContainer {
+.message-container {
     margin: 15px;
+}
+
+.top-container-right {
+    text-align: end;
+}
+
+.message-container-right {
+    float: right;
 }
 
 .nickname {
     text-decoration: none;
-    margin-right: 7px;
     font-size: 16px;
 }
 
 .date {
     text-transform: lowercase;
+    margin: 0px 7px 0px 7px;
 }
 
 .msg {
@@ -20,6 +28,10 @@
     border-radius: 20px;
     padding: 5px 10px 5px 10px;
     max-width: 60%;
+}
+
+.msg-right {
+    float: right;
 }
 
 @media only screen and (max-width: 768px) {

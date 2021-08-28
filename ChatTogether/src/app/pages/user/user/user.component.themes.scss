@@ -2,7 +2,7 @@
 	$config: mat-get-color-config($theme);
 	$form-label: map-get($config, form-label);
 
-    .formLabel {
+    .form-label {
         width: 140px;
         text-transform: uppercase;
         color: mat-color($form-label);

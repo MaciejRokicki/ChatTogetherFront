@@ -11,7 +11,7 @@
                 </div>
             </div>
             <app-message *ngFor="let message of messages" [Message]="message"
-                [LeftDirection]="userNickname !== message.nickname">
+                [LeftDirection]="userNickname != message.nickname">
             </app-message>
             <button mat-mini-fab color="primary" 
                 [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 'scroll-down-button': showScrollDownButton}"

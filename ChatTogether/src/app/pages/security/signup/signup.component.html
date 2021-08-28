@@ -7,12 +7,12 @@
         <div *ngIf="errorMessage" class="panel panel-error">
             {{ errorMessage }}
         </div>
-        <div class="infoContainer">
+        <div class="info-container">
             <mat-form-field appearance="outline">
                 <mat-label>Nazwa użytkownika</mat-label>
                 <input matInput formControlName="nickname" (focus)="showNicknameInfo()" (blur)="clearInfo()">
             </mat-form-field>
-            <div class="infoBorder" *ngIf="nicknameInfo">
+            <div class="info-border" *ngIf="nicknameInfo">
                 <p class="info">{{ nicknameInfo }}</p>
             </div>
         </div>
@@ -20,12 +20,12 @@
             <mat-label>Adres email</mat-label>
             <input matInput formControlName="email">
         </mat-form-field>
-        <div class="infoContainer">
+        <div class="info-container">
             <mat-form-field appearance="outline">
                 <mat-label>Hasło</mat-label>
                 <input matInput formControlName="password" type="password" (focus)="showPasswordInfo()" (blur)="clearInfo()">
             </mat-form-field>
-            <div class="infoBorder" *ngIf="passwordInfo">
+            <div class="info-border" *ngIf="passwordInfo">
                 <p class="info">{{ passwordInfo }}</p>
             </div>
         </div>
