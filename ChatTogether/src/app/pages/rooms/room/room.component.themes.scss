@@ -1,8 +1,13 @@
 @mixin room-component-theme($theme) {
 	$config: mat-get-color-config($theme);
+    $room-messages: map-get($config, room-messages);
 	$room-message-input: map-get($config, room-message-input);
     $room-message-input-hover: map-get($config, room-message-input-hover);
     $room-message-info: map-get($config, room-message-info);
+
+    .messages {
+        background-color: mat-color($room-messages);
+    }
 
     .message-input {
         background-color: mat-color($room-message-input);

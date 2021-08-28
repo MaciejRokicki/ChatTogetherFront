@@ -1,5 +1,5 @@
 <mat-sidenav-container>
-  <mat-sidenav [mode]="mode" [opened]="isOpen" (openedChange)="openedChange($event)">
+  <mat-sidenav [mode]="mode" [opened]="isOpen" [disableClose]="disableClose" (openedChange)="openedChange($event)">
     <div class="sidenav-header">
       <h2 class="mat-title sidenav-title">{{ user.nickname }}</h2>
       <h4 class="mat-subheading-1 sidenav-subtitle">{{ user.firstName }} {{ user.lastName }}</h4>

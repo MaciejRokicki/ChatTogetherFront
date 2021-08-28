@@ -1,12 +1,5 @@
 .messageContainer {
-    display: flex;
-    flex-direction: column;
     margin: 15px;
-}
-
-.topContainer {
-    display: flex;
-    align-items: baseline;
 }
 
 .nickname {
@@ -20,7 +13,17 @@
 }
 
 .msg {
-    word-wrap: break-word;
+    display: inline-flex;
+    word-wrap: anywhere;
     margin-top: 10px;
     font-size: 16px;
+    border-radius: 20px;
+    padding: 5px 10px 5px 10px;
+    max-width: 60%;
+}
+
+@media only screen and (max-width: 768px) {
+    .msg {
+        max-width: unset;
+    }
 }

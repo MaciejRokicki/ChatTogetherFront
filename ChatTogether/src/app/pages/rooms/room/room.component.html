@@ -13,11 +13,11 @@
             <app-message *ngFor="let message of messages" [Message]="message"
                 [LeftDirection]="userNickname !== message.nickname">
             </app-message>
-                <button mat-mini-fab color="primary" 
-                    [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 'scroll-down-button': showScrollDownButton}"
-                    (click)="scrollDown()">
-                    <mat-icon>south</mat-icon>
-                </button>
+            <button mat-mini-fab color="primary" 
+                [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 'scroll-down-button': showScrollDownButton}"
+                (click)="scrollDown()">
+                <mat-icon>south</mat-icon>
+            </button>
         </div>
     </div>
     <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">

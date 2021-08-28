@@ -1,21 +1,21 @@
 <h1 mat-card-title>Edytuj dane</h1>
 <form [formGroup]="editUserForm" (ngSubmit)="editUser()">
     <mat-dialog-content>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" color="accent">
             <mat-label>Imię</mat-label>
             <input matInput formControlName="firstName">
         </mat-form-field>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" color="accent">
             <mat-label>Nazwisko</mat-label>
             <input matInput formControlName="lastName">
         </mat-form-field>
-        <mat-form-field class="inputField" appearance="outline" (click)="picker.open()">
+        <mat-form-field class="inputField" appearance="outline" color="accent" (click)="picker.open()">
             <mat-label>Data urodzenia</mat-label>
             <input matInput [matDatepicker]="picker" formControlName="birthDate" readonly="readonly">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>                  
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" color="accent">
             <mat-label>Miasto</mat-label>
             <input matInput formControlName="city">
         </mat-form-field>

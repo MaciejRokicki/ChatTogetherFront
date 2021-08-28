@@ -1,7 +1,7 @@
 <h1 mat-card-title>Zmień nazwę uzytkownika</h1>
 <form [formGroup]="changeNicknameForm" (ngSubmit)="changeNickname()">
     <mat-dialog-content>
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" color="accent">
             <mat-label>Nazwa użytkownika</mat-label>
             <input matInput formControlName="nickname">
         </mat-form-field>

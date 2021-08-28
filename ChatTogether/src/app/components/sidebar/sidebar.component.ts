@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   mode: 'over' | 'push' | 'side' = 'side';
   isOpen: boolean = true;
+  disableClose: boolean = true;
 
   constructor() { }
 
@@ -44,9 +45,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
         if(window.innerWidth < 767) {
           this.mode = 'over';
           this.isOpen = false;
+          this.disableClose = false;
         } else {
           this.mode = 'side';
           this.isOpen = true;
+          this.disableClose = true;
         }
       })
     ).subscribe();

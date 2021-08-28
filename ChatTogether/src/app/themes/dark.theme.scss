@@ -1,14 +1,16 @@
 @import 'palettes.scss';
 
-$primary: mat-palette($mat-blue-grey, 500);
-$accent: mat-palette($mat-amber, A200, A100, A400);
+$primary: mat-palette($dark-blue);
+$accent: mat-palette($blue);
 $warn: mat-palette($mat-deep-orange);
 
 $message-nickname: mat-palette($light-gray, 100);
 $message-nickname-hover: mat-palette($primary);
 $message-date: mat-palette($light-gray, 500);
+$message-msg: mat-palette($light-gray, 800);
 
-$room-message-input: mat-palette($gray);
+$room-messages: mat-palette($gray, 900);
+$room-message-input: mat-palette($gray, 700);
 $room-message-input-hover: mat-palette($gray, 600);
 $room-message-info: mat-palette($light-gray);
 
@@ -17,12 +19,12 @@ $row-select-hover: mat-palette($gray, 700);
 $row-select-active: mat-palette($gray, 800);
 
 $background: (
-  status-bar: black,
+  status-bar: #141c21,
   app-bar: map-get($mat-grey, 900),
-  background: #303030,
+  background: #141c21,
   hover: rgba(white, 0.04),
-  card: map-get($mat-grey, 800),
-  dialog: map-get($mat-grey, 800),
+  card: #1b262c,
+  dialog: #1b262c,
   disabled-button: rgba(white, 0.12),
   raised-button: map-get($mat-grey, 800),
   focused-button: $light-focused,
@@ -63,7 +65,9 @@ $dark-theme: (
   message-nickname: $message-nickname,
   message-nickname-hover: $message-nickname-hover,
   message-date: $message-date,
+  message-msg: $message-msg,
 
+  room-messages: $room-messages,
   room-message-input: $room-message-input,
   room-message-input-hover: $room-message-input-hover,
   room-message-info: $room-message-info,

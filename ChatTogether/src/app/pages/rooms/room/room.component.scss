@@ -7,6 +7,9 @@
 .messages {
     height: 100%;
     overflow: hidden;
+    border-radius: 20px 0px 0px 20px;
+    margin: 30px 0px 0px 30px;
+    padding-left: 10px;
 }
 
 .messages-content {
@@ -21,12 +24,13 @@
     min-height: 60px;
     display: flex;
     align-items: center;
+    margin: 0px 0px 0px 30px;
 }
 
 .message-input {
     width: 100%;
     height: 45px;
-    margin: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 0px;
     padding: 0px 0px 0px 10px;
     border-radius: 20px;
     font-size: 16px;
@@ -92,13 +96,24 @@ p {
 
 @media only screen and (max-width: 768px) {
     .messages {
-        margin: 0px;
-        border-radius: 0px;
+        margin: 10px 0px 0px 10px;
+        border-radius: 20px 0px 0px 20px;
+        padding-left: 0px;
+    }
+
+    .message-input-container {
+        margin: 10px 0px 0px 10px;
     }
 }
 
 @media only screen and (min-width: 599px) and (max-width: 768px) {
     .message-input-container {
-        margin: 0px 0px 8px 0px;
+        margin: 0px 0px 8px 10px;
+    }
+}
+
+@media only screen and (max-width: 599px) {
+    .message-input-container {
+        margin: 0px 0px 0px 10px;
     }
 }

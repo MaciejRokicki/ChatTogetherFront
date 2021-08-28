@@ -3,6 +3,7 @@
 	$message-nickname: map-get($config, message-nickname);
     $message-nickname-hover: map-get($config, message-nickname-hover);
     $message-date: map-get($config, message-date);
+    $message-msg: map-get($config, message-msg);
 
     .nickname {
         color: mat-color($message-nickname);
@@ -14,5 +15,9 @@
 
     .date {
         color: mat-color($message-date);
+    }
+
+    .msg {
+        background-color: mat-color($message-msg);
     }
 }
