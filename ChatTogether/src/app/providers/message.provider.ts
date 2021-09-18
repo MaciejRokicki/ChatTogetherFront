@@ -5,7 +5,7 @@ import { BehaviorSubject } from "rxjs";
 import { map, tap } from "rxjs/operators";
 
 import { Message } from "../entities/message";
-import { Hub } from "../Hub";
+import { RoomHub } from "../Hubs/RoomHub";
 import { MessageService } from "../services/message.service";
 
 @Injectable({
@@ -17,7 +17,7 @@ export class MessageProvider {
 
     constructor(
         private messageService: MessageService,
-        private hub: Hub
+        private roomHub: RoomHub
         ) { }
 
     public getMessages(roomId: number, size: number = 20, lastMessageDate: Date = new Date()): void {
@@ -39,9 +39,9 @@ export class MessageProvider {
     }
 
     public sendMessage(message: Message): void {
-        this.hub.conn$.pipe(
+        this.roomHub.conn$.pipe(
             tap(() => {
-                this.hub.conn.invoke("SendMessage", message);
+                this.roomHub.conn.invoke("SendMessage", message);
                 message.sendTimeStr = this.GetTimeString(message);
                 this.messages.next([...this.messages.getValue(), message]);
             })
@@ -49,9 +49,9 @@ export class MessageProvider {
     }
 
     public setListeningOnNewMessages(): void {
-        this.hub.conn$.pipe(
+        this.roomHub.conn$.pipe(
             tap(() => {
-                this.hub.conn.on("ReceiveMessage", (message: Message) => {
+                this.roomHub.conn.on("ReceiveMessage", (message: Message) => {
                     message.sendTimeStr = this.GetTimeString(message);
                     this.messages.next([...this.messages.getValue(), message]);
                 })

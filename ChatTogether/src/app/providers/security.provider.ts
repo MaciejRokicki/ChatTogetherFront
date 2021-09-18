@@ -6,6 +6,7 @@ import { Result, ResultStage } from "../entities/Result";
 import { SigninModel } from "../entities/Security/SigninModel";
 import { SignupModel } from "../entities/Security/SignupModel";
 import { User } from "../entities/user";
+import { InformationHub } from "../Hubs/InformationHub";
 import { SecurityService } from "../services/security.service";
 
 @Injectable({
@@ -16,7 +17,22 @@ export class SecurityProvider {
     public user = new BehaviorSubject<User>(null);
     public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
-    constructor(private securityService: SecurityService, private router: Router) { }
+    constructor(
+        private securityService: SecurityService, 
+        private informationHub: InformationHub, 
+        private router: Router
+        ) { 
+            this.user.pipe(
+                tap((user: User) => {
+                    let hubState = this.informationHub.conn['connection']['connectionState'];
+
+                    if (user && hubState === 2) {
+                        this.informationHub.StartConnection();
+                        this.listenerBlockSignout();
+                    }
+                })
+            ).subscribe();
+        }
 
     signup(signupModel: SignupModel): void {
         this.result.next(new Result(ResultStage.WAITING, undefined));
@@ -53,7 +69,13 @@ export class SecurityProvider {
     signout(): void {
         this.securityService.signout().pipe(
             tap(() => {
+                this.informationHub.conn.stop();
                 this.user.next(null);
+            }),
+            tap(() => {
+                this.router.navigate(['/security/signin']);
+                document.body.classList.remove("dark-theme");
+                document.body.classList.add("light-theme");
             })
         ).subscribe();
     }
@@ -156,5 +178,11 @@ export class SecurityProvider {
 
     changePasswordRequest(): void {
         this.securityService.changePasswordRequest().subscribe();
+    }
+
+    listenerBlockSignout(): void {
+        this.informationHub.conn.on("Signout", () => {
+            this.signout();
+        }); 
     }
 }

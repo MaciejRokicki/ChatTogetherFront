@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -32,7 +33,10 @@ export class SigninComponent implements OnInit {
   successMessage: string = "";
   errorMessage: string = "";
 
-  constructor(private securityProvider: SecurityProvider, private router: Router) { }
+  blockReason: string = "";
+  blockedTo: string = "";
+
+  constructor(private securityProvider: SecurityProvider, private router: Router, private datePipe: DatePipe) { }
 
   ngOnInit(): void {
   }
@@ -44,6 +48,9 @@ export class SigninComponent implements OnInit {
         this.infoMessage = "";
         this.successMessage = "";
         this.errorMessage = "";
+
+        this.blockReason = "";
+        this.blockedTo = "";
 
         switch (res.Stage) {
           case ResultStage.SUCCESS:
@@ -66,12 +73,16 @@ export class SigninComponent implements OnInit {
     this.infoMessage = "";
     this.errorMessage = "";
 
+    this.blockReason = "";
+    this.blockedTo = "";
+
     let signinModel: SigninModel = new SigninModel(this.signinForm.get("email").value, this.signinForm.get("password").value);
     this.securityProvider.signin(signinModel);
     //TODO: pomyslec nad kodami zamiast na sztywno podawac tresc wiadomosci
     this.securityProvider.result.pipe(
       tap((res: Result) => {
         if (res.Stage === ResultStage.ERROR) {
+          console.log(res);
           switch (res.Message) {
             case "Incorrect data.":
               this.errorMessage = "Podano niepoprawne dane.";
@@ -81,6 +92,13 @@ export class SigninComponent implements OnInit {
               break;
             case "Invalid data.":
               this.errorMessage = "Nieprawidłowy format danych.";
+              break;
+            default:
+              if (res.Message["message"] === "Blocked account.") {
+                this.errorMessage = "Twoje konto zostało zablokowane.";
+                this.blockReason = res.Message["data"]["Reason"];
+                this.blockedTo = res.Message["data"]["BlockedTo"] === null ? "Permanentnie" : this.datePipe.transform(res.Message["data"]["BlockedTo"], "yyyy-MM-dd HH:mm");
+              }
               break;
           }
         }

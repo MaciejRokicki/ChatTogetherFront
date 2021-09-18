@@ -29,7 +29,8 @@ import { UserService } from './services/user.service';
 import { TopbarTitleService } from './services/topbarTitle.service';
 import { SnackbarService } from './services/snackbar.service';
 
-import { Hub } from './Hub';
+import { InformationHub } from './Hubs/InformationHub';
+import { RoomHub } from './Hubs/RoomHub';
 
 import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
 import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor';
@@ -82,7 +83,8 @@ registerLocaleData(localePl, localePlExtra);
     MessageService,
     SecurityService,
     UserService,
-    Hub,
+    InformationHub,
+    RoomHub,
     TopbarTitleService,
     SnackbarService
   ],

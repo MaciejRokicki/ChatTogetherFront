@@ -7,6 +7,7 @@ import { SigninComponent } from './signin/signin.component';
 import { SignoutComponent } from './signout/signout.component';
 
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
     declarations: [
@@ -16,8 +17,11 @@ import { SharedModule } from 'src/app/components/shared/shared.module';
     ],
     imports: [
         SecurityRoutingModule,
-        SharedModule,
+        SharedModule
     ],
-    exports: []
+    exports: [],
+    providers: [
+        DatePipe,
+    ]
 })
 export class SecurityModule { }

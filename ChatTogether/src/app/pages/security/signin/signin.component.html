@@ -14,7 +14,24 @@
                 Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
             </p>
             <ng-template #confirmed>
-                {{ errorMessage }}
+                <div *ngIf="errorMessage == 'Twoje konto zostało zablokowane.' else elseIf" style="width: 100%;">
+                    {{ errorMessage }}
+                    <br>
+                    <br>
+                    Powod
+                    <br>
+                    <div style="color: black">
+                        {{ blockReason }}
+                    </div>
+                    Czas blokady
+                    <br>
+                    <div style="color: black">
+                        {{ blockedTo }}
+                    </div>                   
+                </div>
+                <ng-template #elseIf>
+                    {{ errorMessage }}
+                </ng-template>
             </ng-template>
         </mat-card>
         <mat-form-field appearance="outline">
@@ -31,7 +48,7 @@
             <mat-icon>login</mat-icon>
         </button>
         <span class="separator">lub</span>
-        <button mat-raised-button color="primary" (click)="navigateToSignUpPage()">
+        <button mat-raised-button color="primary" type="button" (click)="navigateToSignUpPage()">
             Zarejestruj się
         </button>
     </form>

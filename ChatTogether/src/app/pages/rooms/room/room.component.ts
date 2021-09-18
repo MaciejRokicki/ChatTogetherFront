@@ -71,7 +71,9 @@ export class RoomComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.securityProvider.user.pipe(
       tap((user: User) => {
-        this.userNickname = user.nickname
+        if (user) {
+          this.userNickname = user.nickname
+        }
       })
     ).subscribe();
 
@@ -195,5 +197,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.observer.disconnect();
     this.messages$.unsubscribe();
     this.scroll$.unsubscribe();
+    this.user$.unsubscribe();
   }
 }

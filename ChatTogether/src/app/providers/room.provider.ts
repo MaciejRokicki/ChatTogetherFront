@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { BehaviorSubject, Subject } from "rxjs";
 import { tap } from "rxjs/operators";
 import { Room } from "../entities/room";
-import { Hub } from "../Hub";
+import { RoomHub } from "../Hubs/RoomHub";
 import { RoomService } from "../services/room.service";
 
 @Injectable({
@@ -16,7 +16,7 @@ export class RoomProvider {
 
     constructor(
         private roomService: RoomService,
-        private hub: Hub
+        private roomHub: RoomHub
         ) {}
 
     public getRoom(id: number): void {
@@ -28,30 +28,30 @@ export class RoomProvider {
     }
 
     public getRooms(): void {
-        this.hub.conn$.pipe(
+        this.roomHub.conn$.pipe(
             tap(() => {
-                this.hub.conn.on("GetRooms", (rooms: Room[]) => {
+                this.roomHub.conn.on("GetRooms", (rooms: Room[]) => {
                     this.rooms.next(rooms);
                 })
-                this.hub.conn.invoke("GetRooms");
+                this.roomHub.conn.invoke("GetRooms");
             })
         ).subscribe();
     }
 
     public onRoomEnter(roomId: number): void {
-        this.hub.conn$.pipe(
+        this.roomHub.conn$.pipe(
             tap(() => {
-                this.hub.conn.invoke("EnterRoom", roomId);
+                this.roomHub.conn.invoke("EnterRoom", roomId);
                 this.rooms.next([]);
             })
         ).subscribe();
     }
 
     public onRoomExit(roomId: number): void {
-        this.hub.conn$.pipe(
+        this.roomHub.conn$.pipe(
             tap(() => {
-                this.hub.conn.invoke("ExitRoom", roomId);
-                this.hub.conn.off("ReceiveMessage");
+                this.roomHub.conn.invoke("ExitRoom", roomId);
+                this.roomHub.conn.off("ReceiveMessage");
             })
         ).subscribe();
     }
