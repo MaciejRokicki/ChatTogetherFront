@@ -1,0 +1,26 @@
+<h1 mat-card-title>Edytuj pokój</h1>
+<form [formGroup]="editRoomForm" (ngSubmit)="editRoom()">
+    <mat-dialog-content>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Nazwa</mat-label>
+            <input matInput formControlName="name" [errorStateMatcher]="invalidFormMatcher">
+            <mat-error *ngIf="editRoomForm.controls.name.hasError('required')">
+                Te pole jest wymagane.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" color="accent">
+            <mat-label>Rozmiar pokoju</mat-label>
+            <input matInput formControlName="maxPeople" [errorStateMatcher]="invalidFormMatcher">
+            <mat-error *ngIf="editRoomForm.controls.maxPeople.invalid && !editRoomForm.controls.maxPeople.hasError('required')">
+                Musisz podać liczbę.
+              </mat-error>
+              <mat-error *ngIf="editRoomForm.controls.maxPeople.hasError('required')">
+                Te pole jest wymagane.
+              </mat-error>
+        </mat-form-field>     
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button type="button" (click)="close()">Anuluj</button>
+        <button mat-button type="submit" [disabled]="!editRoomForm.valid">Zapisz</button>
+    </div>
+</form>

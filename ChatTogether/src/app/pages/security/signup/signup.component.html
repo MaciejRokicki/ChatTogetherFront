@@ -7,29 +7,28 @@
         <div *ngIf="errorMessage" class="panel panel-error">
             {{ errorMessage }}
         </div>
-        <div class="info-container">
-            <mat-form-field appearance="outline">
-                <mat-label>Nazwa użytkownika</mat-label>
-                <input matInput formControlName="nickname" (focus)="showNicknameInfo()" (blur)="clearInfo()">
-            </mat-form-field>
-            <div class="info-border" *ngIf="nicknameInfo">
-                <p class="info">{{ nicknameInfo }}</p>
-            </div>
-        </div>
         <mat-form-field appearance="outline">
-            <mat-label>Adres email</mat-label>
-            <input matInput formControlName="email">
+            <mat-label>Nazwa użytkownika</mat-label>
+            <input matInput formControlName="nickname" [errorStateMatcher]="invalidFormMatcher">
+            <mat-hint>Przynajmniej 3 znaki.</mat-hint>
+            <mat-error *ngIf="signupForm.controls.nickname.invalid && !signupForm.controls.nickname.hasError('required')">
+                Nazwa użytkownika musi zawierać przynajmniej 3 znaki.
+            </mat-error>
         </mat-form-field>
-        <div class="info-container">
-            <mat-form-field appearance="outline">
-                <mat-label>Hasło</mat-label>
-                <input matInput formControlName="password" type="password" (focus)="showPasswordInfo()" (blur)="clearInfo()">
-            </mat-form-field>
-            <div class="info-border" *ngIf="passwordInfo">
-                <p class="info">{{ passwordInfo }}</p>
-            </div>
-        </div>
-        <mat-form-field appearance="outline">
+        <mat-form-field class="input-email" appearance="outline">
+            <mat-label>Adres email</mat-label>
+            <input matInput formControlName="email" [errorStateMatcher]="invalidFormMatcher">
+            <mat-hint>Np. adres@email.pl</mat-hint>
+            <mat-error *ngIf="signupForm.controls.email.invalid && !signupForm.controls.email.hasError('required')">
+                Nieprawidłowy format adresu email.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="input-password" appearance="outline">
+            <mat-label>Hasło</mat-label>
+            <input matInput formControlName="password" type="password" [errorStateMatcher]="invalidFormMatcher">
+            <mat-hint>Przynajmniej 6 znaków, jedna wielka litera, jedna cyfra i jeden znak specjalny.</mat-hint>
+        </mat-form-field>
+        <mat-form-field class="input-confirm-password" appearance="outline">
             <mat-label>Powtórz hasło</mat-label>
             <input matInput formControlName="confirmPassword" type="password">
         </mat-form-field>

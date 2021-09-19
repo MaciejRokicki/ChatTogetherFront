@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './utils/guards/auth/auth.guard';
+import { ModeratorGuard } from './utils/guards/auth/moderator.guard';
 
 const routes: Routes = [
   {
@@ -16,6 +17,11 @@ const routes: Routes = [
     path: 'user',
     loadChildren: () => import('./pages/user/user.module').then(x => x.UserModule),
     canActivate: [AuthGuard]
+  },
+  {
+    path: 'blocked-users',
+    loadChildren: () => import('./pages/blocked-users/blocked-users.module').then(x => x.BlockedUsersModule),
+    canActivate: [ModeratorGuard]
   },
   {
     path: '**',

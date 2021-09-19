@@ -8,7 +8,7 @@ import { Message } from 'src/app/entities/message';
 import { MessageProvider } from 'src/app/providers/message.provider';
 import { RoomProvider } from 'src/app/providers/room.provider';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
-import { Room } from 'src/app/entities/room';
+import { Room } from 'src/app/entities/Room/room';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { User } from 'src/app/entities/user';
 import { FormControl, FormGroup } from '@angular/forms';

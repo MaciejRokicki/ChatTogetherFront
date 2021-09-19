@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { interval, of } from 'rxjs';
 
-import { delayWhen, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 import { Result, ResultStage } from 'src/app/entities/Result';
 import { SignupModel } from 'src/app/entities/Security/SignupModel';
 
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { SnackbarService } from 'src/app/services/snackbar.service';
+import { FormControlStateMatcher } from 'src/app/utils/formControlStateMatcher';
 import { DigitExistValidator } from 'src/app/validators/digitExistValidator';
 import { SpecialCharValidator } from 'src/app/validators/specialCharValidator';
 import { UpperCaseCharValidator } from 'src/app/validators/uppercaseCharValidator';
@@ -23,7 +23,13 @@ export class SignupComponent implements OnInit {
   signupForm = new FormGroup({
     nickname: new FormControl('', [Validators.required, Validators.minLength(3)]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [Validators.required, Validators.minLength(6), UpperCaseCharValidator(), DigitExistValidator()]),
+    password: new FormControl('', [
+      Validators.required, 
+      Validators.minLength(6), 
+      UpperCaseCharValidator(), 
+      DigitExistValidator(), 
+      SpecialCharValidator()
+    ]),
     confirmPassword: new FormControl('', [
       Validators.required, 
       Validators.minLength(6), 
@@ -33,12 +39,11 @@ export class SignupComponent implements OnInit {
     ]),
   });
 
+  invalidFormMatcher = new FormControlStateMatcher();
+
   infoMessage: string = "";
   errorMessage: string = "";
 
-  nicknameInfo: string = "";
-  passwordInfo: string = "";
-  
   constructor(private securityProvider: SecurityProvider, private router: Router, private snackbarService: SnackbarService) { }
 
   ngOnInit(): void { }
@@ -81,19 +86,6 @@ export class SignupComponent implements OnInit {
         }
       })
     ).subscribe();
-  }
-
-  showNicknameInfo(): void {
-    this.nicknameInfo = "Przynajmniej 3 znaki.";
-  }
-
-  showPasswordInfo(): void {
-    this.passwordInfo = "Przynajmniej 6 znaków, jedna wielka litera, jedna cyfra i jeden znak specjalny.";
-  }
-
-  clearInfo(): void {
-    this.nicknameInfo = "";
-    this.passwordInfo = "";
   }
 
   validForm(): boolean {

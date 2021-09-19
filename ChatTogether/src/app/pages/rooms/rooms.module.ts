@@ -8,17 +8,25 @@ import { RoomComponent } from './room/room.component';
 
 import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/components/shared/shared.module';
+import { EditRoomDialogComponent } from './edit-room-dialog/edit-room-dialog.component';
+import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
+import { CreateRoomDialogComponent } from './create-room-dialog/create-room-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
     declarations: [
         RoomsComponent,
         RoomComponent,
-        MessageComponent
+        MessageComponent,
+        EditRoomDialogComponent,
+        DeleteRoomDialogComponent,
+        CreateRoomDialogComponent
     ],
     imports: [
         RoomsRoutingModule,
         SharedModule,
         MatTableModule,
+        MatDialogModule,
     ],
     exports: []
 })

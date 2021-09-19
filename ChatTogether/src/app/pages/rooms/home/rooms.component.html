@@ -1,20 +1,38 @@
+<div *ngIf="user.role === 'ADMINISTRATOR'" class="admin-action-row">
+  <button mat-raised-button color="accent" (click)="createRoomOpenModal($event)">
+    <mat-icon>add</mat-icon>
+    Dodaj pokój
+  </button>
+</div>
 <div class="container">
     <table mat-table [dataSource]="dataSource">
       <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Nazwa </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        <th mat-header-cell *matHeaderCellDef>Nazwa</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
       </ng-container>
 
       <ng-container matColumnDef="currentPeople">
         <th mat-header-cell *matHeaderCellDef> Użytkownicy </th>
-        <td mat-cell *matCellDef="let element"> {{element.currentPeople}} </td>
+        <td mat-cell *matCellDef="let element">{{element.currentPeople}}</td>
       </ng-container>
       
       <ng-container matColumnDef="maxPeople">
-        <th mat-header-cell *matHeaderCellDef> Rozmiar pokoju </th>
-        <td mat-cell *matCellDef="let element"> {{element.maxPeople}} </td>
+        <th mat-header-cell *matHeaderCellDef>Rozmiar pokoju</th>
+        <td mat-cell *matCellDef="let element">{{element.maxPeople}}</td>
       </ng-container>
   
+      <ng-container *ngIf="user.role === 'ADMINISTRATOR'" matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Akcja</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-icon-button color="accent" (click)="editRoomOpenModal($event, element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="deleteRoomOpenModal($event, element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
       <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
       <tr mat-row class="select-row" *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></tr>
     </table>

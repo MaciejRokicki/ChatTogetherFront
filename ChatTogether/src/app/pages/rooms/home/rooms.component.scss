@@ -11,3 +11,15 @@ table {
 	width: 100px;
 	text-align: end;
 }
+
+.mat-column-action {
+	width: 120px;
+	text-align: center;
+}
+
+.admin-action-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-end;
+	margin: 10px;
+}

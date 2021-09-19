@@ -11,39 +11,19 @@ form {
     max-width: 300px;
 }
 
-::ng-deep .mat-form-field-wrapper {
-    padding-bottom: unset;
+.input-password {
+    height: 90px;
+}
+
+::ng-deep .input-email .mat-form-field-wrapper {
     margin: 0px !important;
 }
 
-.info-container {
-    margin: 10px 0px 10px 0px;
-    display: flex;
-    flex-direction: column;
+::ng-deep .input-confirm-password .mat-form-field-wrapper {
+    padding: unset !important;
+    margin: 0px 0px 10px 0px !important;
 }
 
-.info-border {
-    min-width: 300px;
-    display: flex;
-    font-family: 'Roboto', sans-serif;
-    font-size: 15px;
-    align-items: center;
-    background-color: whitesmoke;
-    height: 50px;
-    border-radius: 0px 0px 15px 15px;
-    text-align: center;
-}
-
-.info {
-    width: 100%;
-    margin: 0px;
-}
-
-.separator {
-    align-self: center;
-    margin: 5px 0px 5px 0px;
-}
-
-button {
-    margin: 5px 0px 5px 0px;
+mat-form-field {
+    margin-top: 10px;
 }

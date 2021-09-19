@@ -1,0 +1,14 @@
+mat-dialog-content {
+    display: flex;
+    flex-direction: column;   
+}
+
+mat-form-field {
+    margin-bottom: 5px;
+}
+
+@media only screen and (max-width: 767px) {
+    mat-dialog-content {
+        width: unset;
+    }
+}

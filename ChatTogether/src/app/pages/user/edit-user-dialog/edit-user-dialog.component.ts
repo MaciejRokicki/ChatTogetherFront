@@ -48,7 +48,7 @@ export class EditUserDialogComponent implements OnInit {
     let birthDate = this.editUserForm.get('birthDate').value
     let city = this.editUserForm.get('city').value
 
-    let user = new User(null, firstName, lastName, birthDate, city, null);
+    let user = new User(null, firstName, lastName, null, birthDate, city, null);
     this.userProvider.changeUserData(user);
 
     this.close({
