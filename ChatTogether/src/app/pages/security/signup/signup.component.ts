@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 
 import { tap } from 'rxjs/operators';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
-import { Result, ResultStage } from 'src/app/entities/Result';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { SignupModel } from 'src/app/entities/Security/SignupModel';
 
 import { SecurityProvider } from 'src/app/providers/security.provider';

@@ -15,15 +15,6 @@ form {
     height: 90px;
 }
 
-::ng-deep .input-email .mat-form-field-wrapper {
-    margin: 0px !important;
-}
-
-::ng-deep .input-confirm-password .mat-form-field-wrapper {
-    padding: unset !important;
-    margin: 0px 0px 10px 0px !important;
-}
-
 mat-form-field {
     margin-top: 10px;
 }

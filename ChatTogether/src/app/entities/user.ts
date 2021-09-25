@@ -12,7 +12,8 @@ export class User {
         public role: string,
         public birthDate: Date,
         public city: string,
-        public description: string
+        public description: string,
+        public isBlocked: boolean
     ) { }
 
 }

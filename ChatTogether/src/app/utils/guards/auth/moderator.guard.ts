@@ -17,7 +17,7 @@ export class ModeratorGuard implements CanActivate {
         return this.securityProvider.user.pipe(
             take(1),
             map((user: User) => {
-                if(user.role === Role.MODERATOR || user.role === Role.ADMINISTRATOR) {
+                if(user?.role === Role.MODERATOR || user?.role === Role.ADMINISTRATOR) {
                     return true;
                 } else {
                     return false;

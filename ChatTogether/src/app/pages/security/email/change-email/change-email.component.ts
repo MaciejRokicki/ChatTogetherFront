@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { Result, ResultStage } from 'src/app/entities/Result';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 
 @Component({

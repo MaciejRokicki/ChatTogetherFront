@@ -1,13 +1,17 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { BehaviorSubject, throwError } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
-import { Result, ResultStage } from "../entities/Result";
+import { catchError, concatMap, tap } from "rxjs/operators";
+import { SnackbarVariant } from "../components/snackbar/snackbar.data";
+import { Page } from "../entities/page";
+import { Result, ResultStage } from "../entities/result";
+import { BlockedUser } from "../entities/Security/blockedUser";
 import { SigninModel } from "../entities/Security/SigninModel";
 import { SignupModel } from "../entities/Security/SignupModel";
 import { User } from "../entities/user";
 import { InformationHub } from "../Hubs/InformationHub";
 import { SecurityService } from "../services/security.service";
+import { SnackbarService } from "../services/snackbar.service";
 
 @Injectable({
     providedIn: 'root'
@@ -17,10 +21,13 @@ export class SecurityProvider {
     public user = new BehaviorSubject<User>(null);
     public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
+    public blockedUsers = new BehaviorSubject<Page<BlockedUser>>(null)
+
     constructor(
         private securityService: SecurityService, 
         private informationHub: InformationHub, 
-        private router: Router
+        private router: Router,
+        private snackbarService: SnackbarService
         ) { 
             this.user.pipe(
                 tap((user: User) => {
@@ -182,7 +189,20 @@ export class SecurityProvider {
 
     listenerBlockSignout(): void {
         this.informationHub.conn.on("Signout", () => {
+            this.snackbarService.open("Twoje konto zostało zablokowane. Aby uzyskać więcej informacji zaloguj się.", null, SnackbarVariant.ERROR);
             this.signout();
         }); 
+    }
+
+    getBlockedUsers(page: number, search?: string): void {
+        this.securityService.getBlockedUsers(page, search).pipe(
+            tap((page: Page<BlockedUser>) => {
+                this.blockedUsers.next(page);
+            })
+        ).subscribe();
+    }
+
+    unblockUser(userId: number): void {
+        this.securityService.unblockUser(userId).subscribe();
     }
 }

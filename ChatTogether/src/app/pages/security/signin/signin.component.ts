@@ -4,7 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { tap } from 'rxjs/operators';
-import { Result, ResultStage } from 'src/app/entities/Result';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { SigninModel } from 'src/app/entities/Security/SigninModel';
 
 import { SecurityProvider } from 'src/app/providers/security.provider';

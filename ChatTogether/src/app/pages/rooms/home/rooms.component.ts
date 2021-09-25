@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { map, tap } from 'rxjs/operators';
+import { map, take, tap } from 'rxjs/operators';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 
 import { Room } from 'src/app/entities/Room/room';
@@ -46,19 +46,17 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.user$ = this.securityProvider.user.pipe(
       tap((user: User) => {
         this.user = user;
-        console.log(this.user);
+        
         if (user.role === Role.ADMINISTRATOR) {
           this.displayedColumns = ['name', 'currentPeople', 'maxPeople', 'action']
         }
       })
     ).subscribe();
 
+    this.roomProvider.getRooms();
+
     this.rooms$ = this.roomProvider.rooms.pipe(
-      map((rooms: Room[]) => {
-        if(rooms.length === 0) {
-          this.roomProvider.getRooms();
-        }
-        
+      tap((rooms: Room[]) => {
         this.dataSource = rooms;
       })
     ).subscribe();

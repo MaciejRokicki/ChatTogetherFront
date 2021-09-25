@@ -5,6 +5,8 @@ import { environment } from "src/environments/environment.prod";
 import { SigninModel } from "../entities/Security/SigninModel";
 import { User } from "../entities/user";
 import { SignupModel } from "../entities/Security/SignupModel";
+import { Page } from "../entities/page";
+import { BlockedUser } from "../entities/Security/blockedUser";
 
 @Injectable({
     providedIn: 'root'
@@ -58,5 +60,19 @@ export class SecurityService {
 
     changePasswordRequest(): Observable<void> {
         return this.http.post<void>(`${this.url}/ChangePasswordRequest`, null);
+    }
+
+    getBlockedUsers(page: number, search?: string): Observable<Page<BlockedUser>> {
+        let u: string = `${this.url}/GetBlockedUsers?page=${page}`;
+
+        if (search) {
+            u += `&search=${search}`;
+        }
+
+        return this.http.get<Page<BlockedUser>>(u);
+    }
+
+    unblockUser(userId: number): Observable<void> {
+        return this.http.post<void>(`${this.url}/UnblockUser`, new Object(userId))
     }
 }

@@ -4,7 +4,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
-import { Result, ResultStage } from 'src/app/entities/Result';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { DigitExistValidator } from 'src/app/validators/digitExistValidator';

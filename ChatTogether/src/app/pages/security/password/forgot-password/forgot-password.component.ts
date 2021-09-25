@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { tap } from 'rxjs/operators';
-import { Result, ResultStage } from 'src/app/entities/Result';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 
 @Component({

@@ -1,0 +1,10 @@
+<h1 mat-card-title>Odblokować?</h1>
+<form [formGroup]="unblockConfimationForm" (ngSubmit)="unblock()">
+    <mat-dialog-content>
+        Czy na pewno chcesz odblokować uzytkownika o adresie email: <strong>{{ data.email }}</strong>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button type="button" (click)="close()">Anuluj</button>
+        <button mat-button type="submit">Odblokuj</button>
+    </div>
+</form>
