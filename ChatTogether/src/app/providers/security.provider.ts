@@ -197,7 +197,7 @@ export class SecurityProvider {
                     break;
                 
                 case "ROLE_CHANGED":
-                    this.snackbarService.open("Twoja rola została zmieniona, możesz się zalogować ponownie.", null, SnackbarVariant.INFO);
+                    this.snackbarService.open("Twoja rola została zmieniona, możesz się zalogować ponownie.", 10000, SnackbarVariant.INFO);
                     break;
             }
             

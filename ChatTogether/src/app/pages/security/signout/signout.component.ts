@@ -17,7 +17,7 @@ export class SignoutComponent implements OnInit {
   ngOnInit(): void {
     this.securityProvider.signout();
     this.router.navigate(['security/signin'])
-    this.securityProvider.user.subscribe(x => console.log(x)).unsubscribe();
+    this.securityProvider.user.subscribe().unsubscribe();
   }
 
 }
