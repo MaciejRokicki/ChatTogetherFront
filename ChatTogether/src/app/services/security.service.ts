@@ -83,7 +83,6 @@ export class SecurityService {
     }
 
     changeRole(changeRoleModel: ChangeRoleModel): Observable<void> {
-        console.log(changeRoleModel);
         return this.http.post<void>(`${this.url}/ChangeRole`, changeRoleModel)
     }
 }

@@ -47,8 +47,6 @@ export class BlockUserDialogComponent implements OnInit {
       blockUserModel.blockedTo = null;
     }
 
-    console.log(blockUserModel);
-
     this.securityProvider.blockUser(blockUserModel);
     
     this.close({

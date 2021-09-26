@@ -133,7 +133,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
     editUserDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
-        this.snackbarService.open("Opis został zmieniony.");
+        this.snackbarService.open("Opis został zmieniony.", 10000, SnackbarVariant.SUCCESS);
       }
     });
   }
@@ -149,10 +149,8 @@ export class UserComponent implements OnInit, OnDestroy {
     changeRoleDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
         this.snackbarService.open(`Rola użytkownika: ${this.user.nickname} została zmieniona.`, 10000, SnackbarVariant.SUCCESS);
-        
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate([this.router.url]);
+
+        this.reloadPage();
       }
     });
   }
@@ -169,9 +167,7 @@ export class UserComponent implements OnInit, OnDestroy {
       if(result?.showSnackbar) {
         this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS);
       
-        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
-        this.router.onSameUrlNavigation = 'reload';
-        this.router.navigate([this.router.url]);
+        this.reloadPage();
       }
     });
   }
@@ -187,7 +183,16 @@ export class UserComponent implements OnInit, OnDestroy {
     unblockConfirmationDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
         this.snackbarService.open(`Konto o adresie email: ${this.user.nickname} zostało odblokowane.`, 10000, SnackbarVariant.SUCCESS);
+      
+        this.reloadPage();
       }
+    });
+  }
+
+  reloadPage(): void {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl]);
     });
   }
 

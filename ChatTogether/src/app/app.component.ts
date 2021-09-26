@@ -32,9 +32,6 @@ export class AppComponent {
   constructor(
     private securityProvider: SecurityProvider
     ) {
-
-      console.log(this.siderbarItems);
-
       this.securityProvider.user.pipe(
         skip(1),
         tap((user: User) => {
@@ -54,7 +51,7 @@ export class AppComponent {
                 break;
             }
             let userItem = this.siderbarItems.find(item => item.text === 'Mój profil');
-
+            
             if(userItem) {
               userItem.route = `/users/${this.user.nickname}`;
             }

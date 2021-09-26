@@ -27,7 +27,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
   user$: Subscription = new Subscription();
   
   dataSource: Room[] = []
-  displayedColumns = ['name', 'currentPeople', 'maxPeople']
+  displayedColumns = ['name', 'accessibility']
 
   rooms$: Subscription = new Subscription();
 
@@ -48,7 +48,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
         this.user = user;
         
         if (user?.role === Role.ADMINISTRATOR) {
-          this.displayedColumns = ['name', 'currentPeople', 'maxPeople', 'action']
+          this.displayedColumns = ['name', 'accessibility', 'action']
         }
       })
     ).subscribe();

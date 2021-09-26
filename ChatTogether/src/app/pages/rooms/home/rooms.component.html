@@ -10,19 +10,14 @@
         <th mat-header-cell *matHeaderCellDef>Nazwa</th>
         <td mat-cell *matCellDef="let element">{{element.name}}</td>
       </ng-container>
-
-      <ng-container matColumnDef="currentPeople">
-        <th mat-header-cell *matHeaderCellDef> Użytkownicy </th>
-        <td mat-cell *matCellDef="let element">{{element.currentPeople}}</td>
-      </ng-container>
       
-      <ng-container matColumnDef="maxPeople">
-        <th mat-header-cell *matHeaderCellDef>Rozmiar pokoju</th>
-        <td mat-cell *matCellDef="let element">{{element.maxPeople}}</td>
+      <ng-container matColumnDef="accessibility">
+        <th mat-header-cell *matHeaderCellDef>Dostępność</th>
+        <td mat-cell *matCellDef="let element">{{element.currentPeople}}/{{element.maxPeople}}</td>
       </ng-container>
   
       <ng-container *ngIf="user?.role === 'ADMINISTRATOR'" matColumnDef="action">
-        <th mat-header-cell *matHeaderCellDef>Akcja</th>
+        <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let element">
           <button mat-icon-button color="accent" (click)="editRoomOpenDialog($event, element)">
             <mat-icon>edit</mat-icon>

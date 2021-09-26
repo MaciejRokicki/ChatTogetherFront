@@ -32,8 +32,8 @@ body {
 }
 
 .snackbar-success {
-    background-color: darkgreen;
-    color: whitesmoke;  
+    background-color: darkgreen !important;
+    color: whitesmoke !important;  
 }
 
 @media only screen and (max-width: 768px) {

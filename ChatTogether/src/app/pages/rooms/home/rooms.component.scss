@@ -7,14 +7,14 @@ table {
 	width: 100%;
 }
 
-.mat-column-maxPeople, .mat-column-currentPeople {
+.mat-column-accessibility {
 	width: 100px;
 	text-align: end;
 }
 
 .mat-column-action {
-	width: 120px;
-	text-align: center;
+	width: 80px;
+	padding-left: 20px;
 }
 
 .admin-action-row {
