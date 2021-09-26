@@ -6,6 +6,8 @@ import { SnackbarVariant } from "../components/snackbar/snackbar.data";
 import { Page } from "../entities/page";
 import { Result, ResultStage } from "../entities/result";
 import { BlockedUser } from "../entities/Security/blockedUser";
+import { BlockUserModel } from "../entities/Security/blockUserModel";
+import { ChangeRoleModel } from "../entities/Security/changeRoleModel";
 import { SigninModel } from "../entities/Security/SigninModel";
 import { SignupModel } from "../entities/Security/SignupModel";
 import { User } from "../entities/user";
@@ -188,8 +190,17 @@ export class SecurityProvider {
     }
 
     listenerBlockSignout(): void {
-        this.informationHub.conn.on("Signout", () => {
-            this.snackbarService.open("Twoje konto zostało zablokowane. Aby uzyskać więcej informacji zaloguj się.", null, SnackbarVariant.ERROR);
+        this.informationHub.conn.on("Signout", (information: string) => {
+            switch (information) {
+                case "ACCOUNT_BLOCKED":
+                    this.snackbarService.open("Twoje konto zostało zablokowane. Aby uzyskać więcej informacji zaloguj się.", null, SnackbarVariant.ERROR);
+                    break;
+                
+                case "ROLE_CHANGED":
+                    this.snackbarService.open("Twoja rola została zmieniona, możesz się zalogować ponownie.", null, SnackbarVariant.INFO);
+                    break;
+            }
+            
             this.signout();
         }); 
     }
@@ -202,7 +213,15 @@ export class SecurityProvider {
         ).subscribe();
     }
 
+    blockUser(blockUserModel: BlockUserModel): void {
+        this.securityService.blockUser(blockUserModel).subscribe();
+    }
+
     unblockUser(userId: number): void {
         this.securityService.unblockUser(userId).subscribe();
+    }
+
+    changeRole(changeRoleModel: ChangeRoleModel): void {
+        this.securityService.changeRole(changeRoleModel).subscribe();
     }
 }

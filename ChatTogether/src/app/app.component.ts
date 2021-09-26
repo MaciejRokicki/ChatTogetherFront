@@ -1,20 +1,20 @@
-import { Route } from '@angular/compiler/src/core';
 import { Component } from '@angular/core';
-import { ActivatedRoute, Event, NavigationEnd, Router } from '@angular/router';
-import { filter, skip, tap } from 'rxjs/operators';
+import { skip, tap } from 'rxjs/operators';
 import { SidebarItem } from './components/sidebar/sidebar.component';
 import { Role, User } from './entities/user';
 import { SecurityProvider } from './providers/security.provider';
 
 const userSidebarItems: SidebarItem[] = [
-  new SidebarItem('Mój profil', 'account_circle', '/user/'),
-  new SidebarItem('Pokoje', 'groups', '/'),
+  new SidebarItem('Mój profil', 'account_circle', '/users/'),
+  new SidebarItem('Pokoje', 'group', '/'),
+  new SidebarItem('Użytkownicy', 'groups', '/users/'),
   new SidebarItem('Wyloguj się', 'logout', 'security/signout')
 ]
 
 const moderatorSidebarItems: SidebarItem[] = [
-  new SidebarItem('Mój profil', 'account_circle', '/user/'),
-  new SidebarItem('Pokoje', 'groups', '/'),
+  new SidebarItem('Mój profil', 'account_circle', '/users/'),
+  new SidebarItem('Pokoje', 'group', '/'),
+  new SidebarItem('Użytkownicy', 'groups', '/users/'),
   new SidebarItem('Zablokowani użytkownicy', 'block', 'blocked-users'),
   new SidebarItem('Wyloguj się', 'logout', 'security/signout')
 ]
@@ -30,7 +30,6 @@ export class AppComponent {
   public siderbarItems: SidebarItem[] = []
 
   constructor(
-    private router: Router,
     private securityProvider: SecurityProvider
     ) {
 
@@ -41,7 +40,7 @@ export class AppComponent {
         tap((user: User) => {
           this.user = user;
           if(user) {
-            switch (user.role) {
+            switch (user?.role) {
               case Role.ADMINISTRATOR:
                 this.siderbarItems = moderatorSidebarItems;
                 break;
@@ -55,21 +54,12 @@ export class AppComponent {
                 break;
             }
             let userItem = this.siderbarItems.find(item => item.text === 'Mój profil');
+
             if(userItem) {
-              userItem.route = `/user/${this.user.nickname}`;
+              userItem.route = `/users/${this.user.nickname}`;
             }
           }
         })
       ).subscribe();
-      
-      //TODO: zrobic liste podstron, ktore maja sie wyswietlac bez topbara i sidebara
-      // this.router.events.pipe(
-      //   filter(event => event instanceof NavigationEnd),
-      //   tap((event: Event) => {
-      //     console.log(event);
-      //   })
-      // ).subscribe()
-
-      //securityProvider.validate();
     }
 }

@@ -1,4 +1,6 @@
 export interface IPaginator {
-    nextPage(): void;
+    firstPage(): void;
     previousPage(): void;
+    nextPage(): void;
+    lastPage(): void;
 }

@@ -12,6 +12,9 @@ import { EditAboutMeDialogComponent } from '../edit-about-me-dialog/edit-about-m
 import { ChangeNicknameDialogComponent } from '../change-nickname-dialog/change-nickname-dialog.component';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
+import { ChangeRoleDialogComponent } from '../change-role-dialog/change-role-dialog.component';
+import { BlockUserDialogComponent } from '../block-user-dialog/block-user-dialog.component';
+import { UnblockConfirmationDialogComponent } from 'src/app/components/unblock-confirmation-dialog/unblock-confirmation-dialog.component';
 
 @Component({
   selector: 'app-user',
@@ -70,7 +73,7 @@ export class UserComponent implements OnInit, OnDestroy {
 
   }
 
-  changeNicknameOpenModal(): void {
+  changeNicknameOpenDialog(): void {
     const editUserDialogRef = this.dialog.open(ChangeNicknameDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -97,7 +100,7 @@ export class UserComponent implements OnInit, OnDestroy {
     this.snackbarService.open("Prośba o zmianę hasła została wysłana na adres email.");
   }
 
-  userEditOpenModal(): void {
+  userEditOpenDialog(): void {
     const editUserDialogRef = this.dialog.open(EditUserDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -117,7 +120,7 @@ export class UserComponent implements OnInit, OnDestroy {
     });
   }
 
-  aboutMeEditOpenModal(): void {
+  aboutMeEditOpenDialog(): void {
     const editUserDialogRef = this.dialog.open(EditAboutMeDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -131,6 +134,59 @@ export class UserComponent implements OnInit, OnDestroy {
     editUserDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
         this.snackbarService.open("Opis został zmieniony.");
+      }
+    });
+  }
+
+  changeRoleOpenDialog(): void {
+    const changeRoleDialogRef = this.dialog.open(ChangeRoleDialogComponent, {
+      width: 'calc(100% - 30px)',
+      minWidth: 300,
+      maxWidth: 400,
+      data: this.user
+    });
+
+    changeRoleDialogRef.afterClosed().subscribe(result => {
+      if(result?.showSnackbar) {
+        this.snackbarService.open(`Rola użytkownika: ${this.user.nickname} została zmieniona.`, 10000, SnackbarVariant.SUCCESS);
+        
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([this.router.url]);
+      }
+    });
+  }
+
+  blockUserOpenDialog(): void {
+    const blockUserDialogRef = this.dialog.open(BlockUserDialogComponent, {
+      width: 'calc(100% - 30px)',
+      minWidth: 300,
+      maxWidth: 400,
+      data: this.user
+    });
+
+    blockUserDialogRef.afterClosed().subscribe(result => {
+      if(result?.showSnackbar) {
+        this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS);
+      
+        this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+        this.router.onSameUrlNavigation = 'reload';
+        this.router.navigate([this.router.url]);
+      }
+    });
+  }
+
+  unblockUserOpenDialog(): void {
+    const unblockConfirmationDialogRef = this.dialog.open(UnblockConfirmationDialogComponent, {
+      width: 'calc(100% - 30px)',
+      minWidth: 300,
+      maxWidth: 400,
+      data: this.user
+    });
+
+    unblockConfirmationDialogRef.afterClosed().subscribe(result => {
+      if(result?.showSnackbar) {
+        this.snackbarService.open(`Konto o adresie email: ${this.user.nickname} zostało odblokowane.`, 10000, SnackbarVariant.SUCCESS);
       }
     });
   }

@@ -3,13 +3,8 @@
     height: 100%;
 }
 
-.table-container {
-    overflow: auto;
-}
-
 table {
     width: 100%;
-    min-width: 1000px;
 }
 
 .filter-container {
@@ -21,8 +16,23 @@ table {
     width: 500px;
 }
 
+.input-role-form {
+    margin: 0px 0px 0px 10px;
+}
+
+@media only screen and (max-width: 986px) {
+    .input-role-form {
+        margin: 0px;
+    }
+}
+
 @media only screen and (max-width: 768px) {
     .input-search-form {
         width: 100%;
+    }
+
+    .input-role-form {
+        width: 100%;
+        margin: 0px;
     }
 }

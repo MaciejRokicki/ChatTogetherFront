@@ -9,8 +9,10 @@ export class PaginatorComponent implements OnInit, OnChanges {
   @Input() currentPage: number;
   @Input() pageCount: number;
   @Input() dataCount: number;
-  @Output() nextPageFunc: EventEmitter<any> = new EventEmitter<any>();
+  @Output() firstPageFunc: EventEmitter<any> = new EventEmitter<any>();
   @Output() previousPageFunc: EventEmitter<any> = new EventEmitter<any>();
+  @Output() nextPageFunc: EventEmitter<any> = new EventEmitter<any>();
+  @Output() lastPageFunc: EventEmitter<any> = new EventEmitter<any>();
 
   isPreviousPageButtonDisabled: boolean = true;
   isNextPageButtonDisabled: boolean = false;
@@ -36,11 +38,19 @@ export class PaginatorComponent implements OnInit, OnChanges {
 
   ngOnInit(): void { }
 
+  firstPage(): void {
+    this.firstPageFunc.emit();
+  }
+
   previousPage(): void {
     this.previousPageFunc.emit();
   }
 
   nextPage(): void {
     this.nextPageFunc.emit();
+  }
+
+  lastPage(): void {
+    this.lastPageFunc.emit();
   }
 }

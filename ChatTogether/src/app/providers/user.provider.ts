@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
-import { Subject } from "rxjs";
-import { tap } from "rxjs/operators";
-import { User } from "../entities/user";
+import { BehaviorSubject, Subject } from "rxjs";
+import { map, tap } from "rxjs/operators";
+import { Page } from "../entities/page";
+import { BlockedUser } from "../entities/Security/blockedUser";
+import { Role, User } from "../entities/user";
 import { UserService } from "../services/user.service";
 import { SecurityProvider } from "./security.provider";
 
@@ -12,6 +14,7 @@ import { SecurityProvider } from "./security.provider";
 export class UserProvider {
 
     user = new Subject<User>();
+    users = new BehaviorSubject<Page<User>>(null);
 
     constructor(
         private userService: UserService,
@@ -30,6 +33,14 @@ export class UserProvider {
                this.user.next(user);
             })
         ).subscribe()
+    }
+
+    getUsers(page: number, search?: string, role?: Role): void {
+        this.userService.getUsers(page, search, role).pipe(
+            tap((page: Page<User>) => {
+                this.users.next(page);
+            })
+        ).subscribe();
     }
 
     changeNickname(nickname: string): void {

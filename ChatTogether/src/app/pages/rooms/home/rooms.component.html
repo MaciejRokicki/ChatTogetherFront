@@ -1,5 +1,5 @@
-<div *ngIf="user.role === 'ADMINISTRATOR'" class="admin-action-row">
-  <button mat-raised-button color="accent" (click)="createRoomOpenModal($event)">
+<div *ngIf="user?.role === 'ADMINISTRATOR'" class="admin-action-row">
+  <button mat-raised-button color="accent" (click)="createRoomOpenDialog($event)">
     <mat-icon>add</mat-icon>
     Dodaj pokój
   </button>
@@ -21,13 +21,13 @@
         <td mat-cell *matCellDef="let element">{{element.maxPeople}}</td>
       </ng-container>
   
-      <ng-container *ngIf="user.role === 'ADMINISTRATOR'" matColumnDef="action">
+      <ng-container *ngIf="user?.role === 'ADMINISTRATOR'" matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Akcja</th>
         <td mat-cell *matCellDef="let element">
-          <button mat-icon-button color="accent" (click)="editRoomOpenModal($event, element)">
+          <button mat-icon-button color="accent" (click)="editRoomOpenDialog($event, element)">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="accent" (click)="deleteRoomOpenModal($event, element)">
+          <button mat-icon-button color="accent" (click)="deleteRoomOpenDialog($event, element)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

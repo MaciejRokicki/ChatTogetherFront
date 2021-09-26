@@ -1,0 +1,20 @@
+<h1 mat-card-title>Zmień role</h1>
+<form [formGroup]="changeRoleForm" (ngSubmit)="changeRole()">
+    <mat-dialog-content>
+        <div>
+            Czy na pewno chcesz zmień role uzytkownika: <strong>{{ data.nickname }}</strong>?
+        </div>
+        <mat-form-field appearance="outline" class="input-role-form">
+            <mat-label>Rola</mat-label>
+            <mat-select formControlName="role">
+              <mat-option value="0">Administrator</mat-option>
+              <mat-option value="1">Moderator</mat-option>
+              <mat-option value="2">Użytkownik</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button type="button" (click)="close()">Anuluj</button>
+        <button mat-button type="submit">Zapisz</button>
+    </div>
+</form>

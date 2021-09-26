@@ -1,0 +1,25 @@
+<h1 mat-card-title>Zablokować?</h1>
+<form [formGroup]="blockForm" (ngSubmit)="block()">
+    <mat-dialog-content>
+        <div>
+            Czy na pewno chcesz zablokować uzytkownika: <strong>{{ data.nickname }}</strong>?
+        </div>
+        <mat-form-field appearance="outline" color="accent" class="input-reason-form">
+            <mat-label>Powód</mat-label>
+            <input matInput [errorStateMatcher]="invalidFormMatcher" formControlName="reason">
+            <mat-error *ngIf="blockForm.controls.reason.hasError('required')">
+                Te pole jest wymagane.
+            </mat-error>
+        </mat-form-field>
+        <mat-form-field class="inputField" appearance="outline" color="accent">
+            <mat-label>Blokada do</mat-label>
+            <input matInput [matDatepicker]="picker" [min]="minDate" formControlName="blockedTo">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>                  
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button type="button" (click)="close()">Anuluj</button>
+        <button mat-button type="submit">Zablokuj</button>
+    </div>
+</form>

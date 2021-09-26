@@ -1,6 +1,6 @@
 <div class="message-container" *ngIf="LeftDirection; else RightDirection">
     <div>
-        <a routerLink="/user/{{Message?.nickname}}" 
+        <a routerLink="/users/{{Message?.nickname}}" 
             class="nickname">
             {{ Message?.nickname }}
         </a>
@@ -14,7 +14,7 @@
     <div class="message-container message-container-right">
         <div class="top-container-right">
             <i class="date">{{ Message?.sendTimeStr }}</i>
-            <a routerLink="/user/{{Message?.nickname}}" 
+            <a routerLink="/users/{{Message?.nickname}}" 
                 class="nickname">
                 {{ Message?.nickname }}
             </a>      

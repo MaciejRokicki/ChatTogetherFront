@@ -3,7 +3,7 @@
         Wyniki: <b>{{ dataCount === 0 ? "Brak" : dataCount }}</b>
     </div>
     <div>
-        <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="previousPage()">
+        <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="firstPage()">
             <mat-icon>first_page</mat-icon>
         </button>
         <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="previousPage()">
@@ -12,7 +12,7 @@
         <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="nextPage()">
             <mat-icon>navigate_next</mat-icon>
         </button>
-        <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="nextPage()">
+        <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="lastPage()">
             <mat-icon>last_page</mat-icon>
         </button>
     </div>

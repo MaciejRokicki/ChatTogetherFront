@@ -82,7 +82,6 @@ export class SigninComponent implements OnInit {
     this.securityProvider.result.pipe(
       tap((res: Result) => {
         if (res.Stage === ResultStage.ERROR) {
-          console.log(res);
           switch (res.Message) {
             case "Incorrect data.":
               this.errorMessage = "Podano niepoprawne dane.";

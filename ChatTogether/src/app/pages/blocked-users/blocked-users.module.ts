@@ -7,7 +7,7 @@ import { BlockedUsersComponent } from './home/blocked-users.component';
 import { MatTableModule } from '@angular/material/table';
 import { SharedModule } from 'src/app/components/shared/shared.module';
 import { MatDialogModule } from '@angular/material/dialog';
-import { UnblockConfirmationDialogComponent } from './unblock-confirmation-dialog/unblock-confirmation-dialog.component';
+import { UnblockConfirmationDialogComponent } from '../../components/unblock-confirmation-dialog/unblock-confirmation-dialog.component';
 import { PaginatorModule } from 'src/app/components/paginator/paginator.module';
 
 @NgModule({

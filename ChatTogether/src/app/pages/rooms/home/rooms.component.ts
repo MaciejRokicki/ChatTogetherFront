@@ -47,7 +47,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
       tap((user: User) => {
         this.user = user;
         
-        if (user.role === Role.ADMINISTRATOR) {
+        if (user?.role === Role.ADMINISTRATOR) {
           this.displayedColumns = ['name', 'currentPeople', 'maxPeople', 'action']
         }
       })
@@ -70,7 +70,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     this.router.navigate(['room', room.id])
   }
 
-  public createRoomOpenModal(event: Event) {
+  public createRoomOpenDialog(event: Event) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -87,7 +87,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     }); 
   }
 
-  public editRoomOpenModal(event: Event, room: UpdateRoomModel) {
+  public editRoomOpenDialog(event: Event, room: UpdateRoomModel) {
     event.preventDefault();
     event.stopPropagation();
 
@@ -109,7 +109,7 @@ export class RoomsComponent implements OnInit, OnDestroy {
     });
   }
 
-  public deleteRoomOpenModal(event: Event, room: UpdateRoomModel) {
+  public deleteRoomOpenDialog(event: Event, room: UpdateRoomModel) {
     event.preventDefault();
     event.stopPropagation();
 

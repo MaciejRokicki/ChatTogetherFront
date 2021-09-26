@@ -55,6 +55,31 @@ p {
 	width: 100%;
 }
 
+.blocked-account-info {
+	font-size: 16px;
+	color: #cc0000;
+}
+
+.title-container {
+	display: flex;
+	flex-direction: row;
+}
+
+.badge {
+	margin: 0px 0px 0px 10px;
+	font-size: 12px;
+	border-radius: 15px;
+	padding: 0px 10px 0px 10px;
+}
+
+.badge-admin {
+	background-color: #00b3b3;
+}
+
+.badge-mod {
+	background-color: #00b36b;
+}
+
 @media only screen and (min-width: 1200px) {
 	.wrapper {
 		display: flex;

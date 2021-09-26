@@ -10,7 +10,7 @@ import { BlockedUser } from 'src/app/entities/Security/blockedUser';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
-import { UnblockConfirmationDialogComponent } from '../unblock-confirmation-dialog/unblock-confirmation-dialog.component';
+import { UnblockConfirmationDialogComponent } from '../../../components/unblock-confirmation-dialog/unblock-confirmation-dialog.component';
 
 @Component({
   selector: 'app-blocked-users',
@@ -51,9 +51,9 @@ export class BlockedUsersComponent implements OnInit, OnDestroy, IPaginator {
     this.securityProvider.getBlockedUsers(1, search);
   }
 
-  nextPage(): void {
-    this.blockedUsers.currentPage++;
-    
+  firstPage(): void {
+    this.blockedUsers.currentPage = 1;
+
     let search: string = this.searchForm.controls['search'].value;
     this.securityProvider.getBlockedUsers(this.blockedUsers.currentPage, search);
   }
@@ -65,18 +65,32 @@ export class BlockedUsersComponent implements OnInit, OnDestroy, IPaginator {
     this.securityProvider.getBlockedUsers(this.blockedUsers.currentPage, search);
   }
 
+  nextPage(): void {
+    this.blockedUsers.currentPage++;
+    
+    let search: string = this.searchForm.controls['search'].value;
+    this.securityProvider.getBlockedUsers(this.blockedUsers.currentPage, search);
+  }
+
+  lastPage(): void {
+    this.blockedUsers.currentPage = this.blockedUsers.pageCount;
+
+    let search: string = this.searchForm.controls['search'].value;
+    this.securityProvider.getBlockedUsers(this.blockedUsers.currentPage, search);
+  }
+
   unblockConfirmationOpenModel(event: Event, blockedUser: BlockedUser) {
     event.preventDefault();
     event.stopPropagation();
 
-    const createRoomDialogRef = this.dialog.open(UnblockConfirmationDialogComponent, {
+    const unblockConfirmationDialogRef = this.dialog.open(UnblockConfirmationDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
       maxWidth: 400,
       data: blockedUser
     });
 
-    createRoomDialogRef.afterClosed().subscribe(result => {
+    unblockConfirmationDialogRef.afterClosed().subscribe(result => {
       if(result?.showSnackbar) {
         this.snackbarService.open(`Konto o adresie email: ${blockedUser.email} zostało odblokowane.`, 10000, SnackbarVariant.SUCCESS);
         

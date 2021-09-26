@@ -1,7 +1,22 @@
 <div class="wrapper">
     <div class="container">
+        <div *ngIf="user?.isBlocked">
+            <mat-card>
+                <mat-card-content class="blocked-account-info">To konto zostało zablokowane.</mat-card-content>
+            </mat-card>
+        </div>
         <mat-card>
-            <mat-card-title>{{ nickname }}</mat-card-title>
+            <mat-card-title>
+                <div class="title-container">
+                    {{ nickname }}
+                    <div *ngIf="user?.role === 'ADMINISTRATOR'" class="badge badge-admin">
+                        ADMINISTRATOR
+                    </div>
+                    <div *ngIf="user?.role === 'MODERATOR'" class="badge badge-mod">
+                        MODERATOR
+                    </div>
+                </div>
+            </mat-card-title>
             <mat-card-content>
                 <div class="form-group">
                     <div class="form-label">
@@ -60,8 +75,8 @@
                 </div>
                 <mat-divider class="custom-divider"></mat-divider>
             </mat-card-content>
-            <mat-card-actions *ngIf="nickname == authUser?.nickname">
-                <button mat-icon-button id="userEdit" (click)="userEditOpenModal()">
+            <mat-card-actions *ngIf="nickname === authUser?.nickname">
+                <button mat-icon-button id="userEdit" (click)="userEditOpenDialog()">
                     <mat-icon>edit</mat-icon>
                 </button>
             </mat-card-actions>
@@ -78,21 +93,47 @@
                     </ng-template>
                 </div>
             </mat-card-content>
-            <mat-card-actions *ngIf="nickname == authUser?.nickname">
-                <button mat-icon-button id="aboutMeEdit" (click)="aboutMeEditOpenModal()">
+            <mat-card-actions *ngIf="nickname === authUser?.nickname">
+                <button mat-icon-button id="aboutMeEdit" (click)="aboutMeEditOpenDialog()">
                     <mat-icon>edit</mat-icon>
                 </button>
             </mat-card-actions>
         </mat-card>
-        <mat-card *ngIf="nickname == authUser?.nickname">
+        <mat-card *ngIf="nickname === authUser?.nickname">
             <mat-card-title>Konto</mat-card-title>
             <mat-card-content class="account-card-content">
                 <button mat-raised-button color="accent" class="account-button"
-                        id="changeNickname" (click)="changeNicknameOpenModal()">Zmień nazwę użytkownika</button>
+                        id="changeNickname" (click)="changeNicknameOpenDialog()">Zmień nazwę użytkownika</button>
                 <button mat-raised-button color="accent" class="account-button"
                         id="changeEmail" (click)="changeEmail()">Zmień adres email</button>
                 <button mat-raised-button color="accent" class="account-button"
                         id="changePassword" (click)="changePassword()">Zmień hasło</button>
+            </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="nickname !== authUser?.nickname && user?.role === 'USER' && authUser?.role === 'MODERATOR'">
+            <mat-card-title>Konto</mat-card-title>
+            <mat-card-content class="account-card-content">
+                <button *ngIf="!user?.isBlocked; else isBlocked"
+                        mat-raised-button color="accent" class="account-button"
+                        id="blockUser" (click)="blockUserOpenDialog()">Zablokuj</button>
+                <ng-template #isBlocked>
+                    <button mat-raised-button color="accent" class="account-button"
+                            id="unblockUser" (click)="unblockUserOpenDialog()">Odblokuj</button>
+                </ng-template>
+            </mat-card-content>
+        </mat-card>
+        <mat-card *ngIf="nickname !== authUser?.nickname && authUser?.role === 'ADMINISTRATOR'">
+            <mat-card-title>Konto</mat-card-title>
+            <mat-card-content class="account-card-content">
+                <button mat-raised-button color="accent" class="account-button"
+                        id="changeRole" (click)="changeRoleOpenDialog()">Zmień role</button>
+                <button *ngIf="!user?.isBlocked; else isBlocked"
+                        mat-raised-button color="accent" class="account-button"
+                        id="blockUser" (click)="blockUserOpenDialog()">Zablokuj</button>
+                <ng-template #isBlocked>
+                    <button mat-raised-button color="accent" class="account-button"
+                            id="unblockUser" (click)="unblockUserOpenDialog()">Odblokuj</button>
+                </ng-template>
             </mat-card-content>
         </mat-card>
     </div>

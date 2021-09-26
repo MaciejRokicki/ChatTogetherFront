@@ -7,6 +7,8 @@ import { User } from "../entities/user";
 import { SignupModel } from "../entities/Security/SignupModel";
 import { Page } from "../entities/page";
 import { BlockedUser } from "../entities/Security/blockedUser";
+import { BlockUserModel } from "../entities/Security/blockUserModel";
+import { ChangeRoleModel } from "../entities/Security/changeRoleModel";
 
 @Injectable({
     providedIn: 'root'
@@ -72,7 +74,16 @@ export class SecurityService {
         return this.http.get<Page<BlockedUser>>(u);
     }
 
+    blockUser(blockUserModel: BlockUserModel): Observable<void> {
+        return this.http.post<void>(`${this.url}/BlockUser`, blockUserModel)
+    }
+
     unblockUser(userId: number): Observable<void> {
         return this.http.post<void>(`${this.url}/UnblockUser`, new Object(userId))
+    }
+
+    changeRole(changeRoleModel: ChangeRoleModel): Observable<void> {
+        console.log(changeRoleModel);
+        return this.http.post<void>(`${this.url}/ChangeRole`, changeRoleModel)
     }
 }

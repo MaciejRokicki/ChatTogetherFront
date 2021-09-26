@@ -1,10 +1,15 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { UsersComponent } from './home/users.component';
 
 import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
-    { //TODO: zrobic page dla user'a
+    { 
+        path: '', 
+        component: UsersComponent,
+    },
+    { 
         path: ':nickname', 
         component: UserComponent,
     }
@@ -14,4 +19,4 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class UserRoutingModule {}
+export class UsersRoutingModule {}

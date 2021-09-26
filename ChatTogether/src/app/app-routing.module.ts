@@ -14,8 +14,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/security/security.module').then(x => x.SecurityModule)
   },
   {
-    path: 'user',
-    loadChildren: () => import('./pages/user/user.module').then(x => x.UserModule),
+    path: 'users',
+    loadChildren: () => import('./pages/users/users.module').then(x => x.UsersModule),
     canActivate: [AuthGuard]
   },
   {
