@@ -18,7 +18,6 @@ import { SnackbarService } from "../services/snackbar.service";
 @Injectable({
     providedIn: 'root'
 })
-
 export class SecurityProvider {
     public user = new BehaviorSubject<User>(null);
     public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
@@ -36,7 +35,7 @@ export class SecurityProvider {
                     let hubState = this.informationHub.conn['connection']['connectionState'];
 
                     if (user && hubState === 2) {
-                        this.informationHub.StartConnection();
+                        this.informationHub.startConnection();
                         this.listenerBlockSignout();
                     }
                 })

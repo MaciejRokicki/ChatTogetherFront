@@ -10,7 +10,6 @@ import { SecurityProvider } from "./security.provider";
 @Injectable({
     providedIn: 'root'
 })
-
 export class UserProvider {
 
     user = new Subject<User>();

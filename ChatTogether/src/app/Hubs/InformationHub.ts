@@ -1,16 +1,16 @@
-import * as signalR from '@aspnet/signalr';
-import { from, Observable } from 'rxjs';
+import { Injectable, Injector } from '@angular/core';
+import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { Hub } from './Hub';
 
-export class InformationHub {
-
-    public conn: signalR.HubConnection = new signalR.HubConnectionBuilder()
-        .configureLogging(signalR.LogLevel.Information)
+@Injectable({
+    providedIn: 'root'
+})
+export class InformationHub extends Hub {
+    constructor(injector: Injector) {
+        super(injector, new HubConnectionBuilder()
         .withUrl("https://localhost:44387/informationHub")
-        .build();
-
-    public conn$: Observable<void>;
-
-    public StartConnection() {
-        this.conn$ = from(this.conn.start());
+        .configureLogging(LogLevel.Information)
+        .withAutomaticReconnect()
+        .build())
     }
 }

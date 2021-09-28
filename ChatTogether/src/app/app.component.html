@@ -1,6 +1,11 @@
 <div class="container" *ngIf="user; else loginPage">
   <app-topbar></app-topbar>
   <app-sidebar [user]="user" [items]="siderbarItems"></app-sidebar>
+  <div *ngIf="blockedBackground?.show" class="blocked-background">
+    <div class="blocked-background-message">
+      {{ blockedBackground.message }}
+    </div>
+  </div>
 </div>
 <ng-template #loginPage>
   <head>

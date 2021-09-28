@@ -11,7 +11,6 @@ import { RoomService } from "../services/room.service";
 @Injectable({
     providedIn: 'root'
 })
-
 export class RoomProvider {
 
     room = new Subject<Room>();

@@ -3,6 +3,7 @@ import { skip, tap } from 'rxjs/operators';
 import { SidebarItem } from './components/sidebar/sidebar.component';
 import { Role, User } from './entities/user';
 import { SecurityProvider } from './providers/security.provider';
+import { BlockedBackgroundModel, BlockedBackgroundService } from './services/blockedBackgroundService';
 
 const userSidebarItems: SidebarItem[] = [
   new SidebarItem('Mój profil', 'account_circle', '/users/'),
@@ -28,9 +29,11 @@ export class AppComponent {
   public user: User;
 
   public siderbarItems: SidebarItem[] = []
+  public blockedBackground: BlockedBackgroundModel = null;
 
   constructor(
-    private securityProvider: SecurityProvider
+    private securityProvider: SecurityProvider,
+    private blockedBackgroundService: BlockedBackgroundService
     ) {
       this.securityProvider.user.pipe(
         skip(1),
@@ -56,6 +59,12 @@ export class AppComponent {
               userItem.route = `/users/${this.user.nickname}`;
             }
           }
+        })
+      ).subscribe();
+
+      this.blockedBackgroundService.blockedBackgroundModel.pipe(
+        tap((blockedBackgroundModel: BlockedBackgroundModel) => {
+          this.blockedBackground = blockedBackgroundModel;
         })
       ).subscribe();
     }

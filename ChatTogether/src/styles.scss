@@ -36,6 +36,30 @@ body {
     color: whitesmoke !important;  
 }
 
+.blocked-background {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: black;
+    opacity: 0.8;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+}
+
+.blocked-background-message {
+    position: absolute;
+    z-index: 2;
+    color: #ff1a1a;
+    font-size: 18px;
+    background-color: white;
+    padding: 15px 25px 15px 25px;
+    border-radius: 20px;
+}
+
 @media only screen and (max-width: 768px) {
 	html {
 		height: calc(100% - 56px);
