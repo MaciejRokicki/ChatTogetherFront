@@ -163,12 +163,14 @@ export class UserComponent implements OnInit, OnDestroy {
       data: this.user
     });
 
-    blockUserDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS);
-      
-        this.reloadPage();
-      }
+    blockUserDialogRef.afterClosed().pipe(
+      tap(result => {
+        if(result?.showSnackbar) {
+          this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
+        }
+      })
+    ).subscribe(() => {
+      this.reloadPage();
     });
   }
 
@@ -180,12 +182,14 @@ export class UserComponent implements OnInit, OnDestroy {
       data: this.user
     });
 
-    unblockConfirmationDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open(`Konto o adresie email: ${this.user.nickname} zostało odblokowane.`, 10000, SnackbarVariant.SUCCESS);
-      
-        this.reloadPage();
-      }
+    unblockConfirmationDialogRef.afterClosed().pipe(
+      tap(result => {
+        if(result?.showSnackbar) {
+          this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
+        }
+      })
+    ).subscribe(() => {
+      this.reloadPage();
     });
   }
 

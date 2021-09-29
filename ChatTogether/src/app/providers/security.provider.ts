@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { HubConnectionState } from "@microsoft/signalr";
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, concatMap, tap } from "rxjs/operators";
 import { SnackbarVariant } from "../components/snackbar/snackbar.data";
@@ -32,10 +33,13 @@ export class SecurityProvider {
         ) { 
             this.user.pipe(
                 tap((user: User) => {
-                    let hubState = this.informationHub.conn['connection']['connectionState'];
+                    let hubState: HubConnectionState = this.informationHub.conn.state;
 
-                    if (user && hubState === 2) {
-                        this.informationHub.startConnection();
+                    if (user) {
+                        if(hubState === HubConnectionState.Disconnected) {
+                            this.informationHub.startConnection();
+                        }
+
                         this.listenerBlockSignout();
                     }
                 })
@@ -213,14 +217,32 @@ export class SecurityProvider {
     }
 
     blockUser(blockUserModel: BlockUserModel): void {
-        this.securityService.blockUser(blockUserModel).subscribe();
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+
+        this.securityService.blockUser(blockUserModel).subscribe({
+            complete: () => {
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+            }
+        });
     }
 
     unblockUser(userId: number): void {
-        this.securityService.unblockUser(userId).subscribe();
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+
+        this.securityService.unblockUser(userId).subscribe({
+            complete: () => {
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+            }
+        });
     }
 
     changeRole(changeRoleModel: ChangeRoleModel): void {
-        this.securityService.changeRole(changeRoleModel).subscribe();
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+
+        this.securityService.changeRole(changeRoleModel).subscribe({
+            complete: () => {
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+            }
+        });
     }
 }

@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { tap } from 'rxjs/operators';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { BlockUserModel } from 'src/app/entities/Security/blockUserModel';
 import { User } from 'src/app/entities/user';
 import { SecurityProvider } from 'src/app/providers/security.provider';
@@ -48,9 +50,15 @@ export class BlockUserDialogComponent implements OnInit {
     }
 
     this.securityProvider.blockUser(blockUserModel);
-    
-    this.close({
-      showSnackbar: true
-    });
+
+    this.securityProvider.result.pipe(
+      tap((result: Result) => {
+        if (result.Stage === ResultStage.SUCCESS) {
+          this.close({
+            showSnackbar: true
+          });
+        }
+      })
+    ).subscribe();
   }
 }

@@ -1,24 +1,23 @@
 <div class="container">
+    <div class="app-title">
+        ChatTogether
+    </div>
     <div class="content">
+        <div class="title">
+            Potwierdzenie adres email
+        </div>
         <mat-card *ngIf="infoMessage" class="panel panel-info">
             <div>{{ infoMessage }}</div>
         </mat-card>
         <mat-card *ngIf="errorMessage" class="panel panel-error">
             {{ errorMessage }}
         </mat-card>
-        <mat-card>
-            <mat-card-header>
-                <mat-card-title>Potwierdzenie adres email</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <div class="info-field">
-                    Kliknij w przycisk jeśli chcesz potwierdzić adres email.
-                </div>
-                <button mat-raised-button color="primary" (click)="confirm()">
-                    Potwierdź adres email
-                    <mat-icon>send</mat-icon>
-                </button>
-            </mat-card-content>
-        </mat-card>
+        <div>
+            Kliknij w przycisk jeśli chcesz potwierdzić adres email.
+        </div>
+        <button mat-raised-button color="primary" (click)="confirm()">
+            Potwierdź adres email
+            <mat-icon>send</mat-icon>
+        </button>
     </div>
 </div>

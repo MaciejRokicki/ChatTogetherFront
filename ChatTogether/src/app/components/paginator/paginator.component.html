@@ -1,22 +1,24 @@
 <div class="container">
-    <div class="info-content">
-        Wyniki: <b>{{ dataCount === 0 ? "Brak" : dataCount }}</b>
-    </div>
-    <div>
-        <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="firstPage()">
-            <mat-icon>first_page</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="previousPage()">
-            <mat-icon>navigate_before</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="nextPage()">
-            <mat-icon>navigate_next</mat-icon>
-        </button>
-        <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="lastPage()">
-            <mat-icon>last_page</mat-icon>
-        </button>
-    </div>
-    <div class="info-content">
-        Strona <b>{{ currentPage }}</b> z <b>{{ pageCount }}</b>
+    <div class="sub-container">
+        <div class="record-count-container">
+            Wyniki: <b>{{ dataCount === 0 ? "Brak" : dataCount }}</b>
+        </div>
+        <div class="page-container">
+            <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="firstPage()">
+                <mat-icon>first_page</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" [disabled]="isPreviousPageButtonDisabled" (click)="previousPage()">
+                <mat-icon>navigate_before</mat-icon>
+            </button>
+            <div>
+                {{ currentPage }}/{{ pageCount }}
+            </div>
+            <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="nextPage()">
+                <mat-icon>navigate_next</mat-icon>
+            </button>
+            <button mat-icon-button color="accent" [disabled]="isNextPageButtonDisabled" (click)="lastPage()">
+                <mat-icon>last_page</mat-icon>
+            </button>
+        </div>
     </div>
 </div>

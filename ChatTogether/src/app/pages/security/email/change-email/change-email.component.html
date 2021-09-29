@@ -1,37 +1,32 @@
 <div class="container">
+    <div class="app-title">
+        ChatTogether
+    </div>
     <div class="content">
-        <div class="container">
-            <div class="content">
-                <mat-card *ngIf="infoMessage" class="panel panel-info">
-                    <div>{{ infoMessage }}</div>
-                </mat-card>
-                <mat-card *ngIf="successMessage" class="panel panel-success">
-                    {{ successMessage }}
-                </mat-card>
-                <mat-card *ngIf="errorMessage" class="panel panel-error">
-                    {{ errorMessage }}
-                </mat-card>
-                <mat-card>
-                    <mat-card-header>
-                        <mat-card-title>Zmień adres email</mat-card-title>
-                    </mat-card-header>
-                    <mat-card-content>
-                        <div class="info-field">
-                            Podaj nowy adres email.
-                        </div>
-                        <form [formGroup]="changeEmailForm" (ngSubmit)="onSubmit()">
-                            <mat-form-field appearance="outline" class="field">
-                                <mat-label>Adres email</mat-label>
-                                <input matInput formControlName="newEmail">
-                            </mat-form-field>
-                            <button mat-raised-button color="primary" type="submit" [disabled]="!changeEmailForm.valid">
-                                Zmień email
-                                <mat-icon>send</mat-icon>
-                            </button>
-                        </form>
-                    </mat-card-content>
-                </mat-card>
+        <form [formGroup]="changeEmailForm" class="security-form" (ngSubmit)="onSubmit()">
+            <div class="title">
+                Zmień adres email
             </div>
-        </div>
+            <mat-card *ngIf="infoMessage" class="panel panel-info">
+                <div>{{ infoMessage }}</div>
+            </mat-card>
+            <mat-card *ngIf="successMessage" class="panel panel-success">
+                {{ successMessage }}
+            </mat-card>
+            <mat-card *ngIf="errorMessage" class="panel panel-error">
+                {{ errorMessage }}
+            </mat-card>
+            <div class="infoField">
+                Podaj nowy adres email.
+            </div>
+            <mat-form-field appearance="outline" class="field">
+                <mat-label>Adres email</mat-label>
+                <input matInput formControlName="newEmail">
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" [disabled]="!changeEmailForm.valid">
+                Zmień email
+                <mat-icon>send</mat-icon>
+            </button>
+        </form>
     </div>
 </div>

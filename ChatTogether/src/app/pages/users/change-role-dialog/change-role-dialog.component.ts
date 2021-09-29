@@ -4,6 +4,8 @@ import { User } from 'src/app/entities/user';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { ChangeRoleModel } from 'src/app/entities/Security/changeRoleModel';
+import { tap } from 'rxjs/operators';
+import { Result, ResultStage } from 'src/app/entities/result';
 
 @Component({
   selector: 'app-change-role-dialog',
@@ -46,8 +48,14 @@ export class ChangeRoleDialogComponent implements OnInit {
 
     this.securityProvider.changeRole(changeRoleModel);
 
-    this.close({
-      showSnackbar: true
-    });
+    this.securityProvider.result.pipe(
+      tap((result: Result) => {
+        if (result.Stage === ResultStage.SUCCESS) {
+          this.close({
+            showSnackbar: true
+          });
+        }
+      })
+    ).subscribe();
   }
 }

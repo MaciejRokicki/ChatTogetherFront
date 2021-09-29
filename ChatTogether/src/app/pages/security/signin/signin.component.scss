@@ -1,14 +1,7 @@
-.container {
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-    max-width: 300px;
+.forgot-password {
+    color: #4560a1;
+    margin: 0px 0px 5px 0px;
+    text-align: end;
 }
 
 label {
@@ -18,14 +11,6 @@ label {
 .separator {
     align-self: center;
     margin: 5px 0px 5px 0px;
-}
-
-.logo {
-    margin: 0px 0px 5px 0px;
-}
-
-a {
-    margin: 0px 0px 5px 0px;
 }
 
 .resend {
