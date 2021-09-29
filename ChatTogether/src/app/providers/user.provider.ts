@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, Subject } from "rxjs";
-import { map, tap } from "rxjs/operators";
+import { tap } from "rxjs/operators";
 import { Page } from "../entities/page";
-import { BlockedUser } from "../entities/Security/blockedUser";
+import { Result, ResultStage } from "../entities/result";
 import { Role, User } from "../entities/user";
 import { UserService } from "../services/user.service";
 import { SecurityProvider } from "./security.provider";
@@ -11,9 +11,10 @@ import { SecurityProvider } from "./security.provider";
     providedIn: 'root'
 })
 export class UserProvider {
-
     user = new Subject<User>();
     users = new BehaviorSubject<Page<User>>(null);
+
+    public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
     constructor(
         private userService: UserService,
@@ -21,6 +22,8 @@ export class UserProvider {
         ) {}
 
     getUser(nickname: string): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+
         this.userService.getUser(nickname).pipe(
             tap((user: User) => {
                 if (user.birthDate) {
@@ -30,27 +33,40 @@ export class UserProvider {
                     user.birthDate = bd;
                 }
                this.user.next(user);
+               this.result.next(new Result(ResultStage.SUCCESS, undefined));
             })
         ).subscribe()
     }
 
     getUsers(page: number, search?: string, role?: Role): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.userService.getUsers(page, search, role).pipe(
             tap((page: Page<User>) => {
                 this.users.next(page);
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             })
         ).subscribe();
     }
 
     changeNickname(nickname: string): void {
-        this.userService.changeNickname(nickname).subscribe();
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+
+        this.userService.changeNickname(nickname).pipe(
+            tap(() => {
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+            })
+        ).subscribe();
     }
 
     changeUserData(user: User): void {
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
         this.userService.changeUserData(user).pipe(
             tap((newUser: User) => {
                 this.user.next(newUser);
                 this.securityProvider.user.next(newUser);
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
             })
         ).subscribe();
     }

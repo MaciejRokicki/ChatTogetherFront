@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { User } from 'src/app/entities/user';
+import { Role, User } from 'src/app/entities/user';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { ChangeRoleModel } from 'src/app/entities/Security/changeRoleModel';
@@ -34,10 +34,6 @@ export class ChangeRoleDialogComponent implements OnInit {
     })
   }
 
-  close(result?: any): void {
-    this.dialogRef.close(result);
-  }
-
   changeRole(): void {
     let role = Number.parseInt(this.changeRoleForm.get('role').value);
 
@@ -50,12 +46,22 @@ export class ChangeRoleDialogComponent implements OnInit {
 
     this.securityProvider.result.pipe(
       tap((result: Result) => {
-        if (result.Stage === ResultStage.SUCCESS) {
-          this.close({
-            showSnackbar: true
-          });
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            break;
+
+          case ResultStage.SUCCESS:
+            this.close({
+              showSnackbar: true,
+              role: Object.keys(this.roles).find(key=>this.roles[key] == role)
+            });
+            break;
         }
       })
     ).subscribe();
+  }
+
+  close(result?: any): void {
+    this.dialogRef.close(result);
   }
 }

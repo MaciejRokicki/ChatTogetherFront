@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { tap } from 'rxjs/operators';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { UserProvider } from 'src/app/providers/user.provider';
 
 @Component({
@@ -32,9 +34,20 @@ export class ChangeNicknameDialogComponent implements OnInit {
     changeNickname(): void {
       this.userProvider.changeNickname(this.changeNicknameForm.get('nickname').value);
   
-      this.close({
-        showSnackbar: true
-      });
+      this.userProvider.result.pipe(
+        tap((result: Result) => {
+          switch (result.Stage) {
+            case ResultStage.WAITING:
+              break;
+  
+            case ResultStage.SUCCESS:
+              this.close({
+                showSnackbar: true
+              });
+              break;
+          }
+        })
+      ).subscribe();
     }
 
 }

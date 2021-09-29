@@ -30,10 +30,15 @@ export class UnblockConfirmationDialogComponent implements OnInit {
     
     this.securityProvider.result.pipe(
       tap((result: Result) => {
-        if (result.Stage === ResultStage.SUCCESS) {
-          this.close({
-            showSnackbar: true
-          });
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            break;
+
+          case ResultStage.SUCCESS:
+            this.close({
+              showSnackbar: true
+            });
+            break;
         }
       })
     ).subscribe();

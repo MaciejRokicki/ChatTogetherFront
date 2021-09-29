@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 import { SecurityProvider } from 'src/app/providers/security.provider';
-import { User } from 'src/app/entities/user';
-import { Subscription } from 'rxjs';
+import { Role, User } from 'src/app/entities/user';
+import { merge, Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserProvider } from 'src/app/providers/user.provider';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +15,7 @@ import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 import { ChangeRoleDialogComponent } from '../change-role-dialog/change-role-dialog.component';
 import { BlockUserDialogComponent } from '../block-user-dialog/block-user-dialog.component';
 import { UnblockConfirmationDialogComponent } from 'src/app/components/unblock-confirmation-dialog/unblock-confirmation-dialog.component';
+import { Result, ResultStage } from 'src/app/entities/result';
 
 @Component({
   selector: 'app-user',
@@ -81,23 +82,49 @@ export class UserComponent implements OnInit, OnDestroy {
       data: this.nickname
     });
 
-    editUserDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open("Pseudonim został zmieniony.", 10000, SnackbarVariant.SUCCESS);
-        this.securityProvider.signout();
-        this.router.navigate(['security/signin']);
-      }
-    });
+    editUserDialogRef.afterClosed().pipe(
+      tap(result => {
+        if(result?.showSnackbar) {
+          this.snackbarService.open("Pseudonim został zmieniony.", 10000, SnackbarVariant.SUCCESS);
+          this.securityProvider.signout();
+          this.router.navigate(['security/signin']);
+        }
+      })
+    ).subscribe();
   }
 
   changeEmail(): void {
     this.securityProvider.changeEmailRequest();
-    this.snackbarService.open("Prośba o zmianę adres email została wysłana na aktualny adres email.");
+
+    this.securityProvider.result.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            break;
+
+          case ResultStage.SUCCESS:
+            this.snackbarService.open("Prośba o zmianę adres email została wysłana na aktualny adres email.");
+            break;
+        }
+      })
+    ).subscribe();
   }
 
   changePassword(): void {
     this.securityProvider.changePasswordRequest();
-    this.snackbarService.open("Prośba o zmianę hasła została wysłana na adres email.");
+
+    this.securityProvider.result.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            break;
+
+          case ResultStage.SUCCESS:
+            this.snackbarService.open("Prośba o zmianę hasła została wysłana na adres email.");
+            break;
+        }
+      })
+    ).subscribe();
   }
 
   userEditOpenDialog(): void {
@@ -113,11 +140,13 @@ export class UserComponent implements OnInit, OnDestroy {
       }
     });
 
-    editUserDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open("Dane zostały zmienione.", 10000, SnackbarVariant.SUCCESS);
-      }
-    });
+    editUserDialogRef.afterClosed().pipe(
+      tap(result => {
+        if(result?.showSnackbar) {
+          this.snackbarService.open("Dane zostały zmienione.", 10000, SnackbarVariant.SUCCESS);
+        }
+      })
+    ).subscribe();
   }
 
   aboutMeEditOpenDialog(): void {
@@ -131,11 +160,13 @@ export class UserComponent implements OnInit, OnDestroy {
       }
     });
 
-    editUserDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open("Opis został zmieniony.", 10000, SnackbarVariant.SUCCESS);
-      }
-    });
+    editUserDialogRef.afterClosed().pipe(
+      tap(result => {
+        if(result?.showSnackbar) {
+          this.snackbarService.open("Opis został zmieniony.", 10000, SnackbarVariant.SUCCESS);
+        }        
+      })
+    ).subscribe();
   }
 
   changeRoleOpenDialog(): void {
@@ -146,13 +177,16 @@ export class UserComponent implements OnInit, OnDestroy {
       data: this.user
     });
 
-    changeRoleDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open(`Rola użytkownika: ${this.user.nickname} została zmieniona.`, 10000, SnackbarVariant.SUCCESS);
-
-        this.reloadPage();
-      }
-    });
+    changeRoleDialogRef.afterClosed().pipe(
+      tap(result => {
+        if(result?.showSnackbar) {
+          this.snackbarService.open(`Rola użytkownika: ${this.user.nickname} została zmieniona.`, 10000, SnackbarVariant.SUCCESS);
+        
+          this.user.role = result.role;
+          this.userProvider.user.next(this.user);
+        }
+      })
+    ).subscribe();
   }
 
   blockUserOpenDialog(): void {
@@ -167,11 +201,12 @@ export class UserComponent implements OnInit, OnDestroy {
       tap(result => {
         if(result?.showSnackbar) {
           this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
+        
+          this.user.isBlocked = true;
+          this.userProvider.user.next(this.user);
         }
       })
-    ).subscribe(() => {
-      this.reloadPage();
-    });
+    ).subscribe();
   }
 
   unblockUserOpenDialog(): void {
@@ -186,18 +221,12 @@ export class UserComponent implements OnInit, OnDestroy {
       tap(result => {
         if(result?.showSnackbar) {
           this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
+        
+          this.user.isBlocked = false;
+          this.userProvider.user.next(this.user);
         }
       })
-    ).subscribe(() => {
-      this.reloadPage();
-    });
-  }
-
-  reloadPage(): void {
-    let currentUrl = this.router.url;
-    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this.router.navigate([currentUrl]);
-    });
+    ).subscribe();
   }
 
   ngOnDestroy(): void {

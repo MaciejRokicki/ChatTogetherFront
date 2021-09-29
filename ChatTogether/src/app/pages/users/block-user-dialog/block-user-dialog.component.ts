@@ -43,9 +43,9 @@ export class BlockUserDialogComponent implements OnInit {
       blockedTo: this.blockForm.get('blockedTo').value
     }
 
-    if (blockUserModel.blockedTo) {
-      blockUserModel.blockedTo = new Date(Date.UTC(blockUserModel.blockedTo.getUTCFullYear(), blockUserModel.blockedTo.getUTCMonth(), blockUserModel.blockedTo.getUTCDate()))
-    } else {
+    console.log(this.blockForm.get('blockedTo').value);
+
+    if (!blockUserModel.blockedTo) {
       blockUserModel.blockedTo = null;
     }
 
@@ -53,10 +53,15 @@ export class BlockUserDialogComponent implements OnInit {
 
     this.securityProvider.result.pipe(
       tap((result: Result) => {
-        if (result.Stage === ResultStage.SUCCESS) {
-          this.close({
-            showSnackbar: true
-          });
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            break;
+
+          case ResultStage.SUCCESS:
+            this.close({
+              showSnackbar: true
+            });
+            break;
         }
       })
     ).subscribe();

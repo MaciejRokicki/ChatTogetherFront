@@ -185,11 +185,23 @@ export class SecurityProvider {
     }
 
     changeEmailRequest(): void {
-        this.securityService.changeEmailRequest().subscribe();
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+
+        this.securityService.changeEmailRequest().subscribe({
+            complete: () => {
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+            }
+        });
     }
 
     changePasswordRequest(): void {
-        this.securityService.changePasswordRequest().subscribe();
+        this.result.next(new Result(ResultStage.WAITING, undefined));
+        
+        this.securityService.changePasswordRequest().subscribe({
+            complete: () => {
+                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+            }
+        });
     }
 
     listenerBlockSignout(): void {

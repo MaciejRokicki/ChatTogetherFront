@@ -3,6 +3,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { User } from 'src/app/entities/user';
 import { UserProvider } from 'src/app/providers/user.provider';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { tap } from 'rxjs/operators';
+import { Result, ResultStage } from 'src/app/entities/result';
 
 export interface EditUserData {
   firstName: string;
@@ -51,9 +53,20 @@ export class EditUserDialogComponent implements OnInit {
     let user = new User(undefined, undefined, firstName, lastName, undefined, birthDate, city, undefined, undefined);
     this.userProvider.changeUserData(user);
 
-    this.close({
-      showSnackbar: true
-    });
+    this.userProvider.result.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            break;
+
+          case ResultStage.SUCCESS:
+            this.close({
+              showSnackbar: true
+            });
+            break;
+        }
+      })
+    ).subscribe();
   }
 
 }
