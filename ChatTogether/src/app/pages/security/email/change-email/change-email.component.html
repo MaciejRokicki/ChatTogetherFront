@@ -1,32 +1,36 @@
-<div class="container">
+<div class="container" *ngIf="!showSpinner; else showSpinnerTemplate">
     <div class="app-title">
         ChatTogether
     </div>
-    <div class="content">
-        <form [formGroup]="changeEmailForm" class="security-form" (ngSubmit)="onSubmit()">
-            <div class="title">
-                Zmień adres email
-            </div>
-            <mat-card *ngIf="infoMessage" class="panel panel-info">
-                <div>{{ infoMessage }}</div>
-            </mat-card>
-            <mat-card *ngIf="successMessage" class="panel panel-success">
-                {{ successMessage }}
-            </mat-card>
-            <mat-card *ngIf="errorMessage" class="panel panel-error">
-                {{ errorMessage }}
-            </mat-card>
-            <div class="infoField">
-                Podaj nowy adres email.
-            </div>
-            <mat-form-field appearance="outline" class="field">
-                <mat-label>Adres email</mat-label>
-                <input matInput formControlName="newEmail">
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!changeEmailForm.valid">
-                Zmień email
-                <mat-icon>send</mat-icon>
-            </button>
-        </form>
+    <div>
+        <div *ngIf="successMessage" class="panel panel-success">
+            {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="panel panel-error">
+            {{ errorMessage }}
+        </div>
+        <div class="content">
+            <form [formGroup]="changeEmailForm" class="security-form" (ngSubmit)="onSubmit()">
+                <div class="title">
+                    Zmień adres email
+                </div>
+                <div class="infoField">
+                    Podaj nowy adres email.
+                </div>
+                <mat-form-field appearance="outline" class="field">
+                    <mat-label>Adres email</mat-label>
+                    <input matInput formControlName="newEmail">
+                </mat-form-field>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!changeEmailForm.valid">
+                    Zmień email
+                    <mat-icon>send</mat-icon>
+                </button>
+            </form>
+        </div>
     </div>
 </div>
+<ng-template #showSpinnerTemplate>
+    <div class="container-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

@@ -44,7 +44,7 @@ export class ChangeRoleDialogComponent implements OnInit {
 
     this.securityProvider.changeRole(changeRoleModel);
 
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultChangeRole.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
@@ -55,6 +55,13 @@ export class ChangeRoleDialogComponent implements OnInit {
               showSnackbar: true,
               role: Object.keys(this.roles).find(key=>this.roles[key] == role)
             });
+            break;
+
+          case ResultStage.ERROR:
+            this.close({
+              showSnackbar: false,
+              success: false
+            })
             break;
         }
       })

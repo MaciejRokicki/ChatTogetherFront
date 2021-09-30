@@ -53,7 +53,7 @@ export class EditUserDialogComponent implements OnInit {
     let user = new User(undefined, undefined, firstName, lastName, undefined, birthDate, city, undefined, undefined);
     this.userProvider.changeUserData(user);
 
-    this.userProvider.result.pipe(
+    this.userProvider.resultChangeUserData.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
@@ -63,6 +63,13 @@ export class EditUserDialogComponent implements OnInit {
             this.close({
               showSnackbar: true
             });
+            break;
+
+          case ResultStage.ERROR:
+            this.close({
+              showSnackbar: false,
+              success: false
+            })
             break;
         }
       })

@@ -2,8 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
 import { SecurityProvider } from 'src/app/providers/security.provider';
-import { Role, User } from 'src/app/entities/user';
-import { merge, Subscription } from 'rxjs';
+import { User } from 'src/app/entities/user';
+import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { UserProvider } from 'src/app/providers/user.provider';
 import { MatDialog } from '@angular/material/dialog';
@@ -32,6 +32,17 @@ export class UserComponent implements OnInit, OnDestroy {
 
   user: User;
   user$: Subscription;
+
+  disabledChangeUserDataButton: boolean = false;
+  disabledChangeAboutMeButton: boolean = false;
+  
+  disabledChangeNicknameButton: boolean = false;
+  disabledChangeEmailButton: boolean = false;
+  disabledChangePasswordButton: boolean = false;
+
+  disabledBlockButton: boolean = false;
+  disabledUnblockButton: boolean = false;
+  disabledChangeRoleButton: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -75,6 +86,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   changeNicknameOpenDialog(): void {
+    this.disabledChangeNicknameButton = true;
+
     const editUserDialogRef = this.dialog.open(ChangeNicknameDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -84,6 +97,10 @@ export class UserComponent implements OnInit, OnDestroy {
 
     editUserDialogRef.afterClosed().pipe(
       tap(result => {
+        if (!result || result?.success === false) {
+          this.disabledChangeNicknameButton = false;
+        }
+
         if(result?.showSnackbar) {
           this.snackbarService.open("Pseudonim został zmieniony.", 10000, SnackbarVariant.SUCCESS);
           this.securityProvider.signout();
@@ -94,9 +111,11 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   changeEmail(): void {
+    this.disabledChangeEmailButton = true;
+
     this.securityProvider.changeEmailRequest();
 
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultChangeEmailRequest.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
@@ -104,6 +123,11 @@ export class UserComponent implements OnInit, OnDestroy {
 
           case ResultStage.SUCCESS:
             this.snackbarService.open("Prośba o zmianę adres email została wysłana na aktualny adres email.");
+            this.disabledChangeEmailButton = false;
+            break;
+
+          case ResultStage.ERROR:
+            this.disabledChangeEmailButton = false;
             break;
         }
       })
@@ -111,9 +135,11 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   changePassword(): void {
+    this.disabledChangePasswordButton = true;
+
     this.securityProvider.changePasswordRequest();
 
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultChangePasswordRequest.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
@@ -121,6 +147,11 @@ export class UserComponent implements OnInit, OnDestroy {
 
           case ResultStage.SUCCESS:
             this.snackbarService.open("Prośba o zmianę hasła została wysłana na adres email.");
+            this.disabledChangePasswordButton = false;
+            break;
+
+          case ResultStage.ERROR:
+            this.disabledChangePasswordButton = false;
             break;
         }
       })
@@ -128,6 +159,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   userEditOpenDialog(): void {
+    this.disabledChangeUserDataButton = true;
+
     const editUserDialogRef = this.dialog.open(EditUserDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -142,14 +175,21 @@ export class UserComponent implements OnInit, OnDestroy {
 
     editUserDialogRef.afterClosed().pipe(
       tap(result => {
+        if (!result || result?.success === false) {
+          this.disabledChangeUserDataButton = false;
+        }
+
         if(result?.showSnackbar) {
           this.snackbarService.open("Dane zostały zmienione.", 10000, SnackbarVariant.SUCCESS);
+          this.disabledChangeUserDataButton = false;
         }
       })
     ).subscribe();
   }
 
   aboutMeEditOpenDialog(): void {
+    this.disabledChangeAboutMeButton = true;
+
     const editUserDialogRef = this.dialog.open(EditAboutMeDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -162,14 +202,21 @@ export class UserComponent implements OnInit, OnDestroy {
 
     editUserDialogRef.afterClosed().pipe(
       tap(result => {
+        if (!result || result?.success === false) {
+          this.disabledChangeAboutMeButton = false;
+        }
+
         if(result?.showSnackbar) {
           this.snackbarService.open("Opis został zmieniony.", 10000, SnackbarVariant.SUCCESS);
+          this.disabledChangeAboutMeButton = false;
         }        
       })
     ).subscribe();
   }
 
   changeRoleOpenDialog(): void {
+    this.disabledChangeRoleButton = true;
+
     const changeRoleDialogRef = this.dialog.open(ChangeRoleDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -179,9 +226,14 @@ export class UserComponent implements OnInit, OnDestroy {
 
     changeRoleDialogRef.afterClosed().pipe(
       tap(result => {
+        if (!result || result?.success === false) {
+          this.disabledChangeRoleButton = false;
+        }
+
         if(result?.showSnackbar) {
           this.snackbarService.open(`Rola użytkownika: ${this.user.nickname} została zmieniona.`, 10000, SnackbarVariant.SUCCESS);
-        
+          this.disabledChangeRoleButton = false;
+
           this.user.role = result.role;
           this.userProvider.user.next(this.user);
         }
@@ -190,6 +242,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   blockUserOpenDialog(): void {
+    this.disabledBlockButton = true;
+
     const blockUserDialogRef = this.dialog.open(BlockUserDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -199,9 +253,14 @@ export class UserComponent implements OnInit, OnDestroy {
 
     blockUserDialogRef.afterClosed().pipe(
       tap(result => {
+        if (!result || result?.success === false) {
+          this.disabledBlockButton = false;
+        }
+
         if(result?.showSnackbar) {
           this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
-        
+          this.disabledBlockButton = false;
+
           this.user.isBlocked = true;
           this.userProvider.user.next(this.user);
         }
@@ -210,6 +269,8 @@ export class UserComponent implements OnInit, OnDestroy {
   }
 
   unblockUserOpenDialog(): void {
+    this.disabledUnblockButton = true;
+
     const unblockConfirmationDialogRef = this.dialog.open(UnblockConfirmationDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
@@ -219,9 +280,14 @@ export class UserComponent implements OnInit, OnDestroy {
 
     unblockConfirmationDialogRef.afterClosed().pipe(
       tap(result => {
+        if (!result || result?.success === false) {
+          this.disabledUnblockButton = false;
+        }
+
         if(result?.showSnackbar) {
           this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
-        
+          this.disabledUnblockButton = false;
+
           this.user.isBlocked = false;
           this.userProvider.user.next(this.user);
         }

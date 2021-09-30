@@ -1,5 +1,5 @@
 <div *ngIf="user?.role === 'ADMINISTRATOR'" class="admin-action-row">
-  <button mat-raised-button color="accent" (click)="createRoomOpenDialog($event)">
+  <button mat-raised-button color="accent" (click)="createRoomOpenDialog($event)" [disabled]="disabledCreateRoomButton">
     <mat-icon>add</mat-icon>
     Dodaj pokój
   </button>

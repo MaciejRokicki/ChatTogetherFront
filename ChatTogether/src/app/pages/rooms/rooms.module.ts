@@ -12,6 +12,7 @@ import { EditRoomDialogComponent } from './edit-room-dialog/edit-room-dialog.com
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { CreateRoomDialogComponent } from './create-room-dialog/create-room-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MessageTimeConverterPipe } from 'src/app/utils/pipes/messageTimeConverter';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MessageComponent,
         EditRoomDialogComponent,
         DeleteRoomDialogComponent,
-        CreateRoomDialogComponent
+        CreateRoomDialogComponent,
+        MessageTimeConverterPipe,
     ],
     imports: [
         RoomsRoutingModule,
@@ -28,6 +30,8 @@ import { MatDialogModule } from '@angular/material/dialog';
         MatTableModule,
         MatDialogModule,
     ],
-    exports: []
+    exports: [
+        MessageTimeConverterPipe
+    ]
 })
 export class RoomsModule { }

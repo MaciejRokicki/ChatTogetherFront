@@ -41,8 +41,8 @@ export class SignupComponent implements OnInit {
 
   invalidFormMatcher = new FormControlStateMatcher();
 
-  infoMessage: string = "";
   errorMessage: string = "";
+  showSpinner: boolean = false;
 
   constructor(private securityProvider: SecurityProvider, private router: Router, private snackbarService: SnackbarService) { }
 
@@ -55,13 +55,17 @@ export class SignupComponent implements OnInit {
       this.signupForm.get("nickname").value);
 
     this.securityProvider.signup(signupModel);
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultSignup.pipe(
       tap((res: Result) => {
-        this.infoMessage = "";
         this.errorMessage = "";
 
         switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+            
           case ResultStage.SUCCESS:
+            this.showSpinner = false;
             this.snackbarService.open("Konto zostało założone, musisz jeszcze je aktywować, na  Twój adres email wysłaliśmy link potwierdzający założenie konta.", 30000, SnackbarVariant.SUCCESS)
             this.router.navigate(['security/signin']);
             break;
@@ -78,10 +82,8 @@ export class SignupComponent implements OnInit {
                 this.errorMessage = "Podana nazwa użytkownika jest zajęta.";
                 break;
             }
-            break;
 
-          case ResultStage.WAITING:
-            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            this.showSpinner = false;
             break;
         }
       })

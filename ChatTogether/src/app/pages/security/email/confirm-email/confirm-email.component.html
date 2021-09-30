@@ -1,23 +1,27 @@
-<div class="container">
+<div class="container" *ngIf="!showSpinner; else showSpinnerTemplate">
     <div class="app-title">
         ChatTogether
     </div>
-    <div class="content">
-        <div class="title">
-            Potwierdzenie adres email
-        </div>
-        <mat-card *ngIf="infoMessage" class="panel panel-info">
-            <div>{{ infoMessage }}</div>
-        </mat-card>
-        <mat-card *ngIf="errorMessage" class="panel panel-error">
+    <div>
+        <div *ngIf="errorMessage" class="panel panel-error">
             {{ errorMessage }}
-        </mat-card>
-        <div>
-            Kliknij w przycisk jeśli chcesz potwierdzić adres email.
         </div>
-        <button mat-raised-button color="primary" (click)="confirm()">
-            Potwierdź adres email
-            <mat-icon>send</mat-icon>
-        </button>
+        <div class="content">
+            <div class="title">
+                Potwierdzenie adres email
+            </div>
+            <div>
+                Kliknij w przycisk jeśli chcesz potwierdzić adres email.
+            </div>
+            <button mat-raised-button color="primary" (click)="confirm()">
+                Potwierdź adres email
+                <mat-icon>send</mat-icon>
+            </button>
+        </div>
     </div>
 </div>
+<ng-template #showSpinnerTemplate>
+    <div class="container-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

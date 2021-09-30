@@ -1,7 +1,8 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { BehaviorSubject, Subject, Subscription } from "rxjs";
-import { tap } from "rxjs/operators";
+import { BehaviorSubject, Subject, Subscription, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
+import { Result, ResultStage } from "../entities/result";
 import { CreateRoomModel } from "../entities/Room/createRoomModel";
 import { Room } from "../entities/Room/room";
 import { UpdateRoomModel } from "../entities/Room/updateRoomModel";
@@ -17,6 +18,10 @@ export class RoomProvider {
     rooms = new BehaviorSubject<Room[]>([]);
 
     removeRoomUsersListener: Subscription;
+
+    public resultCreateRoom = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultUpdateRoom = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultDeleteRoom = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
     constructor(
         private roomService: RoomService,
@@ -72,14 +77,44 @@ export class RoomProvider {
     }
 
     public createRoom(room: CreateRoomModel): void {
-        this.roomService.createRoom(room).subscribe();
+        this.resultCreateRoom.next(new Result(ResultStage.WAITING, undefined));
+
+        this.roomService.createRoom(room).pipe(
+            tap(() => {
+                this.resultCreateRoom.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultCreateRoom.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
+            })
+        ).subscribe();
     }
 
     public updateRoom(room: UpdateRoomModel): void {
-        this.roomService.updateRoom(room).subscribe();
+        this.resultUpdateRoom.next(new Result(ResultStage.WAITING, undefined));
+
+        this.roomService.updateRoom(room).pipe(
+            tap(() => {
+                this.resultUpdateRoom.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultUpdateRoom.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
+            })
+        ).subscribe();
     }
 
     public deleteRoom(id: number): void {
-        this.roomService.deleteRoom(id).subscribe();
+        this.resultDeleteRoom.next(new Result(ResultStage.WAITING, undefined));
+
+        this.roomService.deleteRoom(id).pipe(
+            tap(() => {
+                this.resultDeleteRoom.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultDeleteRoom.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
+            })
+        ).subscribe();
     }
 }

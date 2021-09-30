@@ -1,62 +1,66 @@
-<div class="container">
+<div class="container" *ngIf="!showSpinner; else showSpinnerTemplate">
     <div class="app-title">
         ChatTogether
     </div>
-    <div class="content">
-        <form [formGroup]="signinForm" class="security-form" (ngSubmit)="onSubmit()">
-            <div class="title">
-                Logowanie
-            </div>
-            <mat-card *ngIf="infoMessage" class="panel panel-info">
-                <div>{{ infoMessage }}</div>
-            </mat-card>
-            <mat-card *ngIf="successMessage" class="panel panel-success">
-                <div>{{ successMessage }}</div>
-            </mat-card>
-            <mat-card *ngIf="errorMessage" class="panel panel-error">
-                <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
+    <div>
+        <div *ngIf="successMessage" class="panel panel-success">
+            <div>{{ successMessage }}</div>
+        </div>
+        <div *ngIf="errorMessage" class="panel panel-error">
+            <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
+                {{ errorMessage }}
+                <br>
+                Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
+            </p>
+            <ng-template #confirmed>
+                <div *ngIf="errorMessage == 'Twoje konto zostało zablokowane.' else elseIf" style="width: 100%;">
                     {{ errorMessage }}
                     <br>
-                    Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
-                </p>
-                <ng-template #confirmed>
-                    <div *ngIf="errorMessage == 'Twoje konto zostało zablokowane.' else elseIf" style="width: 100%;">
-                        {{ errorMessage }}
-                        <br>
-                        <br>
-                        Powod
-                        <br>
-                        <div style="color: black">
-                            {{ blockReason }}
-                        </div>
-                        Czas blokady
-                        <br>
-                        <div style="color: black">
-                            {{ blockedTo }}
-                        </div>                   
+                    <br>
+                    Powod
+                    <br>
+                    <div style="color: black">
+                        {{ blockReason }}
                     </div>
-                    <ng-template #elseIf>
-                        {{ errorMessage }}
-                    </ng-template>
+                    Czas blokady
+                    <br>
+                    <div style="color: black">
+                        {{ blockedTo | UTCDateConverter | date:'dd.MM.yyyy HH:mm' }}
+                    </div>                   
+                </div>
+                <ng-template #elseIf>
+                    {{ errorMessage }}
                 </ng-template>
-            </mat-card>
-            <mat-form-field appearance="outline">
-                <mat-label>Adres email</mat-label>
-                <input matInput formControlName="email">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>Hasło</mat-label>
-                <input matInput type="password" formControlName="password">
-            </mat-form-field>
-            <a [routerLink]="['/security/password/forgot']" class="forgot-password">Nie pamiętasz hasła?</a>
-            <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
-                Zaloguj się
-                <mat-icon>login</mat-icon>
-            </button>
-            <span class="separator">lub</span>
-            <button mat-raised-button color="primary" type="button" (click)="navigateToSignUpPage()">
-                Zarejestruj się
-            </button>
-        </form>
+            </ng-template>
+        </div>
+        <div class="content">
+            <form [formGroup]="signinForm" class="security-form" (ngSubmit)="onSubmit()">
+                <div class="title">
+                    Logowanie
+                </div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Adres email</mat-label>
+                    <input matInput formControlName="email">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <mat-label>Hasło</mat-label>
+                    <input matInput type="password" formControlName="password">
+                </mat-form-field>
+                <a [routerLink]="['/security/password/forgot']" class="forgot-password">Nie pamiętasz hasła?</a>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!signinForm.valid">
+                    Zaloguj się
+                    <mat-icon>login</mat-icon>
+                </button>
+                <span class="separator">lub</span>
+                <button mat-raised-button color="primary" type="button" (click)="navigateToSignUpPage()">
+                    Zarejestruj się
+                </button>
+            </form>
+        </div>
     </div>
 </div>
+<ng-template #showSpinnerTemplate>
+    <div class="container-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

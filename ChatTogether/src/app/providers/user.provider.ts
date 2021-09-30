@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Subject } from "rxjs";
-import { tap } from "rxjs/operators";
+import { BehaviorSubject, Subject, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 import { Page } from "../entities/page";
 import { Result, ResultStage } from "../entities/result";
 import { Role, User } from "../entities/user";
@@ -14,7 +14,10 @@ export class UserProvider {
     user = new Subject<User>();
     users = new BehaviorSubject<Page<User>>(null);
 
-    public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultGetUser = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultGetUsers = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangeNickname = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangeUserData = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
     constructor(
         private userService: UserService,
@@ -22,7 +25,7 @@ export class UserProvider {
         ) {}
 
     getUser(nickname: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultGetUser.next(new Result(ResultStage.WAITING, undefined));
 
         this.userService.getUser(nickname).pipe(
             tap((user: User) => {
@@ -33,40 +36,56 @@ export class UserProvider {
                     user.birthDate = bd;
                 }
                this.user.next(user);
-               this.result.next(new Result(ResultStage.SUCCESS, undefined));
+               this.resultGetUser.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultGetUser.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
             })
         ).subscribe()
     }
 
     getUsers(page: number, search?: string, role?: Role): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultGetUsers.next(new Result(ResultStage.WAITING, undefined));
         
         this.userService.getUsers(page, search, role).pipe(
             tap((page: Page<User>) => {
                 this.users.next(page);
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultGetUsers.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultGetUsers.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
             })
         ).subscribe();
     }
 
     changeNickname(nickname: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangeNickname.next(new Result(ResultStage.WAITING, undefined));
 
         this.userService.changeNickname(nickname).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultChangeNickname.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultChangeNickname.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
             })
         ).subscribe();
     }
 
     changeUserData(user: User): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangeUserData.next(new Result(ResultStage.WAITING, undefined));
         
         this.userService.changeUserData(user).pipe(
             tap((newUser: User) => {
                 this.user.next(newUser);
                 this.securityProvider.user.next(newUser);
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultChangeUserData.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultChangeUserData.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
             })
         ).subscribe();
     }

@@ -28,7 +28,7 @@ export class UnblockConfirmationDialogComponent implements OnInit {
   unblock(): void {
     this.securityProvider.unblockUser(this.data.userId);
     
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultUnblockUser.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
@@ -38,6 +38,13 @@ export class UnblockConfirmationDialogComponent implements OnInit {
             this.close({
               showSnackbar: true
             });
+            break;
+
+          case ResultStage.ERROR:
+            this.close({
+              showSnackbar: false,
+              success: false
+            })
             break;
         }
       })

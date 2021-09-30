@@ -6,6 +6,7 @@ import { tap } from 'rxjs/operators';
 import { IPaginator } from 'src/app/components/paginator/ipaginator';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 import { Page } from 'src/app/entities/page';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { BlockedUser } from 'src/app/entities/Security/blockedUser';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { SnackbarService } from 'src/app/services/snackbar.service';
@@ -27,6 +28,8 @@ export class BlockedUsersComponent implements OnInit, OnDestroy, IPaginator {
   blockedUsers: Page<BlockedUser>
   blockedUsers$: Subscription = new Subscription();
 
+  showSpinner: boolean = true;
+
   constructor(
     private securityProvider: SecurityProvider,
     private dialog: MatDialog,
@@ -37,6 +40,24 @@ export class BlockedUsersComponent implements OnInit, OnDestroy, IPaginator {
     }
 
   ngOnInit(): void {
+    this.securityProvider.resultGetBlockedUsers.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+          
+          case ResultStage.SUCCESS:
+            this.showSpinner = false;
+            break;
+
+          case ResultStage.ERROR:
+            this.showSpinner = false;
+            break;
+        }
+      })
+    ).subscribe();
+
     this.securityProvider.getBlockedUsers(1, null);
 
     this.blockedUsers$ = this.securityProvider.blockedUsers.pipe(

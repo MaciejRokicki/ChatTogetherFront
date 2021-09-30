@@ -6,7 +6,6 @@ export class Message {
     nickname: string;
     roomId: number;
     sendTime: Date;
-    sendTimeStr: string;
     receivedTime: Date;
 
     constructor(

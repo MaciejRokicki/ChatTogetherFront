@@ -51,7 +51,7 @@ export class BlockUserDialogComponent implements OnInit {
 
     this.securityProvider.blockUser(blockUserModel);
 
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultBlockUser.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
@@ -61,6 +61,13 @@ export class BlockUserDialogComponent implements OnInit {
             this.close({
               showSnackbar: true
             });
+            break;
+
+          case ResultStage.ERROR:
+            this.close({
+              showSnackbar: false,
+              success: false
+            })
             break;
         }
       })

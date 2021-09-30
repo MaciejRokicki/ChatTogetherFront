@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IPaginator } from 'src/app/components/paginator/ipaginator';
 import { Page } from 'src/app/entities/page';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { Role, User } from 'src/app/entities/user';
 import { UserProvider } from 'src/app/providers/user.provider';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
@@ -24,6 +25,8 @@ export class UsersComponent implements OnInit, OnDestroy, IPaginator {
   users: Page<User>;
   users$: Subscription = new Subscription();
 
+  showSpinner: boolean = true;
+
   roleTranslations: Object = {
     "ADMINISTRATOR": "Administrator",
     "MODERATOR": "Moderator",
@@ -38,6 +41,24 @@ export class UsersComponent implements OnInit, OnDestroy, IPaginator {
     }
 
   ngOnInit(): void {
+    this.userProvider.resultGetUsers.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+          
+          case ResultStage.SUCCESS:
+            this.showSpinner = false;
+            break;
+
+          case ResultStage.ERROR:
+            this.showSpinner = false;
+            break;
+        }
+      })
+    ).subscribe();
+
     this.userProvider.getUsers(1, null);
 
     this.users$ = this.userProvider.users.pipe(

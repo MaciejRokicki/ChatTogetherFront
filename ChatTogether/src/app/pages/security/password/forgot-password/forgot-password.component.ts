@@ -14,10 +14,11 @@ export class ForgotPasswordComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email])
   });
 
-  infoMessage: string = "";
   successMessage: string = "";
   errorMessage: string = "";
   
+  showSpinner: boolean = false;
+
   constructor(
     private securityProvider : SecurityProvider
   ) { }
@@ -29,15 +30,19 @@ export class ForgotPasswordComponent implements OnInit {
   onSubmit() {
     let email = this.forgotPasswordForm.get("email").value;
     this.securityProvider.forgotPassword(email);
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultForgotPassword.pipe(
       tap((res: Result) => {
-        this.infoMessage = "";
         this.successMessage = "";
         this.errorMessage = "";
 
         switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+            
           case ResultStage.SUCCESS:
             this.successMessage = "Link do zmiany hasła został wysłany na podany adres email.";
+            this.showSpinner = false;
             break;
 
           case ResultStage.ERROR:
@@ -49,10 +54,7 @@ export class ForgotPasswordComponent implements OnInit {
                 this.errorMessage = "Nieprawidłowy format danych.";
                 break;
             }
-            break;
-
-          case ResultStage.WAITING:
-            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            this.showSpinner = false;
             break;
         }
       })

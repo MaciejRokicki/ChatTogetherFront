@@ -43,16 +43,24 @@ export class EditAboutMeDialogComponent implements OnInit {
     
     this.userProvider.changeUserData(newUser);
 
-    this.userProvider.result.pipe(
+    this.userProvider.resultChangeUserData.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
+            
             break;
 
           case ResultStage.SUCCESS:
             this.close({
               showSnackbar: true
             });
+            break;
+
+          case ResultStage.ERROR:
+            this.close({
+              showSnackbar: false,
+              success: false
+            })
             break;
         }
       })

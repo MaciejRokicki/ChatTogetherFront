@@ -21,7 +21,19 @@ import { SnackbarService } from "../services/snackbar.service";
 })
 export class SecurityProvider {
     public user = new BehaviorSubject<User>(null);
-    public result = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultSignup = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultSignin = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangeEmail = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangePassword = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultForgotPassword = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultConfirmEmail = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultResendConfirmationEmail = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangeEmailRequest = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangePasswordRequest = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultGetBlockedUsers = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultBlockUser = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultUnblockUser = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public resultChangeRole = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
 
     public blockedUsers = new BehaviorSubject<Page<BlockedUser>>(null)
 
@@ -47,32 +59,32 @@ export class SecurityProvider {
         }
 
     signup(signupModel: SignupModel): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultSignup.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.signup(signupModel).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultSignup.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultSignup.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
     }
 
     signin(signinModel: SigninModel): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultSignin.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.signin(signinModel).pipe(
             tap((user: User) => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultSignin.next(new Result(ResultStage.SUCCESS, undefined));
                 this.user.next(user);
             }),
             tap(() => {
                 this.router.navigate(['/']);
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultSignin.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
@@ -115,91 +127,91 @@ export class SecurityProvider {
     }
 
     changeEmail(token: string, newEmail: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangeEmail.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.changeEmail(token, newEmail).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined))
+                this.resultChangeEmail.next(new Result(ResultStage.SUCCESS, undefined))
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultChangeEmail.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);       
             })
         ).subscribe();
     }
 
     changePassword(token: string, newPassword: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangePassword.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.changePassword(token, newPassword).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultChangePassword.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultChangePassword.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
     }
     
     forgotPassword(email: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultForgotPassword.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.forgotPassword(email).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultForgotPassword.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultForgotPassword.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();;
     }
 
     confirmEmail(email: string, token: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultConfirmEmail.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.confirmEmail(email, token).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultConfirmEmail.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultConfirmEmail.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();;
     }
 
     resendConfirmationEmail(email: string): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultResendConfirmationEmail.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.resendConfirmationEmail(email).pipe(
             tap(() => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultResendConfirmationEmail.next(new Result(ResultStage.SUCCESS, undefined));
             }),
             catchError(err => {
-                this.result.next(new Result(ResultStage.ERROR, err.error));
+                this.resultResendConfirmationEmail.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
             })
         ).subscribe();
     }
 
     changeEmailRequest(): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangeEmailRequest.next(new Result(ResultStage.WAITING, undefined));
 
         this.securityService.changeEmailRequest().subscribe({
             complete: () => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultChangeEmailRequest.next(new Result(ResultStage.SUCCESS, undefined));
             }
         });
     }
 
     changePasswordRequest(): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangePasswordRequest.next(new Result(ResultStage.WAITING, undefined));
         
         this.securityService.changePasswordRequest().subscribe({
             complete: () => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultChangePasswordRequest.next(new Result(ResultStage.SUCCESS, undefined));
             }
         });
     }
@@ -221,39 +233,46 @@ export class SecurityProvider {
     }
 
     getBlockedUsers(page: number, search?: string): void {
+        this.resultGetBlockedUsers.next(new Result(ResultStage.WAITING, undefined));
+
         this.securityService.getBlockedUsers(page, search).pipe(
             tap((page: Page<BlockedUser>) => {
                 this.blockedUsers.next(page);
+                this.resultGetBlockedUsers.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultGetBlockedUsers.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
             })
         ).subscribe();
     }
 
     blockUser(blockUserModel: BlockUserModel): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultBlockUser.next(new Result(ResultStage.WAITING, undefined));
 
         this.securityService.blockUser(blockUserModel).subscribe({
             complete: () => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultBlockUser.next(new Result(ResultStage.SUCCESS, undefined));
             }
         });
     }
 
     unblockUser(userId: number): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultUnblockUser.next(new Result(ResultStage.WAITING, undefined));
 
         this.securityService.unblockUser(userId).subscribe({
             complete: () => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultUnblockUser.next(new Result(ResultStage.SUCCESS, undefined));
             }
         });
     }
 
     changeRole(changeRoleModel: ChangeRoleModel): void {
-        this.result.next(new Result(ResultStage.WAITING, undefined));
+        this.resultChangeRole.next(new Result(ResultStage.WAITING, undefined));
 
         this.securityService.changeRole(changeRoleModel).subscribe({
             complete: () => {
-                this.result.next(new Result(ResultStage.SUCCESS, undefined));
+                this.resultChangeRole.next(new Result(ResultStage.SUCCESS, undefined));
             }
         });
     }

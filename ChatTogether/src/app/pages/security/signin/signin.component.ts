@@ -29,12 +29,13 @@ export class SigninComponent implements OnInit {
     ]),
   });
 
-  infoMessage: string = "";
   successMessage: string = "";
   errorMessage: string = "";
 
   blockReason: string = "";
   blockedTo: string = "";
+
+  showSpinner: boolean = false;
 
   constructor(private securityProvider: SecurityProvider, private router: Router, private datePipe: DatePipe) { }
 
@@ -43,9 +44,8 @@ export class SigninComponent implements OnInit {
 
   resendConfirmationEmail(): void {
     this.securityProvider.resendConfirmationEmail(this.signinForm.get('email').value);
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultResendConfirmationEmail.pipe(
       tap((res: Result) => {
-        this.infoMessage = "";
         this.successMessage = "";
         this.errorMessage = "";
 
@@ -53,16 +53,18 @@ export class SigninComponent implements OnInit {
         this.blockedTo = "";
 
         switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+
           case ResultStage.SUCCESS:
             this.successMessage = "Link potwierdzający został wysłany ponownie.";
+            this.showSpinner = false;
             break;
 
           case ResultStage.ERROR:
             this.errorMessage = "Coś poszło nie tak :(";
-            break;
-
-          case ResultStage.WAITING:
-            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            this.showSpinner = false;
             break;
         }
       })
@@ -70,7 +72,6 @@ export class SigninComponent implements OnInit {
   }
 
   onSubmit() {
-    this.infoMessage = "";
     this.errorMessage = "";
 
     this.blockReason = "";
@@ -79,27 +80,38 @@ export class SigninComponent implements OnInit {
     let signinModel: SigninModel = new SigninModel(this.signinForm.get("email").value, this.signinForm.get("password").value);
     this.securityProvider.signin(signinModel);
     //TODO: pomyslec nad kodami zamiast na sztywno podawac tresc wiadomosci
-    this.securityProvider.result.pipe(
+    this.securityProvider.resultSignin.pipe(
       tap((res: Result) => {
-        if (res.Stage === ResultStage.ERROR) {
-          switch (res.Message) {
-            case "Incorrect data.":
-              this.errorMessage = "Podano niepoprawne dane.";
-              break;
-            case "Unconfirmed account.":
-              this.errorMessage = "Konto nie zostało jeszcze potwierdzone.";
-              break;
-            case "Invalid data.":
-              this.errorMessage = "Nieprawidłowy format danych.";
-              break;
-            default:
-              if (res.Message["message"] === "Blocked account.") {
-                this.errorMessage = "Twoje konto zostało zablokowane.";
-                this.blockReason = res.Message["data"]["Reason"];
-                this.blockedTo = res.Message["data"]["BlockedTo"] === null ? "Permanentnie" : this.datePipe.transform(res.Message["data"]["BlockedTo"], "yyyy-MM-dd HH:mm");
-              }
-              break;
-          }
+        switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+            
+          case ResultStage.SUCCESS:
+            this.showSpinner = false;
+            break;
+
+          case ResultStage.ERROR:
+            switch (res.Message) {
+              case "Incorrect data.":
+                this.errorMessage = "Podano niepoprawne dane.";
+                break;
+              case "Unconfirmed account.":
+                this.errorMessage = "Konto nie zostało jeszcze potwierdzone.";
+                break;
+              case "Invalid data.":
+                this.errorMessage = "Nieprawidłowy format danych.";
+                break;
+              default:
+                if (res.Message["message"] === "Blocked account.") {
+                  this.errorMessage = "Twoje konto zostało zablokowane.";
+                  this.blockReason = res.Message["data"]["Reason"];
+                  this.blockedTo = res.Message["data"]["BlockedTo"] === null ? "Permanentnie" : this.datePipe.transform(res.Message["data"]["BlockedTo"], "yyyy-MM-dd HH:mm");
+                }
+                break;
+            }
+            this.showSpinner = false;
+            break;
         }
       })
     ).subscribe();

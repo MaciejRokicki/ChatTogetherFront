@@ -34,7 +34,7 @@ export class ChangeNicknameDialogComponent implements OnInit {
     changeNickname(): void {
       this.userProvider.changeNickname(this.changeNicknameForm.get('nickname').value);
   
-      this.userProvider.result.pipe(
+      this.userProvider.resultChangeNickname.pipe(
         tap((result: Result) => {
           switch (result.Stage) {
             case ResultStage.WAITING:
@@ -44,6 +44,13 @@ export class ChangeNicknameDialogComponent implements OnInit {
               this.close({
                 showSnackbar: true
               });
+              break;
+
+            case ResultStage.ERROR:
+              this.close({
+                showSnackbar: false,
+                success: false
+              })
               break;
           }
         })

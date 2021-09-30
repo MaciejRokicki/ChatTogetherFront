@@ -16,9 +16,11 @@ export class ChangeEmailComponent implements OnInit {
     newEmail: new FormControl('', [Validators.required, Validators.email])
   });
 
-  infoMessage: string = "";
   successMessage: string = "";
   errorMessage: string = "";
+
+  showSpinner: boolean = false;
+
   result$: Subscription;
 
   email: string;
@@ -44,15 +46,19 @@ export class ChangeEmailComponent implements OnInit {
   onSubmit() {
     let newEmail = this.changeEmailForm.get("newEmail").value;
     this.securityProvider.changeEmail(this.token, newEmail);
-    this.result$ = this.securityProvider.result.pipe(
+    this.result$ = this.securityProvider.resultChangeEmail.pipe(
       tap((res: Result) => {
-        this.infoMessage = "";
         this.successMessage = "";
         this.errorMessage = "";
 
         switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+            
           case ResultStage.SUCCESS:
             this.successMessage = "Adres email został zmieniony. Sprawdź nowy adres email w celu potwierdzenia adresu.";
+            this.showSpinner = false;
             break;
 
           case ResultStage.ERROR:
@@ -67,10 +73,7 @@ export class ChangeEmailComponent implements OnInit {
                 this.errorMessage = "Nieprawidłowy format danych.";
                 break;
             }
-            break;
-
-          case ResultStage.WAITING:
-            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            this.showSpinner = false;
             break;
         }
       })

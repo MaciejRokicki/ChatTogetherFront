@@ -31,6 +31,8 @@ export class RoomsComponent implements OnInit, OnDestroy {
 
   rooms$: Subscription = new Subscription();
 
+  disabledCreateRoomButton: boolean = false;
+
   constructor(
     private roomProvider : RoomProvider,
     private router: Router,
@@ -74,17 +76,26 @@ export class RoomsComponent implements OnInit, OnDestroy {
     event.preventDefault();
     event.stopPropagation();
 
+    this.disabledCreateRoomButton = true;
+
     const createRoomDialogRef = this.dialog.open(CreateRoomDialogComponent, {
       width: 'calc(100% - 30px)',
       minWidth: 300,
       maxWidth: 400,
     });
 
-    createRoomDialogRef.afterClosed().subscribe(result => {
-      if(result?.showSnackbar) {
-        this.snackbarService.open("Pokój został dodany.", 10000, SnackbarVariant.SUCCESS);
-      }
-    }); 
+    createRoomDialogRef.afterClosed().pipe(
+      tap(result => {    
+        if (!result || result?.success === false) {
+          this.disabledCreateRoomButton = false;
+        }
+
+        if(result?.showSnackbar) {
+          this.snackbarService.open("Pokój został dodany.", 10000, SnackbarVariant.SUCCESS);
+          this.disabledCreateRoomButton = false;
+        }
+      })
+    ).subscribe(); 
   }
 
   public editRoomOpenDialog(event: Event, room: UpdateRoomModel) {

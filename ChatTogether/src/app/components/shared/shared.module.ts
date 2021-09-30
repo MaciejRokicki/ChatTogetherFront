@@ -7,10 +7,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+import { UTCDateConverterPipe } from 'src/app/utils/pipes/utcDateConverter';
 
 @NgModule({
   declarations: [ 
-
+    UTCDateConverterPipe,
   ],
   imports: [
     CommonModule,
@@ -20,6 +23,7 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule
   ],
   exports: [
     CommonModule,
@@ -29,6 +33,8 @@ import { MatCardModule } from '@angular/material/card';
     MatIconModule,
     MatButtonModule,
     MatCardModule,
+    MatProgressSpinnerModule,
+    UTCDateConverterPipe,
   ]
 })
 export class SharedModule { }

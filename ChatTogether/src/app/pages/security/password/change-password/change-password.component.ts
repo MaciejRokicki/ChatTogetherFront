@@ -27,8 +27,8 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     ])
   });
 
-  infoMessage: string = "";
   errorMessage: string = "";
+  showSpinner: boolean = false;
 
   result$: Subscription;
 
@@ -57,13 +57,17 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   onSubmit() {
     let newPassword = this.changePasswordForm.get("password").value;
     this.securityProvider.changePassword(this.token, newPassword);
-    this.result$ = this.securityProvider.result.pipe(
+    this.result$ = this.securityProvider.resultChangePassword.pipe(
       tap((res: Result) => {
-        this.infoMessage = "";
         this.errorMessage = "";
 
         switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+            
           case ResultStage.SUCCESS:
+            this.showSpinner = false;
             this.snackbarService.open("Hasło zostało zmienione.", 30000, SnackbarVariant.SUCCESS);
             this.router.navigate(['security/signin']);
             break;
@@ -77,10 +81,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
                 this.errorMessage = "Nieprawidłowy format danych.";
                 break;
             }
-            break;
-
-          case ResultStage.WAITING:
-            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            this.showSpinner = false;
             break;
         }
       })

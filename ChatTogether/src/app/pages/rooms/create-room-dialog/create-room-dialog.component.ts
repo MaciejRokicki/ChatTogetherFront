@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { tap } from 'rxjs/operators';
+import { Result, ResultStage } from 'src/app/entities/result';
 import { CreateRoomModel } from 'src/app/entities/Room/createRoomModel';
 import { RoomProvider } from 'src/app/providers/room.provider';
 import { FormControlStateMatcher } from 'src/app/utils/formControlStateMatcher';
@@ -39,8 +41,27 @@ export class CreateRoomDialogComponent implements OnInit {
 
     this.roomProvider.createRoom(room);
 
-    this.close({
-      showSnackbar: true
-    });
+    this.roomProvider.resultCreateRoom.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            
+            break;
+
+          case ResultStage.SUCCESS:
+            this.close({
+              showSnackbar: true
+            });
+            break;
+
+          case ResultStage.ERROR:
+            this.close({
+              showSnackbar: false,
+              success: false
+            })
+            break;
+        }
+      })
+    ).subscribe();
   }
 }

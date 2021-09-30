@@ -13,8 +13,9 @@ import { SnackbarService } from 'src/app/services/snackbar.service';
   styleUrls: ['../../security.scss', './confirm-email.component.scss']
 })
 export class ConfirmEmailComponent implements OnInit {
-  infoMessage: string = "";
   errorMessage: string = "";
+
+  showSpinner: boolean = false;
 
   result$: Subscription;
 
@@ -42,13 +43,17 @@ export class ConfirmEmailComponent implements OnInit {
 
   confirm(): void {
     this.securityProvider.confirmEmail(this.email, this.token);
-    this.result$ = this.securityProvider.result.pipe(
+    this.result$ = this.securityProvider.resultConfirmEmail.pipe(
       tap((res: Result) => {
-        this.infoMessage = "";
         this.errorMessage = "";
 
         switch (res.Stage) {
+          case ResultStage.WAITING:
+            this.showSpinner = true;
+            break;
+            
           case ResultStage.SUCCESS:
+            this.showSpinner = false;
             this.snackbarService.open("Adres email został potwierdzony, możesz się teraz zalogować.", 30000, SnackbarVariant.SUCCESS);
             this.router.navigate(['security/signin']);
             break;
@@ -65,10 +70,7 @@ export class ConfirmEmailComponent implements OnInit {
                 this.errorMessage = "Coś poszło nie tak :(";
                 break;
             }
-            break;
-
-          case ResultStage.WAITING:
-            this.infoMessage = "Daj nam chwilę, pracujemy nad tym...";
+            this.showSpinner = false;
             break;
         }
       })
