@@ -7,11 +7,11 @@
             <div>{{ successMessage }}</div>
         </div>
         <div *ngIf="errorMessage" class="panel panel-error">
-            <p *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
+            <div *ngIf="errorMessage == 'Konto nie zostało jeszcze potwierdzone.' else confirmed">
                 {{ errorMessage }}
                 <br>
                 Wyślij link potwierdzający <a class="resend" (click)="resendConfirmationEmail()">jeszcze raz</a>.
-            </p>
+            </div>
             <ng-template #confirmed>
                 <div *ngIf="errorMessage == 'Twoje konto zostało zablokowane.' else elseIf" style="width: 100%;">
                     {{ errorMessage }}
