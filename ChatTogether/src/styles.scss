@@ -37,28 +37,35 @@ body {
     color: whitesmoke !important;  
 }
 
+.full-height {
+    height: 100%;
+}
+
+.blurry-background {
+    height: 100%; 
+    filter: blur(1px) brightness(.7);
+}
+
 .blocked-background {
     position: fixed;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: black;
-    opacity: 0.8;
     z-index: 1;
     height: 100%;
     width: 100%;
-    top: 0;
-    left: 0;
 }
 
-.blocked-background-message {
+.blocked-background-content {
     position: absolute;
-    z-index: 2;
     color: #ff1a1a;
     font-size: 18px;
-    background-color: white;
+    background-color: whitesmoke;
     padding: 15px 25px 15px 25px;
     border-radius: 20px;
+    border: solid 2px;
+    border-color: gray;
+    margin: 20px;
 }
 
 @media only screen and (max-width: 768px) {

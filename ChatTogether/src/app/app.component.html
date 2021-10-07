@@ -1,10 +1,12 @@
 <div class="container" *ngIf="user; else loginPage">
-  <app-topbar></app-topbar>
-  <app-sidebar [user]="user" [items]="siderbarItems"></app-sidebar>
   <div *ngIf="blockedBackground?.show" class="blocked-background">
-    <div class="blocked-background-message">
+    <div class="blocked-background-content">
       {{ blockedBackground.message }}
     </div>
+  </div>
+  <div [ngClass]="blockedBackground?.show === true ? 'blurry-background' : 'full-height'"> 
+    <app-topbar></app-topbar>
+    <app-sidebar [user]="user" [items]="siderbarItems"></app-sidebar>
   </div>
 </div>
 <ng-template #loginPage>
