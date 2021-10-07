@@ -181,7 +181,13 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    var message: Message = new Message(this.messageForm.get('message').value, this.userNickname, this.id, new Date());
+    var message: Message = new Message(
+      this.messageForm.get('message').value, 
+      this.userNickname, 
+      this.id, 
+      new Date()
+    );
+    
     this.messageProvider.sendMessage(message);
     this.messageForm.setValue({
       'message': ''

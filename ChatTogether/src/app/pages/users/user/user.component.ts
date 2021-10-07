@@ -106,6 +106,10 @@ export class UserComponent implements OnInit, OnDestroy {
           this.securityProvider.signout();
           this.router.navigate(['security/signin']);
         }
+
+        if(result?.msg == "Nickname is in use.") {
+          this.snackbarService.open("Podany pseudonim jest zajęty.", 10000, SnackbarVariant.ERROR);
+        }
       })
     ).subscribe();
   }

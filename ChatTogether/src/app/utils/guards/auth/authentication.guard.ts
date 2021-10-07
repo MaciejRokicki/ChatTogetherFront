@@ -8,7 +8,7 @@ import { SecurityProvider } from "src/app/providers/security.provider";
     providedIn: 'root'
 })
 
-export class AuthGuard implements CanActivate {
+export class AuthenticationGuard implements CanActivate {
     constructor(private securityProvider: SecurityProvider) {
         securityProvider.validate();
      }

@@ -72,6 +72,7 @@ export class SigninComponent implements OnInit {
   }
 
   onSubmit() {
+    this.successMessage = "";
     this.errorMessage = "";
 
     this.blockReason = "";

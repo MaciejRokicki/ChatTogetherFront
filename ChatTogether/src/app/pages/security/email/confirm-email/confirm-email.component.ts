@@ -37,8 +37,6 @@ export class ConfirmEmailComponent implements OnInit {
         this.token = params['token'];
       })
     ).subscribe();
-
-    console.log(this.email + " " + this.token);
   }
 
   confirm(): void {

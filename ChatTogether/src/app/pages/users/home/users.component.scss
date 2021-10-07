@@ -9,8 +9,17 @@
     align-items: center;
 }
 
+.table-container {
+    overflow: auto;
+}
+
 table {
     width: 100%;
+    min-width: 550px;
+}
+
+.mat-column-nickname {
+    width: 130px;
 }
 
 .mat-column-action {

@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from './utils/guards/auth/auth.guard';
+import { AuthenticationGuard } from './utils/guards/auth/authentication.guard';
 import { ModeratorGuard } from './utils/guards/auth/moderator.guard';
 
 const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/rooms/rooms.module').then(x => x.RoomsModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'security',
@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'users',
     loadChildren: () => import('./pages/users/users.module').then(x => x.UsersModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthenticationGuard]
   },
   {
     path: 'blocked-users',

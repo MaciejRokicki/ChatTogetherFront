@@ -43,8 +43,6 @@ export class BlockUserDialogComponent implements OnInit {
       blockedTo: this.blockForm.get('blockedTo').value
     }
 
-    console.log(this.blockForm.get('blockedTo').value);
-
     if (!blockUserModel.blockedTo) {
       blockUserModel.blockedTo = null;
     }

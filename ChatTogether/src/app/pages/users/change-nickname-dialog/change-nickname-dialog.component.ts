@@ -49,7 +49,8 @@ export class ChangeNicknameDialogComponent implements OnInit {
             case ResultStage.ERROR:
               this.close({
                 showSnackbar: false,
-                success: false
+                success: false,
+                msg: result.Message
               })
               break;
           }

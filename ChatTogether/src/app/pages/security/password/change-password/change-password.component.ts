@@ -50,8 +50,6 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
         this.token = params['token'];
       })
     ).subscribe();
-
-    console.log(this.email + " " + this.token);
   }
 
   onSubmit() {
