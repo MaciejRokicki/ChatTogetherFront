@@ -107,7 +107,7 @@ export class SigninComponent implements OnInit {
                 if (res.Message["message"] === "Blocked account.") {
                   this.errorMessage = "Twoje konto zostało zablokowane.";
                   this.blockReason = res.Message["data"]["Reason"];
-                  this.blockedTo = res.Message["data"]["BlockedTo"] === null ? "Permanentnie" : this.datePipe.transform(res.Message["data"]["BlockedTo"], "yyyy-MM-dd HH:mm");
+                  this.blockedTo = res.Message["data"]["BlockedTo"];
                 }
                 break;
             }

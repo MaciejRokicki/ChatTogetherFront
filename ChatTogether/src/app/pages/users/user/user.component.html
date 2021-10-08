@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-control">
                         <div *ngIf="user?.birthDate; else dateExists">
-                            {{user.birthDate | UTCDateConverter | date:'dd.MM.yyyy'}}
+                            {{user.birthDate | date:'dd.MM.yyyy'}}
                         </div>
                         <ng-template #dateExists>
                             <i>brak</i>

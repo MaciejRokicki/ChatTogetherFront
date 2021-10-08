@@ -9,12 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
-import { UTCDateConverterPipe } from 'src/app/utils/pipes/utcDateConverter';
-
 @NgModule({
-  declarations: [ 
-    UTCDateConverterPipe,
-  ],
+  declarations: [],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -34,7 +30,6 @@ import { UTCDateConverterPipe } from 'src/app/utils/pipes/utcDateConverter';
     MatButtonModule,
     MatCardModule,
     MatProgressSpinnerModule,
-    UTCDateConverterPipe,
   ]
 })
 export class SharedModule { }

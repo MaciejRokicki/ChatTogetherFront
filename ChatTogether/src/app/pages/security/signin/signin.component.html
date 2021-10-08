@@ -25,7 +25,7 @@
                     Czas blokady
                     <br>
                     <div style="color: black">
-                        {{ blockedTo | UTCDateConverter | date:'dd.MM.yyyy HH:mm' }}
+                        {{blockedTo ? (blockedTo | date:'dd.MM.yyyy HH:mm') : "Permanentnie"}}
                     </div>                   
                 </div>
                 <ng-template #elseIf>

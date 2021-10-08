@@ -289,7 +289,7 @@ export class UserComponent implements OnInit, OnDestroy {
         }
 
         if(result?.showSnackbar) {
-          this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało zablokowane.`, 10000, SnackbarVariant.SUCCESS); 
+          this.snackbarService.open(`Konto użytkownika: ${this.user.nickname} zostało odblokowane.`, 10000, SnackbarVariant.SUCCESS); 
           this.disabledUnblockButton = false;
 
           this.user.isBlocked = false;
