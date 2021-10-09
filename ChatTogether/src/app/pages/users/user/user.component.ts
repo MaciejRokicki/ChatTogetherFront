@@ -44,6 +44,8 @@ export class UserComponent implements OnInit, OnDestroy {
   disabledUnblockButton: boolean = false;
   disabledChangeRoleButton: boolean = false;
 
+  showSpinner: boolean = true;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -53,6 +55,24 @@ export class UserComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private snackbarService: SnackbarService
     ) {
+      this.userProvider.resultGetUser.pipe(
+        tap((result: Result) => {
+          switch (result.Stage) {
+            case ResultStage.WAITING:
+              this.showSpinner = true;
+              break;
+            
+            case ResultStage.SUCCESS:
+              this.showSpinner = false;
+              break;
+  
+            case ResultStage.ERROR:
+              this.showSpinner = false;
+              break;
+          }
+        })
+      ).subscribe();
+
       this.nickname$ = this.route.params.pipe(
         tap((params: Params) => {
           this.nickname = params['nickname'];

@@ -11,6 +11,6 @@ export class InformationHub extends Hub {
         .withUrl("https://localhost:44387/informationHub")
         .configureLogging(LogLevel.Information)
         .withAutomaticReconnect()
-        .build())
+        .build());
     }
 }

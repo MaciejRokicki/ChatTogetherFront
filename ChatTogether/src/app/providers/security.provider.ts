@@ -13,6 +13,7 @@ import { SigninModel } from "../entities/Security/SigninModel";
 import { SignupModel } from "../entities/Security/SignupModel";
 import { User } from "../entities/user";
 import { InformationHub } from "../Hubs/InformationHub";
+import { RoomHub } from "../Hubs/RoomHub";
 import { SecurityService } from "../services/security.service";
 import { SnackbarService } from "../services/snackbar.service";
 
@@ -21,6 +22,7 @@ import { SnackbarService } from "../services/snackbar.service";
 })
 export class SecurityProvider {
     public user = new BehaviorSubject<User>(null);
+    
     public resultSignup = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
     public resultSignin = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
     public resultChangeEmail = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
@@ -39,20 +41,21 @@ export class SecurityProvider {
 
     constructor(
         private securityService: SecurityService, 
-        private informationHub: InformationHub, 
+        private informationHub: InformationHub,
+        private roomHub: RoomHub,
         private router: Router,
         private snackbarService: SnackbarService
         ) { 
             this.user.pipe(
                 tap((user: User) => {
-                    let hubState: HubConnectionState = this.informationHub.conn.state;
-
                     if (user) {
-                        if(hubState === HubConnectionState.Disconnected) {
-                            this.informationHub.startConnection();
-                        }
+                        this.informationHub.startConnection();
+                        this.roomHub.startConnection();
 
                         this.listenerBlockSignout();
+                    } else {
+                        this.informationHub.stopConnection();
+                        this.roomHub.stopConnection();
                     }
                 })
             ).subscribe();

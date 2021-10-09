@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div class="wrapper"  *ngIf="!showSpinner; else showSpinnerTemplate">
     <div class="container">
         <div *ngIf="user?.isBlocked">
             <mat-card>
@@ -138,3 +138,8 @@
         </mat-card>
     </div>
 </div>
+<ng-template #showSpinnerTemplate>
+    <div class="container-spinner">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>

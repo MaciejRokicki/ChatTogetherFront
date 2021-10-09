@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 
 @Component({
@@ -10,14 +9,11 @@ import { SecurityProvider } from 'src/app/providers/security.provider';
 export class SignoutComponent implements OnInit {
 
   constructor(
-    private securityProvider: SecurityProvider,
-    private router: Router
+    private securityProvider: SecurityProvider
   ) { }
 
   ngOnInit(): void {
     this.securityProvider.signout();
-    this.router.navigate(['security/signin'])
-    this.securityProvider.user.subscribe().unsubscribe();
   }
 
 }

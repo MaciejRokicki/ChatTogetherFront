@@ -1,6 +1,6 @@
 import { Injector } from '@angular/core';
 import { Router } from '@angular/router';
-import { HubConnection } from '@microsoft/signalr';
+import { HubConnection, HubConnectionState } from '@microsoft/signalr';
 import { from, Observable } from "rxjs";
 import { BlockedBackgroundService } from '../services/blockedBackgroundService';
 
@@ -18,7 +18,6 @@ export abstract class Hub {
         this.blockedBackgroundService = this.injector.get(BlockedBackgroundService);
 
         this.conn = _conn;
-        this.startConnection();
 
         this.conn.onreconnecting(() => {
             if (!this.tryingToReconnect) {
@@ -42,6 +41,18 @@ export abstract class Hub {
     }
 
     public startConnection(): void {
-        this.conn$ = from(this.conn.start());
+        let state: HubConnectionState = this.conn.state;
+
+        if (state === HubConnectionState.Disconnected) {
+            this.conn$ = from(this.conn.start());
+        }
+    }
+
+    public stopConnection(): void {
+        let state: HubConnectionState = this.conn.state;
+
+        if (state === HubConnectionState.Connected) {
+            this.conn$ = from(this.conn.stop());
+        }
     }
 }
