@@ -22,7 +22,7 @@
                 <mat-form-field class="input-email" appearance="outline">
                     <mat-label>Adres email</mat-label>
                     <input matInput formControlName="email" [errorStateMatcher]="invalidFormMatcher">
-                    <mat-hint>Np. adres@email.pl</mat-hint>
+                    <mat-hint>Np. jan.kowalski@example.pl</mat-hint>
                     <mat-error *ngIf="signupForm.controls.email.invalid && !signupForm.controls.email.hasError('required')">
                         Nieprawidłowy format adresu email.
                     </mat-error>

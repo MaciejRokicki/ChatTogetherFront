@@ -27,6 +27,10 @@ body {
     max-width: unset !important;
 }
 
+.snackbar-width span {
+    word-break: break-word;
+}
+
 .snackbar-error {
 	background-color: darkred !important;
 	color: whitesmoke !important;
