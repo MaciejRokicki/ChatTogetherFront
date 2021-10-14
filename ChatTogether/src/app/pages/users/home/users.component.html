@@ -26,12 +26,12 @@
         
             <ng-container matColumnDef="firstName">
             <th mat-header-cell *matHeaderCellDef> Imię </th>
-            <td mat-cell *matCellDef="let element"> {{element.firstName === null ? "Brak" : element.firstName}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.firstName ? element.firstName : "Brak"}} </td>
             </ng-container>
         
             <ng-container matColumnDef="lastName">
                 <th mat-header-cell *matHeaderCellDef> Nazwisko </th>
-                <td mat-cell *matCellDef="let element"> {{element.lastName === null ? "Brak" : element.lastName}} </td>
+                <td mat-cell *matCellDef="let element"> {{element.lastName ? element.lastName : "Brak"}} </td>
             </ng-container>
         
             <ng-container matColumnDef="role">
