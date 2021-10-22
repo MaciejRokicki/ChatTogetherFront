@@ -4,6 +4,7 @@
 	$room-message-input: map-get($config, room-message-input);
     $room-message-input-hover: map-get($config, room-message-input-hover);
     $room-message-info: map-get($config, room-message-info);
+    $room-files-container: map-get($config, room-files-container);
 
     .messages {
         background-color: mat-color($room-messages);
@@ -19,5 +20,9 @@
 
     .messages p {
         color: mat-color($room-message-info);
+    }
+
+    .files-container {
+        background-color: mat-color($room-files-container);
     }
 }

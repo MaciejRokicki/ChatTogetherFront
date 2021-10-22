@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { fromEvent, of, Subscription } from 'rxjs';
+import { BehaviorSubject, fromEvent, of, Subscription } from 'rxjs';
 import { debounceTime, map, mergeMap, skip, tap } from 'rxjs/operators';
 
 import { Message } from 'src/app/entities/message';
@@ -12,6 +12,7 @@ import { Room } from 'src/app/entities/Room/room';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { User } from 'src/app/entities/user';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MessageFile } from 'src/app/entities/messageFile';
 
 @Component({
   selector: 'app-room',
@@ -46,6 +47,9 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   outOfMessages: boolean;
   noMessages: boolean;
+
+  showOnDragOverMessageContainerInfo: boolean = false;
+  files: MessageFile[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -132,6 +136,35 @@ export class RoomComponent implements OnInit, OnDestroy {
         }
       })
     ).subscribe();
+
+    //na chromium dragleave wywolywalo sie na dragover, a na firefoxie odwrotnie
+    let browserDragFixCounter = 0;
+
+    document.addEventListener("dragenter", () => {
+      browserDragFixCounter++;
+    });
+
+    document.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      
+      if(!event.target["classList"]?.contains("dropzone")) {
+        event.dataTransfer.effectAllowed = "none";
+        event.dataTransfer.dropEffect = "none";
+      }
+
+      browserDragFixCounter = 1;
+
+      this.showOnDragOverMessageContainerInfo = true;
+    });
+
+    document.addEventListener("dragleave", (event) => {
+      event.preventDefault();
+      browserDragFixCounter--;
+
+      if(browserDragFixCounter === 0) {
+        this.showOnDragOverMessageContainerInfo = false;
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -194,6 +227,53 @@ export class RoomComponent implements OnInit, OnDestroy {
     })
 
     this.ref.detectChanges();
+  }
+
+  onDropMessageContainer(event) {
+    event.preventDefault();
+    
+    this.showOnDragOverMessageContainerInfo = false;
+
+    for(let file of event.dataTransfer.files) {
+      if (this.checkElementType(file)) {
+        this.addFile(file);
+      }
+    }
+  }
+
+  private checkElementType(item: DataTransferItem): boolean {
+    if(item.type.includes("image/") || item.type.includes("video/") || item.type.includes("text/plain")) {
+      return true;
+    }
+
+    return false;
+  }
+
+  openFileBrowser(): void {
+    document.getElementById("input-file").click();
+  }
+
+  onFileAddFromFileBrowser(event): void {
+    for (let file of event.target.files) {
+      this.addFile(file);
+    }
+  }
+
+  private addFile(file: File) {
+    let fr = new FileReader();
+    fr.readAsDataURL(file);
+
+    fr.onload = () => {
+      this.files.push(new MessageFile(
+        file["name"],
+        file["type"],
+        fr.result.toString()
+      ));
+    }
+  }
+
+  public removeFile(file: MessageFile) {
+    this.files = this.files.filter(item => item !== file);
   }
 
   ngOnDestroy() {

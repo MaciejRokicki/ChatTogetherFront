@@ -48,6 +48,10 @@
     font-size: 16px;
 }
 
+#input-file {
+    display: none;
+}
+
 .send-button {
     width: 45px;
     height: 45px;
@@ -94,6 +98,41 @@ p {
     font-size: 16px;
 }
 
+.dropzone {
+    position: absolute;
+    width: calc(100% - 9px);
+    height: calc(100% - 8px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    font-size: 22px;
+    border: dashed 4px gray;
+}
+
+.blurred-background {
+    filter: blur(1px);
+}
+
+.files-container {
+    width: calc(100% - 30px);
+    height: 100px;
+    border-radius: 20px 0px 0px 20px;
+    margin: 5px 0px 0px 30px;
+    display: flex;
+}
+
+.files-content {
+    width: 100%;
+    height: calc(100% - 10px);
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    overflow: auto;
+    align-items: center;
+}
+
 @media only screen and (max-width: 768px) {
     .messages {
         margin: 10px 0px 0px 10px;
@@ -104,11 +143,20 @@ p {
     .message-input-container {
         margin: 10px 0px 0px 10px;
     }
+
+    .files-container {
+        width: calc(100% - 10px);
+        margin: 5px 0px 0px 10px;
+    }
 }
 
 @media only screen and (min-width: 599px) and (max-width: 768px) {
     .message-input-container {
         margin: 0px 0px 8px 10px;
+    }
+
+    .dropzone {
+        height: calc(100% - 16px);
     }
 }
 

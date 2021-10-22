@@ -13,6 +13,7 @@ import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dial
 import { CreateRoomDialogComponent } from './create-room-dialog/create-room-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MessageTimeConverterPipe } from 'src/app/utils/pipes/messageTimeConverter';
+import { FileMessageComponent } from 'src/app/components/file-message/file-message.component';
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { MessageTimeConverterPipe } from 'src/app/utils/pipes/messageTimeConvert
         DeleteRoomDialogComponent,
         CreateRoomDialogComponent,
         MessageTimeConverterPipe,
+        FileMessageComponent
     ],
     imports: [
         RoomsRoutingModule,

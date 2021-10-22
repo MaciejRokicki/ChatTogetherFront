@@ -13,6 +13,7 @@ $room-messages: mat-palette($gray, 900);
 $room-message-input: mat-palette($gray, 700);
 $room-message-input-hover: mat-palette($gray, 600);
 $room-message-info: mat-palette($light-gray);
+$room-files-container: mat-palette($gray, 800);
 
 $label: mat-palette($gray, 100);
 $row-select-hover: mat-palette($gray, 700);
@@ -71,6 +72,7 @@ $dark-theme: (
   room-message-input: $room-message-input,
   room-message-input-hover: $room-message-input-hover,
   room-message-info: $room-message-info,
+  room-files-container: $room-files-container,
 
   form-label: $label,
   row-select-hover: $row-select-hover,

@@ -1,4 +1,10 @@
-<div class="message-container">
+<div *ngIf="showOnDragOverMessageContainerInfo" 
+      class="dropzone"
+      (drop)="onDropMessageContainer($event)">
+    Upuść pliki tutaj
+</div>
+<div class="message-container"
+     [ngClass]="{'blurred-background': showOnDragOverMessageContainerInfo}">
     <div class="messages">
         <div #scroll class="messages-content">
             <div *ngIf="noMessages" class="no-messages-container">
@@ -20,9 +26,18 @@
             </button>
         </div>
     </div>
+    <div class="files-container" *ngIf="files.length > 0">
+        <div class="files-content">
+            <app-file-message *ngFor="let file of files" [file]="file" (removeFile)="removeFile($event)"></app-file-message>
+        </div>
+    </div>
     <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
         <div class="message-input">
             <input class="input-field" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required>
+            <input id="input-file" accept="text/plain, image/*, video/*" type="file" multiple (change)="onFileAddFromFileBrowser($event)"/>
+            <button mat-icon-button type="button" color="accent" class="send-button" (click)="openFileBrowser()">
+                <mat-icon>image</mat-icon>
+            </button>
             <button mat-icon-button color="accent" class="send-button" [disabled]="!messageForm.valid">
                 <mat-icon>send</mat-icon>
             </button>
