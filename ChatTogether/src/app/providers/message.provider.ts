@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 
-import { BehaviorSubject } from "rxjs";
-import { tap } from "rxjs/operators";
+import { BehaviorSubject, throwError } from "rxjs";
+import { catchError, tap } from "rxjs/operators";
 
-import { Message } from "../entities/message";
+import { Message } from "../entities/Message/message";
+import { MessageFile } from "../entities/Message/messageFile";
+import { Result, ResultStage } from "../entities/result";
 import { RoomHub } from "../Hubs/RoomHub";
 import { MessageService } from "../services/message.service";
 
@@ -11,7 +13,9 @@ import { MessageService } from "../services/message.service";
     providedIn: 'root'
 })
 export class MessageProvider {
-    messages = new BehaviorSubject<Message[]>([])
+    public messageFiles = new BehaviorSubject<MessageFile[]>([]);
+    public resultMessageFiles = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+    public messages = new BehaviorSubject<Message[]>([]);
 
     constructor(
         private messageService: MessageService,
@@ -35,6 +39,22 @@ export class MessageProvider {
             tap(() => {
                 this.roomHub.conn.invoke("SendMessage", message);
                 this.messages.next([...this.messages.getValue(), message]);
+            })
+        ).subscribe();
+    }
+
+    public uploadMessageFiles(formData: FormData): void {
+        this.resultMessageFiles.next(new Result(ResultStage.WAITING, undefined));
+        this.messageFiles.next([]);
+
+        this.messageService.uploadMessageFiles(formData).pipe(
+            tap((messageFiles: MessageFile[]) => {
+                this.messageFiles.next(messageFiles);
+                this.resultMessageFiles.next(new Result(ResultStage.SUCCESS, undefined));
+            }),
+            catchError(err => {
+                this.resultMessageFiles.next(new Result(ResultStage.ERROR, err.error));
+                return throwError(err);
             })
         ).subscribe();
     }

@@ -1,4 +1,5 @@
 import { Guid } from "guid-typescript";
+import { MessageFile } from "./messageFile";
 
 export class Message {
     id: Guid;
@@ -7,6 +8,7 @@ export class Message {
     roomId: number;
     sendTime: Date;
     receivedTime: Date;
+    files: MessageFile[];
 
     constructor(
         message: string,

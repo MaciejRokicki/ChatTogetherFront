@@ -26,9 +26,9 @@
             </button>
         </div>
     </div>
-    <div class="files-container" *ngIf="files.length > 0">
+    <div class="files-container" *ngIf="filesToUpload.length > 0">
         <div class="files-content">
-            <app-file-message *ngFor="let file of files" [file]="file" (removeFile)="removeFile($event)"></app-file-message>
+            <app-file-message *ngFor="let file of filesToUpload" [file]="file" (removeFile)="removeFile($event)"></app-file-message>
         </div>
     </div>
     <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">

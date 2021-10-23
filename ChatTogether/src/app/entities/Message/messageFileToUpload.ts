@@ -1,4 +1,4 @@
-export class MessageFile {
+export class MessageFileToUpload {
     name: string;
     type: string;
     result: string;

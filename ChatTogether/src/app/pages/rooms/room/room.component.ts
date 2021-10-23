@@ -1,10 +1,10 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { BehaviorSubject, fromEvent, of, Subscription } from 'rxjs';
-import { debounceTime, map, mergeMap, skip, tap } from 'rxjs/operators';
+import { fromEvent, of, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap, skip, subscribeOn, take, takeLast, tap } from 'rxjs/operators';
 
-import { Message } from 'src/app/entities/message';
+import { Message } from 'src/app/entities/Message/message';
 import { MessageProvider } from 'src/app/providers/message.provider';
 import { RoomProvider } from 'src/app/providers/room.provider';
 import { TopbarTitleService } from 'src/app/services/topbarTitle.service';
@@ -12,7 +12,9 @@ import { Room } from 'src/app/entities/Room/room';
 import { SecurityProvider } from 'src/app/providers/security.provider';
 import { User } from 'src/app/entities/user';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MessageFile } from 'src/app/entities/messageFile';
+import { MessageFileToUpload } from 'src/app/entities/Message/messageFileToUpload';
+import { MessageFile } from 'src/app/entities/Message/messageFile';
+import { Result, ResultStage } from 'src/app/entities/result';
 
 @Component({
   selector: 'app-room',
@@ -35,6 +37,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   observer: MutationObserver = new MutationObserver(()=>{});
 
+  message: Message;
   messages: Message[] = []
   messages$: Subscription = new Subscription()
 
@@ -49,7 +52,11 @@ export class RoomComponent implements OnInit, OnDestroy {
   noMessages: boolean;
 
   showOnDragOverMessageContainerInfo: boolean = false;
-  files: MessageFile[] = [];
+  filesToUpload: MessageFileToUpload[] = [];
+  formData: FormData = new FormData();
+  messageFiles: MessageFile[] = [];
+  messageFiles$: Subscription = new Subscription();
+  resultMessageFiles$: Subscription = new Subscription();
 
   constructor(
     private route: ActivatedRoute,
@@ -165,6 +172,32 @@ export class RoomComponent implements OnInit, OnDestroy {
         this.showOnDragOverMessageContainerInfo = false;
       }
     });
+
+    this.messageFiles$ = this.messageProvider.messageFiles.pipe(
+      tap((messageFiles: MessageFile[]) => {
+        this.messageFiles = messageFiles;
+      })
+    ).subscribe();
+
+    this.messageProvider.resultMessageFiles.pipe(
+      tap((result: Result) => {
+        switch (result.Stage) {
+          case ResultStage.WAITING:
+            
+            break;
+
+          case ResultStage.SUCCESS:
+            this.message.files = this.messageFiles;
+
+            this.afterSubmit();
+            break;
+
+          case ResultStage.ERROR:
+
+            break;
+        }
+      })
+    ).subscribe();
   }
 
   ngAfterViewInit() {
@@ -214,17 +247,28 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-    var message: Message = new Message(
+    this.message = new Message(
       this.messageForm.get('message').value, 
       this.userNickname, 
       this.id, 
       new Date()
     );
-    
-    this.messageProvider.sendMessage(message);
+
+    if (this.filesToUpload.length > 0) {
+      this.messageProvider.uploadMessageFiles(this.formData);
+    } else {
+      this.afterSubmit();
+    }
+  }
+
+  afterSubmit(): void {
+    this.messageProvider.sendMessage(this.message);
+        
     this.messageForm.setValue({
       'message': ''
     })
+    this.filesToUpload = [];
+    this.formData = new FormData();
 
     this.ref.detectChanges();
   }
@@ -264,16 +308,18 @@ export class RoomComponent implements OnInit, OnDestroy {
     fr.readAsDataURL(file);
 
     fr.onload = () => {
-      this.files.push(new MessageFile(
+      this.filesToUpload.push(new MessageFileToUpload(
         file["name"],
         file["type"],
         fr.result.toString()
       ));
     }
+
+    this.formData.append(file.name, file);
   }
 
-  public removeFile(file: MessageFile) {
-    this.files = this.files.filter(item => item !== file);
+  public removeFile(file: MessageFileToUpload) {
+    this.filesToUpload = this.filesToUpload.filter(item => item !== file);
   }
 
   ngOnDestroy() {
@@ -284,5 +330,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.messages$.unsubscribe();
     this.scroll$.unsubscribe();
     this.user$.unsubscribe();
+    this.messageFiles$.unsubscribe();
+    this.resultMessageFiles$.unsubscribe();
   }
 }

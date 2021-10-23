@@ -21,6 +21,9 @@
         </div>
         <div class="msg msg-right">
             {{ Message?.message }}
+            <div *ngIf="Message?.files">
+                <img *ngFor="let file of Message.files" [src]="url + file.sourceName"/>
+            </div>
         </div>
     </div>
 </ng-template>
