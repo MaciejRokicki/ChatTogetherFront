@@ -8,6 +8,11 @@
     </div>
     <div class="msg">
         {{ Message?.message }}
+        <div *ngIf="Message?.files" class="message-files-container">
+            <div *ngFor="let file of Message.files">
+                <app-message-file [MessageFile]="file"></app-message-file>
+            </div> 
+        </div>
     </div>
 </div>
 <ng-template #RightDirection>
@@ -21,8 +26,10 @@
         </div>
         <div class="msg msg-right">
             {{ Message?.message }}
-            <div *ngIf="Message?.files">
-                <img *ngFor="let file of Message.files" [src]="url + file.sourceName"/>
+            <div *ngIf="Message?.files" class="message-files-container">
+                <div *ngFor="let file of Message.files">
+                    <app-message-file [MessageFile]="file"></app-message-file>
+                </div> 
             </div>
         </div>
     </div>

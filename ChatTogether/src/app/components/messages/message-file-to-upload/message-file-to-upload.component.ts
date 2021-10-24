@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MessageFileToUpload } from 'src/app/entities/Message/messageFileToUpload';
 
 @Component({
-  selector: 'app-file-message',
-  templateUrl: './file-message.component.html',
-  styleUrls: ['./file-message.component.scss']
+  selector: 'app-message-file-to-upload',
+  templateUrl: './message-file-to-upload.component.html',
+  styleUrls: ['./message-file-to-upload.component.scss']
 })
-export class FileMessageComponent implements OnInit {
+export class MessageFileToUploadComponent implements OnInit {
   @Input() file: MessageFileToUpload;
   @Output() removeFile: EventEmitter<MessageFileToUpload> = new EventEmitter<MessageFileToUpload>();
 

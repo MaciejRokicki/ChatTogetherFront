@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FileMessageComponent } from './file-message.component';
+import { MessageFileComponent } from './message-file.component';
 
-describe('FileMessageComponent', () => {
-  let component: FileMessageComponent;
-  let fixture: ComponentFixture<FileMessageComponent>;
+describe('MessageFileComponent', () => {
+  let component: MessageFileComponent;
+  let fixture: ComponentFixture<MessageFileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FileMessageComponent ]
+      declarations: [ MessageFileComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FileMessageComponent);
+    fixture = TestBed.createComponent(MessageFileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -8,6 +8,7 @@ $message-nickname: mat-palette($light-gray, 100);
 $message-nickname-hover: mat-palette($primary);
 $message-date: mat-palette($light-gray, 500);
 $message-msg: mat-palette($light-gray, 800);
+$message-files-container: mat-palette($light-gray, 400);
 
 $room-messages: mat-palette($gray, 900);
 $room-message-input: mat-palette($gray, 700);
@@ -67,6 +68,7 @@ $dark-theme: (
   message-nickname-hover: $message-nickname-hover,
   message-date: $message-date,
   message-msg: $message-msg,
+  message-files-container: $message-files-container,
 
   room-messages: $room-messages,
   room-message-input: $room-message-input,

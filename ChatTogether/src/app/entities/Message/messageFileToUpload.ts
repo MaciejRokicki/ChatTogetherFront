@@ -7,9 +7,5 @@ export class MessageFileToUpload {
         this.name = name;
         this.type = type;
         this.result = result;
-
-        if (type === 'text/plain') {
-            this.result = '/assets/file_icon.png';
-        }
     }
 }

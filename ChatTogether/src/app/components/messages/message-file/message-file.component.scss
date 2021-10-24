@@ -1,0 +1,22 @@
+.file {
+    position: relative;
+    display: flex;
+    margin: 5px;
+    max-height: 100px;
+    max-width: 170px;
+    justify-content: center;
+}
+
+img, video {
+    max-height: 90px;
+    max-width: 160px;
+    cursor: pointer;
+}
+
+.file:hover .file-name {
+    display: flex;
+}
+
+.file, img, video {
+    border-radius: 10px;
+}

@@ -1,0 +1,20 @@
+<div class="file">
+    <img *ngIf="MessageFile.type.includes('image/') && MessageFile.type !== 'image/gif'" 
+          [src]="url + MessageFile.thumbnailName"
+          [matTooltip]="MessageFile.fileName"
+          matTooltipPosition="above">
+    <img *ngIf="MessageFile.type === 'image/gif'" 
+          [src]="url + MessageFile.sourceName"
+          [matTooltip]="MessageFile.fileName"
+          matTooltipPosition="above">
+    <img *ngIf="MessageFile.type.includes('text/')" 
+          src="./assets/file_icon.png"
+          [matTooltip]="MessageFile.fileName"
+          matTooltipPosition="above">
+    <video *ngIf="MessageFile.type.includes('video/')" 
+            controls
+            [matTooltip]="MessageFile.fileName"
+            matTooltipPosition="above">
+        <source [src]="url + MessageFile.sourceName" [type]="MessageFile.type">
+    </video>
+</div>

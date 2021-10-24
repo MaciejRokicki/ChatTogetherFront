@@ -4,6 +4,7 @@
     $message-nickname-hover: map-get($config, message-nickname-hover);
     $message-date: map-get($config, message-date);
     $message-msg: map-get($config, message-msg);
+    $message-files-container: map-get($config, message-files-container);
 
     .nickname {
         color: mat-color($message-nickname);
@@ -19,5 +20,9 @@
 
     .msg {
         background-color: mat-color($message-msg);
+    }
+
+    .message-files-container {
+        background-color: mat-color($message-files-container);
     }
 }

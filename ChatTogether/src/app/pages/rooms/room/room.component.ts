@@ -322,6 +322,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.filesToUpload = this.filesToUpload.filter(item => item !== file);
   }
 
+  validMessageForm(): boolean {
+    return this.messageForm.valid || this.filesToUpload.length > 0;
+  }
+
   ngOnDestroy() {
     this.messageProvider.clearMessages();
     this.roomProvider.onRoomExit(this.id);

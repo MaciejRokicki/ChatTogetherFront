@@ -1,7 +1,5 @@
 .container {
     position: relative;
-    width: 80px;
-    height: 80px;
     background-color: #999999;
     margin: 5px;
     border-radius: 10px;
@@ -17,9 +15,14 @@
 
 .file {
     max-width: 70px;
-    max-width: 70px;
+    max-height: 70px;
     border-radius: 5px;
     margin: 5px;
+}
+
+.file-video {
+    max-width: 124px;
+    max-height: 70px;
 }
 
 .file-other {

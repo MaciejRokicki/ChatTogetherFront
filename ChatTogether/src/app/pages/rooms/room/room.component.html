@@ -20,7 +20,9 @@
                 [LeftDirection]="userNickname != message.nickname">
             </app-message>
             <button mat-mini-fab color="primary" 
-                [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 'scroll-down-button': showScrollDownButton}"
+                [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 
+                            'scroll-down-button': showScrollDownButton,
+                            'scroll-down-button-with-files': showScrollDownButton && filesToUpload.length > 0 }"
                 (click)="scrollDown()">
                 <mat-icon>south</mat-icon>
             </button>
@@ -28,7 +30,7 @@
     </div>
     <div class="files-container" *ngIf="filesToUpload.length > 0">
         <div class="files-content">
-            <app-file-message *ngFor="let file of filesToUpload" [file]="file" (removeFile)="removeFile($event)"></app-file-message>
+            <app-message-file-to-upload *ngFor="let file of filesToUpload" [file]="file" (removeFile)="removeFile($event)"></app-message-file-to-upload>
         </div>
     </div>
     <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
@@ -38,7 +40,7 @@
             <button mat-icon-button type="button" color="accent" class="send-button" (click)="openFileBrowser()">
                 <mat-icon>image</mat-icon>
             </button>
-            <button mat-icon-button color="accent" class="send-button" [disabled]="!messageForm.valid">
+            <button mat-icon-button color="accent" class="send-button" [disabled]="!validMessageForm()">
                 <mat-icon>send</mat-icon>
             </button>
         </div>

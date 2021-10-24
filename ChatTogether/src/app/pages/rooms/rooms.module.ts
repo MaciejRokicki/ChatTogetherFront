@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { RoomsRoutingModule } from './rooms-routing.module';
 
 import { RoomsComponent } from './home/rooms.component';
-import { MessageComponent } from 'src/app/components/message/message.component';
 import { RoomComponent } from './room/room.component';
 
 import { MatTableModule } from '@angular/material/table';
@@ -12,28 +11,25 @@ import { EditRoomDialogComponent } from './edit-room-dialog/edit-room-dialog.com
 import { DeleteRoomDialogComponent } from './delete-room-dialog/delete-room-dialog.component';
 import { CreateRoomDialogComponent } from './create-room-dialog/create-room-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MessageTimeConverterPipe } from 'src/app/utils/pipes/messageTimeConverter';
-import { FileMessageComponent } from 'src/app/components/file-message/file-message.component';
+import { MessageModule } from 'src/app/components/messages/message/message.module';
+import { MessageFileToUploadComponent } from 'src/app/components/messages/message-file-to-upload/message-file-to-upload.component';
 
 @NgModule({
     declarations: [
         RoomsComponent,
         RoomComponent,
-        MessageComponent,
         EditRoomDialogComponent,
         DeleteRoomDialogComponent,
         CreateRoomDialogComponent,
-        MessageTimeConverterPipe,
-        FileMessageComponent
+        MessageFileToUploadComponent
     ],
     imports: [
         RoomsRoutingModule,
         SharedModule,
         MatTableModule,
         MatDialogModule,
+        MessageModule,
     ],
-    exports: [
-        MessageTimeConverterPipe
-    ]
+    exports: []
 })
 export class RoomsModule { }
