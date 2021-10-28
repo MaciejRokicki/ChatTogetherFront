@@ -1,16 +1,22 @@
 <div class="file">
-    <img *ngIf="MessageFile.type.includes('image/') && MessageFile.type !== 'image/gif'" 
-          [src]="url + MessageFile.thumbnailName"
-          [matTooltip]="MessageFile.fileName"
-          matTooltipPosition="above">
-    <img *ngIf="MessageFile.type === 'image/gif'" 
-          [src]="url + MessageFile.sourceName"
-          [matTooltip]="MessageFile.fileName"
-          matTooltipPosition="above">
+     <a (click)="openOverlay(MessageFile)">
+      <img *ngIf="MessageFile.type.includes('image/') && MessageFile.type !== 'image/gif'" 
+            [src]="url + MessageFile.thumbnailName"
+            [matTooltip]="MessageFile.fileName"
+            matTooltipPosition="above">
+    </a>
+    <a (click)="openOverlay(MessageFile)">
+      <img *ngIf="MessageFile.type === 'image/gif'" 
+            [src]="url + MessageFile.sourceName"
+            [matTooltip]="MessageFile.fileName"
+            matTooltipPosition="above">
+    </a>
     <img *ngIf="MessageFile.type.includes('text/')" 
           src="./assets/file_icon.png"
+          class="file-other"
           [matTooltip]="MessageFile.fileName"
-          matTooltipPosition="above">
+          matTooltipPosition="above"
+          (click)="downloadFile(MessageFile)">
     <video *ngIf="MessageFile.type.includes('video/')" 
             controls
             [matTooltip]="MessageFile.fileName"

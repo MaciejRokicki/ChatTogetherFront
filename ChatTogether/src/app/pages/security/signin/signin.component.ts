@@ -37,7 +37,7 @@ export class SigninComponent implements OnInit {
 
   showSpinner: boolean = false;
 
-  constructor(private securityProvider: SecurityProvider, private router: Router, private datePipe: DatePipe) { }
+  constructor(private securityProvider: SecurityProvider, private router: Router) { }
 
   ngOnInit(): void {
   }

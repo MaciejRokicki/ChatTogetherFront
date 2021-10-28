@@ -15,6 +15,7 @@ import { MessageService } from "../services/message.service";
 export class MessageProvider {
     public messageFiles = new BehaviorSubject<MessageFile[]>([]);
     public resultMessageFiles = new BehaviorSubject<Result>(new Result(ResultStage.INITIAL, undefined));
+
     public messages = new BehaviorSubject<Message[]>([]);
 
     constructor(
@@ -55,6 +56,20 @@ export class MessageProvider {
             catchError(err => {
                 this.resultMessageFiles.next(new Result(ResultStage.ERROR, err.error));
                 return throwError(err);
+            })
+        ).subscribe();
+    }
+
+    public downloadFile(messageFile: MessageFile) {
+        this.messageService.downloadFile(messageFile.sourceName).pipe(
+            tap((data) => {
+                let link = document.createElement("a");
+                let blob = new Blob([data], { type: messageFile.type });
+
+                link.href = window.URL.createObjectURL(blob);
+                link.download = messageFile.fileName;
+                link.click();
+                link.remove();      
             })
         ).subscribe();
     }

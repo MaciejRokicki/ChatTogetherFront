@@ -35,6 +35,7 @@ import { RoomHub } from './Hubs/RoomHub';
 import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
 import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor';
 import { ExceptionHandlerInterceptor } from './interceptors/ExceptionHandlerInterceptor';
+import { MessageFileOverlayComponent } from './components/messages/message-file-overlay/message-file-overlay.component';
 
 registerLocaleData(localePl, localePlExtra);
 
@@ -43,7 +44,8 @@ registerLocaleData(localePl, localePlExtra);
     AppComponent,
     TopbarComponent,
     SidebarComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    MessageFileOverlayComponent
   ],
   imports: [
     BrowserModule,

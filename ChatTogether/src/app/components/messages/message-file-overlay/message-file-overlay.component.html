@@ -1,0 +1,22 @@
+<div *ngIf="messageFile">
+    <div class="background"></div>
+    <div class="top-bar-background"></div>
+    <div class="container">
+        <div class="top-bar">
+            {{ messageFile?.fileName }}
+            <div class="buttons-container">
+                <button mat-flat-button color="primary" (click)="downloadFile(messageFile)">
+                    Pobierz
+                    <mat-icon>download</mat-icon>
+                </button>
+                <button mat-flat-button color="primary" (click)="closeOverlay()">
+                    Zamknij
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="file-content">
+            <img [src]="url + messageFile?.sourceName">
+        </div>
+    </div>
+</div>

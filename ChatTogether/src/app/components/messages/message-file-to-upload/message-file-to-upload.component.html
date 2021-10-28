@@ -8,7 +8,4 @@
     <video *ngIf="file.type.includes('video/')" class="file file-video" controls>
         <source [src]="file.result" [type]="file.type">
     </video>
-    <!-- <img class="file" 
-        [src]="file.result"
-        [ngClass]="{'file-other': file.type === 'text/plain'}"> -->
 </div>

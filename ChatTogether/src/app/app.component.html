@@ -1,4 +1,5 @@
 <div class="container" *ngIf="user; else loginPage">
+  <app-message-file-overlay></app-message-file-overlay>
   <div *ngIf="blockedBackground?.show" class="blocked-background">
     <div class="blocked-background-content">
       {{ blockedBackground.message }}

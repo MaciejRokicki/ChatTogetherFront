@@ -20,4 +20,8 @@ export class MessageService {
     uploadMessageFiles(formData: FormData): Observable<MessageFile[]> {
         return this.http.post<MessageFile[]>(`${this.url}/UploadMessageFiles`, formData);
     }
+
+    downloadFile(sourceUrl: string): Observable<any> {
+        return this.http.get(`https://localhost:44387/static/${sourceUrl}`, { responseType: 'blob' });
+    }
 }

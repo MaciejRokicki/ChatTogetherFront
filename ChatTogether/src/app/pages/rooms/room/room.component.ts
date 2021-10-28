@@ -40,6 +40,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   message: Message;
   messages: Message[] = []
   messages$: Subscription = new Subscription()
+  resultMessages$: Subscription = new Subscription();
 
   scroll$: Subscription = new Subscription();
   showScrollDownButton: boolean = false;
@@ -57,6 +58,10 @@ export class RoomComponent implements OnInit, OnDestroy {
   messageFiles: MessageFile[] = [];
   messageFiles$: Subscription = new Subscription();
   resultMessageFiles$: Subscription = new Subscription();
+
+  firstInitPage: boolean = true;
+
+  showSpinner: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -187,9 +192,11 @@ export class RoomComponent implements OnInit, OnDestroy {
             break;
 
           case ResultStage.SUCCESS:
-            this.message.files = this.messageFiles;
-
-            this.afterSubmit();
+            if (this.message) {
+              this.message.files = this.messageFiles;
+              
+              this.afterSubmit();
+            }
             break;
 
           case ResultStage.ERROR:
@@ -226,7 +233,7 @@ export class RoomComponent implements OnInit, OnDestroy {
           }
   
           return false;
-        }).forEach((mutation: MutationRecord) => {        
+        }).forEach((mutation: MutationRecord) => {              
           heightNewMessages += (mutation.addedNodes[0] as Element).clientHeight; //sumowanie wysokosci wszystkich nowych wiadomosci
         })
 
@@ -332,6 +339,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.roomSub$.unsubscribe();
     this.observer.disconnect();
     this.messages$.unsubscribe();
+    this.resultMessages$.unsubscribe();
     this.scroll$.unsubscribe();
     this.user$.unsubscribe();
     this.messageFiles$.unsubscribe();
