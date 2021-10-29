@@ -2,10 +2,30 @@
     <button mat-icon-button class="button-remove" (click)="remove()">
         <mat-icon>highlight_off</mat-icon>
     </button>
-    <img *ngIf="file.type.includes('image/') && file.type !== 'image/gif'" class="file" [src]="file.result"/>
-    <img *ngIf="file.type === 'image/gif'" class="file" [src]="file.result"/>
-    <img *ngIf="file.type.includes('text/')" class="file file-other" src="./assets/file_icon.png"/>
-    <video *ngIf="file.type.includes('video/')" class="file file-video" controls>
+    <img *ngIf="file.type.includes('image/') && file.type !== 'image/gif'" 
+          class="file" 
+          [src]="file.result"
+          [matTooltip]="file.name"
+          matTooltipPosition="above"/>
+    <img *ngIf="file.type === 'image/gif'" 
+          class="file" 
+          [src]="file.result" 
+          [matTooltip]="file.name"
+          matTooltipPosition="above"/>
+    <div *ngIf="file.type.includes('text/')"
+          class="file file-other"
+          [matTooltip]="file.name"
+          matTooltipPosition="above">
+        <mat-icon>description</mat-icon>
+        <div class="filename">
+            {{ file.name }}
+        </div>
+    </div>
+    <video *ngIf="file.type.includes('video/')" 
+            class="file file-video" 
+            [matTooltip]="file.name"
+            matTooltipPosition="above" 
+            controls>
         <source [src]="file.result" [type]="file.type">
     </video>
 </div>

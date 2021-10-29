@@ -10,6 +10,8 @@ $message-date: mat-palette($light-gray, 500);
 $message-msg: mat-palette($light-gray, 800);
 $message-files-container: mat-palette($light-gray, 400);
 
+$message-file-background: mat-palette($light-gray, 500);
+
 $room-messages: mat-palette($gray, 900);
 $room-message-input: mat-palette($gray, 700);
 $room-message-input-hover: mat-palette($gray, 600);
@@ -69,6 +71,8 @@ $dark-theme: (
   message-date: $message-date,
   message-msg: $message-msg,
   message-files-container: $message-files-container,
+
+  message-file-background: $message-file-background,
 
   room-messages: $room-messages,
   room-message-input: $room-message-input,

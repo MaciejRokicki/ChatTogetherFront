@@ -5,6 +5,7 @@
 @import 'dark.theme.scss';
 
 @import '../components/messages/message/message.component.themes.scss';
+@import '../components/messages/message-file/message-file.themes.scss';
 
 @import '../pages/rooms/home/rooms.component.themes.scss';
 @import '../pages/users/user/user.component.themes.scss';
@@ -14,6 +15,7 @@
   @include angular-material-color($light-theme);
 
   @include message-component-theme($light-theme);
+  @include message-file-component-theme($light-theme);
 
   @include rooms-component-theme($light-theme);
   @include room-component-theme($light-theme);
@@ -24,6 +26,7 @@
   @include angular-material-color($dark-theme);
 
   @include message-component-theme($dark-theme);
+  @include message-file-component-theme($dark-theme);
 
   @include rooms-component-theme($dark-theme);
   @include room-component-theme($dark-theme);

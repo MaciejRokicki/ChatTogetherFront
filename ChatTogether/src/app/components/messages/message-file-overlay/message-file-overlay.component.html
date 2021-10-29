@@ -3,7 +3,9 @@
     <div class="top-bar-background"></div>
     <div class="container">
         <div class="top-bar">
-            {{ messageFile?.fileName }}
+            <div class="filename-container">
+                {{ messageFile?.fileName }}
+            </div>
             <div class="buttons-container">
                 <button mat-flat-button color="primary" (click)="downloadFile(messageFile)">
                     Pobierz

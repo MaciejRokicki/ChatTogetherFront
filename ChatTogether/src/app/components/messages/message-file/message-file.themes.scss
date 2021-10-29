@@ -1,0 +1,8 @@
+@mixin message-file-component-theme($theme) {
+	$config: mat-get-color-config($theme);
+	$message-file-background: map-get($config, message-file-background);
+
+    .background {
+        background-color: mat-color($message-file-background);
+    }
+}

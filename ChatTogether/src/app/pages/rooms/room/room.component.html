@@ -22,15 +22,15 @@
             <button mat-mini-fab color="primary" 
                 [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 
                             'scroll-down-button': showScrollDownButton,
-                            'scroll-down-button-with-files': showScrollDownButton && filesToUpload.length > 0 }"
+                            'scroll-down-button-with-files': showScrollDownButton && filesToUpload.files.length > 0 }"
                 (click)="scrollDown()">
                 <mat-icon>south</mat-icon>
             </button>
         </div>
     </div>
-    <div class="files-container" *ngIf="filesToUpload.length > 0">
+    <div class="files-container" *ngIf="filesToUpload.files.length > 0">
         <div class="files-content">
-            <app-message-file-to-upload *ngFor="let file of filesToUpload" [file]="file" (removeFile)="removeFile($event)"></app-message-file-to-upload>
+            <app-message-file-to-upload *ngFor="let file of filesToUpload.files" [file]="file" (removeFile)="removeFile($event)"></app-message-file-to-upload>
         </div>
     </div>
     <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">

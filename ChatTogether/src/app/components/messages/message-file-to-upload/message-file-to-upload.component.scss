@@ -9,8 +9,13 @@
 
 .button-remove {
     position: absolute;
-    top: -15px;
-    right: -15px;
+    top: -14px;
+    right: -14px;
+}
+
+.button-remove mat-icon {
+    border-radius: 20px;
+    background-color: #999999;
 }
 
 .file {
@@ -26,6 +31,14 @@
 }
 
 .file-other {
-    width: 70px;
-    height: 70px;
+    max-width: 200px;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+}
+
+.filename {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
 }

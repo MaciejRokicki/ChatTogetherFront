@@ -11,12 +11,18 @@
             [matTooltip]="MessageFile.fileName"
             matTooltipPosition="above">
     </a>
-    <img *ngIf="MessageFile.type.includes('text/')" 
-          src="./assets/file_icon.png"
-          class="file-other"
+    <div *ngIf="MessageFile.type.includes('text/')" 
+          class="file-other-container"
           [matTooltip]="MessageFile.fileName"
           matTooltipPosition="above"
           (click)="downloadFile(MessageFile)">
+          <div class="background">
+            <mat-icon>description</mat-icon>
+            <div class="filename">
+                  {{ MessageFile.fileName }}
+            </div>
+          </div>
+    </div>
     <video *ngIf="MessageFile.type.includes('video/')" 
             controls
             [matTooltip]="MessageFile.fileName"

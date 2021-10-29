@@ -162,6 +162,10 @@ p {
     .dropzone {
         height: calc(100% - 16px);
     }
+
+    .scroll-down-button {
+        bottom: 80px;
+    }
 }
 
 @media only screen and (max-width: 599px) {

@@ -1,8 +1,10 @@
 import { ChangeDetectorRef, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 
-import { fromEvent, of, Subscription } from 'rxjs';
-import { debounceTime, map, mergeMap, skip, subscribeOn, take, takeLast, tap } from 'rxjs/operators';
+import { BehaviorSubject, fromEvent, of, Subscription } from 'rxjs';
+import { debounceTime, map, mergeMap, skip, tap } from 'rxjs/operators';
+
+import { environment } from 'src/environments/environment.prod'
 
 import { Message } from 'src/app/entities/Message/message';
 import { MessageProvider } from 'src/app/providers/message.provider';
@@ -15,6 +17,9 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { MessageFileToUpload } from 'src/app/entities/Message/messageFileToUpload';
 import { MessageFile } from 'src/app/entities/Message/messageFile';
 import { Result, ResultStage } from 'src/app/entities/result';
+import { FilesToUpload } from 'src/app/entities/Room/filesToUpload';
+import { SnackbarService } from 'src/app/services/snackbar.service';
+import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 
 @Component({
   selector: 'app-room',
@@ -40,7 +45,6 @@ export class RoomComponent implements OnInit, OnDestroy {
   message: Message;
   messages: Message[] = []
   messages$: Subscription = new Subscription()
-  resultMessages$: Subscription = new Subscription();
 
   scroll$: Subscription = new Subscription();
   showScrollDownButton: boolean = false;
@@ -53,15 +57,12 @@ export class RoomComponent implements OnInit, OnDestroy {
   noMessages: boolean;
 
   showOnDragOverMessageContainerInfo: boolean = false;
-  filesToUpload: MessageFileToUpload[] = [];
+  filesToUpload: FilesToUpload = new FilesToUpload();
+
   formData: FormData = new FormData();
   messageFiles: MessageFile[] = [];
   messageFiles$: Subscription = new Subscription();
   resultMessageFiles$: Subscription = new Subscription();
-
-  firstInitPage: boolean = true;
-
-  showSpinner: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -69,7 +70,8 @@ export class RoomComponent implements OnInit, OnDestroy {
     private roomProvider: RoomProvider,
     private messageProvider: MessageProvider,
     private ref: ChangeDetectorRef,
-    private topbarTitleService: TopbarTitleService
+    private topbarTitleService: TopbarTitleService,
+    private snackBarService: SnackbarService
   ) { 
     this.route.params.subscribe((params: Params) => {
       this.id = +params['id'];
@@ -208,10 +210,17 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit() {
+    let firstInit: boolean = false;
+
     const observer = new MutationObserver((mutations: MutationRecord[]) => {
       const messages = this.messagesContent.nativeElement.children;       //wszystkie elementy app-message
       var scrollHeight = this.messagesContent.nativeElement.scrollHeight; //rozmiar scrolla calego messageContentu (roznica jest wysokosc buttona do scrollowania w dol)
       var heightAllMessages = 0;                                          //wysokosc wszystkich elementow app-message
+
+      if (!firstInit) {
+        this.checkLoadedData();
+        firstInit = true;
+      }
 
       for(let i = 0; i < messages.length; i++) {
         heightAllMessages += messages[i].clientHeight;
@@ -249,6 +258,10 @@ export class RoomComponent implements OnInit, OnDestroy {
     });
   }
 
+  onLoadedData(): void {
+    this.scrollDown();
+  }
+
   scrollDown() {
     this.messagesContent.nativeElement.scrollTop = this.messagesContent.nativeElement.scrollHeight;
   }
@@ -261,7 +274,7 @@ export class RoomComponent implements OnInit, OnDestroy {
       new Date()
     );
 
-    if (this.filesToUpload.length > 0) {
+    if (this.filesToUpload.files.length > 0) {
       this.messageProvider.uploadMessageFiles(this.formData);
     } else {
       this.afterSubmit();
@@ -274,7 +287,7 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.messageForm.setValue({
       'message': ''
     })
-    this.filesToUpload = [];
+    this.filesToUpload.clear();
     this.formData = new FormData();
 
     this.ref.detectChanges();
@@ -288,12 +301,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     for(let file of event.dataTransfer.files) {
       if (this.checkElementType(file)) {
         this.addFile(file);
+      } else {
+        this.snackBarService.open("Nieobsługiwany format pliku/plików.", 5000, SnackbarVariant.INFO);
       }
     }
   }
 
-  private checkElementType(item: DataTransferItem): boolean {
-    if(item.type.includes("image/") || item.type.includes("video/") || item.type.includes("text/plain")) {
+  checkElementType(item: DataTransferItem): boolean {
+    if(environment.allowedFiles.includes(item.type)) {
       return true;
     }
 
@@ -310,27 +325,82 @@ export class RoomComponent implements OnInit, OnDestroy {
     }
   }
 
-  private addFile(file: File) {
+  addFile(file: File) {
+    if(this.filesToUpload.totalSize + file.size > environment.maxFilesSize) {
+      this.snackBarService.open("W jednej wiadomości możesz przesłać pliki, których łączny rozmiar wynosi maksymalnie 20MB.", 5000, SnackbarVariant.INFO);
+      return;
+    }
+
     let fr = new FileReader();
     fr.readAsDataURL(file);
 
     fr.onload = () => {
-      this.filesToUpload.push(new MessageFileToUpload(
-        file["name"],
-        file["type"],
+      this.filesToUpload.files.push(new MessageFileToUpload(
+        file.name,
+        file.type,
+        file.size,
         fr.result.toString()
       ));
+
+      this.filesToUpload.totalSize += file.size;
     }
 
     this.formData.append(file.name, file);
   }
 
-  public removeFile(file: MessageFileToUpload) {
-    this.filesToUpload = this.filesToUpload.filter(item => item !== file);
+  removeFile(file: MessageFileToUpload) {
+    this.filesToUpload.files = this.filesToUpload.files.filter(item => {
+      if(item !== file) {
+        return true;
+      }
+
+      this.filesToUpload.totalSize -= file.size;
+      this.formData.delete(file.name);
+      return false;
+    });
   }
 
   validMessageForm(): boolean {
-    return this.messageForm.valid || this.filesToUpload.length > 0;
+    return this.messageForm.valid || this.filesToUpload.files.length > 0;
+  }
+
+  checkLoadedData(): void {
+    let isLoadedCounter: BehaviorSubject<number> = new BehaviorSubject<number>(0);
+
+    const img = document.querySelectorAll("img");
+    let imgCounter = 0;
+
+    const video = document.querySelectorAll("video");
+    let videoCounter = 0;
+
+    for (let i = 0; i < img.length; i++) {
+      img[i].addEventListener("load", function imgLoad() {
+        if (++imgCounter === img.length) {
+          isLoadedCounter.next(isLoadedCounter.value + 1);
+        }
+
+        img[i].removeEventListener("load", imgLoad);
+      });
+    }
+
+    for (let i = 0; i < video.length; i++) {
+      video[i].addEventListener("loadeddata", function videoLoaded() {
+        if (++videoCounter === video.length) {
+          isLoadedCounter.next(isLoadedCounter.value + 1);
+        }
+
+        video[i].removeEventListener("loadeddata", videoLoaded);
+      });
+    }
+
+    isLoadedCounter.pipe(
+      tap((value: number) => {
+        if (value === 2) {
+          this.onLoadedData();
+          isLoadedCounter.unsubscribe();
+        }
+      })
+    ).subscribe();
   }
 
   ngOnDestroy() {
@@ -339,7 +409,6 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.roomSub$.unsubscribe();
     this.observer.disconnect();
     this.messages$.unsubscribe();
-    this.resultMessages$.unsubscribe();
     this.scroll$.unsubscribe();
     this.user$.unsubscribe();
     this.messageFiles$.unsubscribe();

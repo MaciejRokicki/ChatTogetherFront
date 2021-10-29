@@ -13,6 +13,7 @@ import { CreateRoomDialogComponent } from './create-room-dialog/create-room-dial
 import { MatDialogModule } from '@angular/material/dialog';
 import { MessageModule } from 'src/app/components/messages/message/message.module';
 import { MessageFileToUploadComponent } from 'src/app/components/messages/message-file-to-upload/message-file-to-upload.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     declarations: [
@@ -29,6 +30,7 @@ import { MessageFileToUploadComponent } from 'src/app/components/messages/messag
         MatTableModule,
         MatDialogModule,
         MessageModule,
+        MatTooltipModule
     ],
     exports: []
 })

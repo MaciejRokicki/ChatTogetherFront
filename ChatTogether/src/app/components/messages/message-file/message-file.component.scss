@@ -7,7 +7,7 @@
     justify-content: center;
 }
 
-img, video {
+img, video, .file-other-container {
     max-height: 90px;
     max-width: 160px;
     cursor: pointer;
@@ -21,8 +21,25 @@ img, video {
     border-radius: 10px;
 }
 
-.file-other {
-    margin: 5px;
+.file-other-container {
+    display: flex;
+}
+
+.background {
+    padding: 10px;
+    width: calc(100% - 20px);
+    display: flex;
+    border-radius: 10px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    font-size: 14px;
+}
+
+.filename {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 5px;
 }
 
 a {
