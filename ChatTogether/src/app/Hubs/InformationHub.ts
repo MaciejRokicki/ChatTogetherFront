@@ -1,5 +1,6 @@
 import { Injectable, Injector } from '@angular/core';
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
+import { environment } from 'src/environments/environment.prod';
 import { Hub } from './Hub';
 
 @Injectable({
@@ -8,7 +9,7 @@ import { Hub } from './Hub';
 export class InformationHub extends Hub {
     constructor(injector: Injector) {
         super(injector, new HubConnectionBuilder()
-        .withUrl("https://localhost:44387/informationHub")
+        .withUrl(`${environment.serverUrl}/informationHub`)
         .configureLogging(LogLevel.Information)
         .withAutomaticReconnect()
         .build());

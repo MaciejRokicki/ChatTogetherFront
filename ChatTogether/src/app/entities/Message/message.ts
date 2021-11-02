@@ -9,6 +9,7 @@ export class Message {
     sendTime: Date;
     receivedTime: Date;
     files: MessageFile[];
+    isDeleted: boolean = false;
 
     constructor(
         message: string,
@@ -16,6 +17,7 @@ export class Message {
         roomId: number,
         sendTime: Date,
     ) {
+        this.id = Guid.create()['value'];
         this.message = message;
         this.nickname = nickname;
         this.roomId = roomId;

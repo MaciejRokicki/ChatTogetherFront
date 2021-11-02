@@ -12,7 +12,7 @@ import { environment } from 'src/environments/environment.prod';
   styleUrls: ['./message-file-overlay.component.scss']
 })
 export class MessageFileOverlayComponent implements OnInit {
-  readonly url = `${environment.staticUrl}`;
+  readonly url = `${environment.staticUrl}/`;
 
   messageFile: MessageFile = null;
   messageFile$: Subscription = new Subscription();

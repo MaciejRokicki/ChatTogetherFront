@@ -1,0 +1,12 @@
+<h1 mat-card-title>Usuń wiadomość</h1>
+<form [formGroup]="deleteMessageForm" (ngSubmit)="deleteMessage()">
+    <mat-dialog-content>
+        <div>
+            Na pewno chcesz usunać wiadomość użytkownika <strong>{{ data.nickname }}</strong>?
+        </div>
+    </mat-dialog-content>
+    <div mat-dialog-actions>
+        <button mat-button type="button" (click)="close()">Anuluj</button>
+        <button mat-button type="submit">Usuń</button>
+    </div>
+</form>

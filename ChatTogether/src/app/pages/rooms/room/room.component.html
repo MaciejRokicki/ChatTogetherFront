@@ -1,10 +1,10 @@
-<div *ngIf="showOnDragOverMessageContainerInfo" 
+<div *ngIf="showOnDragOverMessageContainerInfo && !areFilesUploading" 
       class="dropzone"
       (drop)="onDropMessageContainer($event)">
     Upuść pliki tutaj
 </div>
 <div class="message-container"
-     [ngClass]="{'blurred-background': showOnDragOverMessageContainerInfo}">
+     [ngClass]="{'blurred-background': showOnDragOverMessageContainerInfo && !areFilesUploading}">
     <div class="messages">
         <div #scroll class="messages-content">
             <div *ngIf="noMessages" class="no-messages-container">
@@ -17,7 +17,8 @@
                 </div>
             </div>
             <app-message *ngFor="let message of messages" [Message]="message"
-                [LeftDirection]="userNickname != message.nickname">
+                [LeftDirection]="user.nickname!= message.nickname"
+                [PermissionToDeleteMessage]="user.role === 'ADMINISTRATOR' || user.role === 'MODERATOR'">
             </app-message>
             <button mat-mini-fab color="primary" 
                 [ngClass]="{'scroll-down-button-hide': !showScrollDownButton, 
@@ -28,21 +29,38 @@
             </button>
         </div>
     </div>
-    <div class="files-container" *ngIf="filesToUpload.files.length > 0">
-        <div class="files-content">
-            <app-message-file-to-upload *ngFor="let file of filesToUpload.files" [file]="file" (removeFile)="removeFile($event)"></app-message-file-to-upload>
+    <div [ngClass]="{'files-uploading-container': areFilesUploading}">
+        <div [ngClass]="{'opacity-background': areFilesUploading}">
+            <div class="files-container" *ngIf="filesToUpload.files.length > 0">
+                <div class="files-content">
+                    <app-message-file-to-upload *ngFor="let file of filesToUpload.files" [file]="file" (removeFile)="removeFile($event)"></app-message-file-to-upload>
+                </div>
+            </div>
+            <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
+                <div class="message-input">
+                    <input class="input-field" 
+                        formControlName="message" 
+                        autocomplete="off" 
+                        type="text" 
+                        placeholder="Aa"
+                        [readonly]="areFilesUploading"
+                        required>
+                    <input id="input-file" 
+                        accept="text/plain, image/*, video/*" 
+                        type="file" 
+                        multiple 
+                        (change)="onFileAddFromFileBrowser($event)"/>
+                    <button mat-icon-button type="button" color="accent" class="send-button" (click)="openFileBrowser()">
+                        <mat-icon>image</mat-icon>
+                    </button>
+                    <button mat-icon-button color="accent" class="send-button" [disabled]="!validMessageForm()">
+                        <mat-icon>send</mat-icon>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div *ngIf="areFilesUploading" class="container-spinner">
+            <mat-spinner></mat-spinner>
         </div>
     </div>
-    <form class="message-input-container" [formGroup]="messageForm" (ngSubmit)="onSubmit()">
-        <div class="message-input">
-            <input class="input-field" formControlName="message" autocomplete="off" type="text" placeholder="Aa" required>
-            <input id="input-file" accept="text/plain, image/*, video/*" type="file" multiple (change)="onFileAddFromFileBrowser($event)"/>
-            <button mat-icon-button type="button" color="accent" class="send-button" (click)="openFileBrowser()">
-                <mat-icon>image</mat-icon>
-            </button>
-            <button mat-icon-button color="accent" class="send-button" [disabled]="!validMessageForm()">
-                <mat-icon>send</mat-icon>
-            </button>
-        </div>
-    </form>
 </div>

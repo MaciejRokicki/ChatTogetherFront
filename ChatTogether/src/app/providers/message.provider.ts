@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Guid } from "guid-typescript";
 
 import { BehaviorSubject, throwError } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
@@ -79,6 +80,34 @@ export class MessageProvider {
             tap(() => {
                 this.roomHub.conn.on("ReceiveMessage", (message: Message) => {
                     this.messages.next([...this.messages.getValue(), message]);
+                })
+            })
+        ).subscribe();
+    }
+
+    public deleteMessage(roomId: number, id: Guid): void {
+        this.roomHub.conn$.pipe(
+            tap(() => {
+                this.roomHub.conn.invoke("DeleteMessage", roomId, id);
+            })
+        ).subscribe();
+    }
+
+    public setListeningOnDeleteMessages(): void {
+        this.roomHub.conn$.pipe(
+            tap(() => {
+                this.roomHub.conn.on("DeleteMessage", (id: Guid) => {
+                    this.messages.getValue().filter((message: Message) => {
+                        if(message.id !== id) {
+                            return true;
+                        }
+
+                        message.message = "Ta wiadomość została usunięta.";
+                        message.isDeleted = true;
+                        message.files = []
+
+                        return false;
+                    })
                 })
             })
         ).subscribe();

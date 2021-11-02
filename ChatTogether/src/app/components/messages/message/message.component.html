@@ -6,15 +6,26 @@
         </a>
         <i class="date">{{ Message?.sendTime | MessageTimeConverter}}</i>
     </div>
-    <div class="msg">
-        <div *ngIf="Message?.message !== ''" class="msg-text-content">
-            {{ Message?.message }}
+    <div class="message-wrapper">
+        <div class="msg">
+            <div *ngIf="Message?.message !== ''" 
+                  class="msg-text-content"
+                  [ngClass]="{'deleted-message': Message.isDeleted}">
+                {{ Message?.message }}
+            </div>
+            <div *ngIf="Message?.files?.length > 0" class="message-files-container">
+                <div *ngFor="let file of Message.files">
+                    <app-message-file [MessageFile]="file"></app-message-file>
+                </div> 
+            </div>
         </div>
-        <div *ngIf="Message?.files?.length > 0" class="message-files-container">
-            <div *ngFor="let file of Message.files">
-                <app-message-file [MessageFile]="file"></app-message-file>
-            </div> 
-        </div>
+        <button *ngIf="!Message.isDeleted && PermissionToDeleteMessage"
+                 mat-icon-button 
+                 color="accent" 
+                 class="delete-button" 
+                 (click)="deleteMessageOpenDialog($event, Message)">
+            <mat-icon>delete</mat-icon>
+        </button>
     </div>
 </div>
 <ng-template #RightDirection>
@@ -26,14 +37,25 @@
                 {{ Message?.nickname }}
             </a>      
         </div>
-        <div class="msg msg-right">
-            <div *ngIf="Message?.message !== ''" class="msg-text-content">
-                {{ Message?.message }}
-            </div>
-            <div *ngIf="Message?.files?.length > 0" class="message-files-container">
-                <div *ngFor="let file of Message.files">
-                    <app-message-file [MessageFile]="file"></app-message-file>
-                </div> 
+        <div class="message-wrapper message-wrapper-right">
+            <button *ngIf="!Message.isDeleted && PermissionToDeleteMessage"
+                    mat-icon-button 
+                    color="accent" 
+                    class="delete-button" 
+                    (click)="deleteMessageOpenDialog($event, Message)">
+                <mat-icon>delete</mat-icon>
+            </button>
+            <div class="msg msg-right">
+                <div *ngIf="Message?.message !== ''" 
+                      class="msg-text-content" 
+                      [ngClass]="{'deleted-message': Message.isDeleted}">
+                    {{ Message?.message }}
+                </div>
+                <div *ngIf="Message?.files?.length > 0" class="message-files-container">
+                    <div *ngFor="let file of Message.files">
+                        <app-message-file [MessageFile]="file"></app-message-file>
+                    </div> 
+                </div>
             </div>
         </div>
     </div>

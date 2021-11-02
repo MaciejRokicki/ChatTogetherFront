@@ -10,6 +10,7 @@ import { MessageFile } from "../entities/Message/messageFile";
 })
 export class MessageService {
     readonly url = `${environment.apiUrl}/Message`;
+    readonly staticUrl = environment.staticUrl;
 
     constructor(private http: HttpClient) { }
 
@@ -22,6 +23,6 @@ export class MessageService {
     }
 
     downloadFile(sourceUrl: string): Observable<any> {
-        return this.http.get(`https://localhost:44387/static/${sourceUrl}`, { responseType: 'blob' });
+        return this.http.get(`${this.staticUrl}/${sourceUrl}`, { responseType: 'blob' });
     }
 }

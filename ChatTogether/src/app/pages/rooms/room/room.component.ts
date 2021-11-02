@@ -34,7 +34,7 @@ export class RoomComponent implements OnInit, OnDestroy {
 
   id: number = 0;
 
-  userNickname: string;
+  user: User;
   user$: Subscription = new Subscription();
 
   room: Room;
@@ -63,6 +63,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   messageFiles: MessageFile[] = [];
   messageFiles$: Subscription = new Subscription();
   resultMessageFiles$: Subscription = new Subscription();
+  areFilesUploading: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -90,13 +91,14 @@ export class RoomComponent implements OnInit, OnDestroy {
     this.securityProvider.user.pipe(
       tap((user: User) => {
         if (user) {
-          this.userNickname = user.nickname
+          this.user = user
         }
       })
     ).subscribe();
 
     this.roomProvider.onRoomEnter(this.id);
     this.messageProvider.setListeningOnNewMessages();
+    this.messageProvider.setListeningOnDeleteMessages();
 
     const height = (document.querySelector('.messages-content') as Element).clientHeight;
     const messagesCount = Math.ceil(height / 71 * 2);
@@ -186,14 +188,15 @@ export class RoomComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-    this.messageProvider.resultMessageFiles.pipe(
+    this.resultMessageFiles$ = this.messageProvider.resultMessageFiles.pipe(
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
-            
+            this.areFilesUploading = true;
             break;
 
           case ResultStage.SUCCESS:
+            this.areFilesUploading = false;
             if (this.message) {
               this.message.files = this.messageFiles;
               
@@ -202,7 +205,7 @@ export class RoomComponent implements OnInit, OnDestroy {
             break;
 
           case ResultStage.ERROR:
-
+            this.areFilesUploading = false;
             break;
         }
       })
@@ -269,7 +272,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   onSubmit() {
     this.message = new Message(
       this.messageForm.get('message').value, 
-      this.userNickname, 
+      this.user.nickname, 
       this.id, 
       new Date()
     );
@@ -361,7 +364,7 @@ export class RoomComponent implements OnInit, OnDestroy {
   }
 
   validMessageForm(): boolean {
-    return this.messageForm.valid || this.filesToUpload.files.length > 0;
+    return !this.areFilesUploading && (this.messageForm.valid || this.filesToUpload.files.length > 0);
   }
 
   checkLoadedData(): void {
@@ -372,6 +375,14 @@ export class RoomComponent implements OnInit, OnDestroy {
 
     const video = document.querySelectorAll("video");
     let videoCounter = 0;
+
+    if (img.length == 0) {
+      isLoadedCounter.next(isLoadedCounter.value + 1);
+    }
+
+    if (video.length == 0) {
+      isLoadedCounter.next(isLoadedCounter.value + 1);
+    }
 
     for (let i = 0; i < img.length; i++) {
       img[i].addEventListener("load", function imgLoad() {

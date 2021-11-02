@@ -39,6 +39,24 @@
     float: right;
 }
 
+.message-wrapper {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.message-wrapper-right {
+    justify-content: flex-end;
+}
+
+.delete-button {
+    margin: 5px 0px 0px 0px;
+}
+
+.deleted-message {
+    font-style: italic;
+}
+
 .message-files-container {
     display: flex;
     flex-direction: row;

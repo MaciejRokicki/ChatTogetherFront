@@ -45,7 +45,7 @@ registerLocaleData(localePl, localePlExtra);
     TopbarComponent,
     SidebarComponent,
     SnackbarComponent,
-    MessageFileOverlayComponent
+    MessageFileOverlayComponent,
   ],
   imports: [
     BrowserModule,

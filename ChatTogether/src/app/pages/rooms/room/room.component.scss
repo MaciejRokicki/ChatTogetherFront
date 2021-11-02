@@ -25,6 +25,7 @@
     display: flex;
     align-items: center;
     margin: 0px 0px 0px 30px;
+    width: calc(100% - 30px);
 }
 
 .message-input {
@@ -137,6 +138,23 @@ p {
     align-items: center;
 }
 
+.files-uploading-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+}
+
+.opacity-background {
+    width: 100%;
+    opacity: 20%;
+}
+
+.container-spinner {
+    position: absolute;
+}
+
 @media only screen and (max-width: 768px) {
     .messages {
         margin: 10px 0px 0px 10px;
@@ -146,6 +164,7 @@ p {
 
     .message-input-container {
         margin: 10px 0px 0px 10px;
+        width: calc(100% - 10px);
     }
 
     .files-container {
@@ -157,6 +176,7 @@ p {
 @media only screen and (min-width: 599px) and (max-width: 768px) {
     .message-input-container {
         margin: 0px 0px 8px 10px;
+        width: calc(100% - 10px);
     }
 
     .dropzone {
@@ -171,5 +191,6 @@ p {
 @media only screen and (max-width: 599px) {
     .message-input-container {
         margin: 0px 0px 0px 10px;
+        width: calc(100% - 10px);
     }
 }

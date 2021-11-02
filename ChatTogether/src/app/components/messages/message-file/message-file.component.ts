@@ -11,7 +11,7 @@ import { environment } from 'src/environments/environment.prod';
 })
 export class MessageFileComponent implements OnInit {
   @Input() MessageFile: MessageFile;
-  readonly url = `${environment.staticUrl}`;
+  readonly url = `${environment.staticUrl}/`;
   
   constructor(
     private messageFileOverlayService: MessageFileOverlayService,
