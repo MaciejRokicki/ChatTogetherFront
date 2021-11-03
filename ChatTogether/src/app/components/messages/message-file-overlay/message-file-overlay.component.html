@@ -18,7 +18,10 @@
             </div>
         </div>
         <div class="file-content">
-            <img [src]="url + messageFile?.sourceName">
+            <img *ngIf="messageFile?.type.includes('image/')" [src]="url + messageFile?.sourceName">
+            <video *ngIf="messageFile?.type.includes('video/')" controls>
+                <source [src]="url + messageFile?.sourceName" [type]="messageFile?.type">
+            </video>
         </div>
     </div>
 </div>

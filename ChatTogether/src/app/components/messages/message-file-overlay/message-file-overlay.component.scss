@@ -73,6 +73,13 @@ img {
     width: auto;
 }
 
+video {
+    max-height: 100%;
+    height: auto;
+    max-width: 100%;
+    width: auto; 
+}
+
 @media only screen and (max-width: 768px) {
     .top-bar {
         justify-content: start;

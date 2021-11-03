@@ -23,10 +23,12 @@
             </div>
           </div>
     </div>
-    <video *ngIf="MessageFile.type.includes('video/')" 
-            controls
-            [matTooltip]="MessageFile.fileName"
-            matTooltipPosition="above">
-        <source [src]="url + MessageFile.sourceName" [type]="MessageFile.type">
-    </video>
+    <a (click)="openOverlay(MessageFile)">
+      <video *ngIf="MessageFile.type.includes('video/')" 
+                  [matTooltip]="MessageFile.fileName"
+                  matTooltipPosition="above"
+                  autoplay>
+            <source [src]="url + MessageFile.sourceName" [type]="MessageFile.type">
+      </video>
+    </a>
 </div>
