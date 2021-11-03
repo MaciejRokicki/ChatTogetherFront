@@ -66,18 +66,11 @@ button {
     padding: 10px;
 }
 
-img {
+img, video {
     max-height: 100%;
     height: auto;
     max-width: 100%;
     width: auto;
-}
-
-video {
-    max-height: 100%;
-    height: auto;
-    max-width: 100%;
-    width: auto; 
 }
 
 @media only screen and (max-width: 768px) {
