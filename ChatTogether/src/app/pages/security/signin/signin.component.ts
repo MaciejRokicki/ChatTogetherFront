@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -80,7 +79,7 @@ export class SigninComponent implements OnInit {
 
     let signinModel: SigninModel = new SigninModel(this.signinForm.get("email").value, this.signinForm.get("password").value);
     this.securityProvider.signin(signinModel);
-    //TODO: pomyslec nad kodami zamiast na sztywno podawac tresc wiadomosci
+    
     this.securityProvider.resultSignin.pipe(
       tap((res: Result) => {
         switch (res.Stage) {
