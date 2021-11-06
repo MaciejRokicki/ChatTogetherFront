@@ -79,7 +79,23 @@ export class MessageProvider {
         this.roomHub.conn$.pipe(
             tap(() => {
                 this.roomHub.conn.on("ReceiveMessage", (message: Message) => {
-                    this.messages.next([...this.messages.getValue(), message]);
+                    let messagesTmp: Message[] = this.messages.getValue();
+                    let messageIndex = messagesTmp.findIndex(x => x.id === message.id);
+
+                    if(messageIndex === -1) {
+                        this.messages.next([...this.messages.getValue(), message]);
+                    } else {
+                        messagesTmp[messageIndex] = message;
+
+                        for(let i = messagesTmp.length-1; i > 0; i--) {
+                            if(messagesTmp[i].receivedTime > message.receivedTime) {
+                                messagesTmp.splice(messageIndex, 1);
+                                messagesTmp.splice(i, 0, message);
+                            } else {
+                                break;
+                            }
+                        }
+                    }
                 })
             })
         ).subscribe();

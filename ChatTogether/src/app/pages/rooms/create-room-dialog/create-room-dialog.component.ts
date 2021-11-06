@@ -19,6 +19,7 @@ export class CreateRoomDialogComponent implements OnInit {
   });
 
   invalidFormMatcher = new FormControlStateMatcher();
+  disabledAddButton: boolean = false;
 
   constructor(
     private dialogRef: MatDialogRef<CreateRoomDialogComponent>,
@@ -45,20 +46,22 @@ export class CreateRoomDialogComponent implements OnInit {
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
-            
+              this.disabledAddButton = true;
             break;
 
           case ResultStage.SUCCESS:
-            this.close({
-              showSnackbar: true
-            });
+              this.close({
+                showSnackbar: true
+              });
+              this.disabledAddButton = false;
             break;
 
           case ResultStage.ERROR:
-            this.close({
-              showSnackbar: false,
-              success: false
-            })
+              this.close({
+                showSnackbar: false,
+                success: false
+              });
+              this.disabledAddButton = false;
             break;
         }
       })

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { skip, tap } from 'rxjs/operators';
 import { SidebarItem } from './components/sidebar/sidebar.component';
 import { Role, User } from './entities/user';
+import { RoomProvider } from './providers/room.provider';
 import { SecurityProvider } from './providers/security.provider';
 import { BlockedBackgroundModel, BlockedBackgroundService } from './services/blockedBackgroundService';
 

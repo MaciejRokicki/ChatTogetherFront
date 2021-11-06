@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
-import { map, take, tap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { SnackbarVariant } from 'src/app/components/snackbar/snackbar.data';
 
 import { Room } from 'src/app/entities/Room/room';
@@ -54,8 +54,6 @@ export class RoomsComponent implements OnInit, OnDestroy {
         }
       })
     ).subscribe();
-
-    this.roomProvider.getRooms();
 
     this.rooms$ = this.roomProvider.rooms.pipe(
       tap((rooms: Room[]) => {

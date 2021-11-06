@@ -20,6 +20,8 @@ export class EditAboutMeDialogComponent implements OnInit {
   editAboutMeForm = new FormGroup({
     aboutMe: new FormControl('', []),
   });
+
+  disabledSaveButton: boolean = false;
   
   constructor(
     private dialogRef: MatDialogRef<EditAboutMeDialogComponent>,
@@ -47,20 +49,22 @@ export class EditAboutMeDialogComponent implements OnInit {
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
-            
+              this.disabledSaveButton = true;
             break;
 
           case ResultStage.SUCCESS:
-            this.close({
-              showSnackbar: true
-            });
+              this.close({
+                showSnackbar: true
+              });
+              this.disabledSaveButton = false;
             break;
 
           case ResultStage.ERROR:
-            this.close({
-              showSnackbar: false,
-              success: false
-            })
+              this.close({
+                showSnackbar: false,
+                success: false
+              });
+              this.disabledSaveButton = false;
             break;
         }
       })

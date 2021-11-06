@@ -20,6 +20,8 @@ export class EditRoomDialogComponent implements OnInit {
 
   invalidFormMatcher = new FormControlStateMatcher();
 
+  disabledEditButton: boolean = false;
+
   constructor(
     private dialogRef: MatDialogRef<EditRoomDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UpdateRoomModel,
@@ -52,20 +54,22 @@ export class EditRoomDialogComponent implements OnInit {
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
-            
+              this.disabledEditButton = true;
             break;
 
           case ResultStage.SUCCESS:
-            this.close({
-              showSnackbar: true
-            });
+              this.close({
+                showSnackbar: true
+              });
+              this.disabledEditButton = false;
             break;
 
           case ResultStage.ERROR:
-            this.close({
-              showSnackbar: false,
-              success: false
-            })
+              this.close({
+                showSnackbar: false,
+                success: false
+              });
+              this.disabledEditButton = false;
             break;
         }
       })

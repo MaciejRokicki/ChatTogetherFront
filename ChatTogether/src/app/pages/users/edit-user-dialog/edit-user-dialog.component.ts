@@ -26,6 +26,8 @@ export class EditUserDialogComponent implements OnInit {
     city: new FormControl('', []),
   });
 
+  disabledSaveButton: boolean = false;
+
   constructor(
     private dialogRef: MatDialogRef<EditUserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: EditUserData,
@@ -57,19 +59,22 @@ export class EditUserDialogComponent implements OnInit {
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
+              this.disabledSaveButton = true; 
             break;
 
           case ResultStage.SUCCESS:
-            this.close({
-              showSnackbar: true
-            });
+              this.close({
+                showSnackbar: true
+              });
+              this.disabledSaveButton = false;
             break;
 
           case ResultStage.ERROR:
-            this.close({
-              showSnackbar: false,
-              success: false
-            })
+              this.close({
+                showSnackbar: false,
+                success: false
+              });
+              this.disabledSaveButton = false;
             break;
         }
       })

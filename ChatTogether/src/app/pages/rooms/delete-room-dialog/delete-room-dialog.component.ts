@@ -14,6 +14,8 @@ import { RoomProvider } from 'src/app/providers/room.provider';
 export class DeleteRoomDialogComponent implements OnInit {
   deleteRoomForm = new FormGroup({ });
 
+  disabledDeleteButton: boolean = false;
+
   constructor(
     private dialogRef: MatDialogRef<DeleteRoomDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: UpdateRoomModel,
@@ -32,20 +34,22 @@ export class DeleteRoomDialogComponent implements OnInit {
       tap((result: Result) => {
         switch (result.Stage) {
           case ResultStage.WAITING:
-            
+              this.disabledDeleteButton = true;
             break;
 
           case ResultStage.SUCCESS:
-            this.close({
-              showSnackbar: true
-            });
+              this.close({
+                showSnackbar: true
+              });
+              this.disabledDeleteButton = false;
             break;
 
           case ResultStage.ERROR:
-            this.close({
-              showSnackbar: false,
-              success: false
-            })
+              this.close({
+                showSnackbar: false,
+                success: false
+              })
+              this.disabledDeleteButton = false;
             break;
         }
       })

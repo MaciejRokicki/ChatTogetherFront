@@ -7,7 +7,7 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./pages/rooms/rooms.module').then(x => x.RoomsModule),
-    canActivate: [AuthenticationGuard]
+    canActivate: [AuthenticationGuard],
   },
   {
     path: 'security',

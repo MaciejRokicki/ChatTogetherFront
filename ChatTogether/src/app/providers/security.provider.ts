@@ -1,8 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
-import { HubConnectionState } from "@microsoft/signalr";
 import { BehaviorSubject, throwError } from "rxjs";
-import { catchError, concatMap, tap } from "rxjs/operators";
+import { catchError, take, tap } from "rxjs/operators";
 import { SnackbarVariant } from "../components/snackbar/snackbar.data";
 import { Page } from "../entities/page";
 import { Result, ResultStage } from "../entities/result";
@@ -16,6 +15,7 @@ import { InformationHub } from "../Hubs/InformationHub";
 import { RoomHub } from "../Hubs/RoomHub";
 import { SecurityService } from "../services/security.service";
 import { SnackbarService } from "../services/snackbar.service";
+import { RoomProvider } from "./room.provider";
 
 @Injectable({
     providedIn: 'root'
@@ -44,7 +44,8 @@ export class SecurityProvider {
         private informationHub: InformationHub,
         private roomHub: RoomHub,
         private router: Router,
-        private snackbarService: SnackbarService
+        private snackbarService: SnackbarService,
+        private roomProvider: RoomProvider
         ) { 
             this.user.pipe(
                 tap((user: User) => {
@@ -53,6 +54,7 @@ export class SecurityProvider {
                         this.roomHub.startConnection();
 
                         this.listenerBlockSignout();
+                        this.roomProvider.getRoomsListener();
                     } else {
                         this.informationHub.stopConnection();
                         this.roomHub.stopConnection();
@@ -108,12 +110,25 @@ export class SecurityProvider {
     }
 
     validate(): void {
+        let url: string;
+
+        this.router.events.pipe(
+            take(1),
+            tap(val => {
+                url = val['url'];
+                
+                if(url?.includes("room")) {
+                    url = "/";
+                }
+            })
+        ).subscribe();
+
         this.securityService.validate().pipe(
             tap((user: User) => {
                 this.user.next(user);
             }),
             tap(() => {
-                this.router.navigate([this.router.url]);
+                this.router.navigate([url]);
             }),
             catchError(err => {
                 if(err.status === 401)

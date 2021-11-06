@@ -27,7 +27,7 @@ export class RoomProvider {
         private roomService: RoomService,
         private roomHub: RoomHub,
         private router: Router
-        ) {}
+        ) { }
 
     public getRoom(id: number): void {
         this.roomService.getRoom(id).pipe(
@@ -37,7 +37,7 @@ export class RoomProvider {
         ).subscribe();
     }
 
-    public getRooms(): void {
+    public getRoomsListener(): void {
         this.roomHub.conn$.pipe(
             tap(() => {
                 this.roomHub.conn.on("GetRooms", (rooms: Room[]) => {

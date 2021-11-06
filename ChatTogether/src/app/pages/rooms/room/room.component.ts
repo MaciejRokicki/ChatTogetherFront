@@ -85,6 +85,8 @@ export class RoomComponent implements OnInit, OnDestroy {
           this.topbarTitleService.setTitle(this.room.name);
       })
     ).subscribe();
+
+    this.roomProvider.onRoomEnter(this.id);
   }
 
   ngOnInit(): void {
@@ -96,7 +98,6 @@ export class RoomComponent implements OnInit, OnDestroy {
       })
     ).subscribe();
 
-    this.roomProvider.onRoomEnter(this.id);
     this.messageProvider.setListeningOnNewMessages();
     this.messageProvider.setListeningOnDeleteMessages();
 
