@@ -38,7 +38,7 @@
             </a>      
         </div>
         <div class="message-wrapper message-wrapper-right">
-            <button *ngIf="!Message.isDeleted && PermissionToDeleteMessage"
+            <button *ngIf="!Message.isDeleted && PermissionToDeleteMessage && Message.receivedTime !== undefined"
                     mat-icon-button 
                     color="accent" 
                     class="delete-button" 
