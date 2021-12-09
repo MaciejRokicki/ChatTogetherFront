@@ -6,7 +6,7 @@ import { Result, ResultStage } from "../entities/result";
 import { CreateRoomModel } from "../entities/Room/createRoomModel";
 import { Room } from "../entities/Room/room";
 import { UpdateRoomModel } from "../entities/Room/updateRoomModel";
-import { RoomHub } from "../Hubs/RoomHub";
+import { RoomHub } from "../hubs/RoomHub";
 import { RoomService } from "../services/room.service";
 
 @Injectable({

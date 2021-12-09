@@ -7,7 +7,7 @@ import { catchError, tap } from "rxjs/operators";
 import { Message } from "../entities/Message/message";
 import { MessageFile } from "../entities/Message/messageFile";
 import { Result, ResultStage } from "../entities/result";
-import { RoomHub } from "../Hubs/RoomHub";
+import { RoomHub } from "../hubs/RoomHub";
 import { MessageService } from "../services/message.service";
 
 @Injectable({

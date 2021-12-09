@@ -29,8 +29,8 @@ import { UserService } from './services/user.service';
 import { TopbarTitleService } from './services/topbarTitle.service';
 import { SnackbarService } from './services/snackbar.service';
 
-import { InformationHub } from './Hubs/InformationHub';
-import { RoomHub } from './Hubs/RoomHub';
+import { InformationHub } from './hubs/InformationHub';
+import { RoomHub } from './hubs/RoomHub';
 
 import { CredentialsInterceptor } from './interceptors/CredentialsInterceptor';
 import { UnauthorizedInterceptor } from './interceptors/UnauthorizedInterceptor';
