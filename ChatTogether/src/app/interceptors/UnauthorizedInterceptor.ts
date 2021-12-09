@@ -18,7 +18,6 @@ export class UnauthorizedInterceptor implements HttpInterceptor {
       catchError((err: Error) => {
         if(err['status'] === 401) {
           this.securityProvider.user.next(null);
-          //this.securityProvider.user.subscribe();
 
           this.router.navigate(['/security/signin']);
           document.body.classList.remove("dark-theme");
