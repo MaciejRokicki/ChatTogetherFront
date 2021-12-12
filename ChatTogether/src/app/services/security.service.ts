@@ -15,7 +15,6 @@ import { ChangeRoleModel } from "../entities/Security/changeRoleModel";
 })
 
 export class SecurityService {
-
     readonly url = `${environment.apiUrl}/Security`;
 
     constructor(private http: HttpClient) {}

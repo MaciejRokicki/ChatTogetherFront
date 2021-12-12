@@ -9,7 +9,6 @@ import { Page } from '../entities/page';
     providedIn: 'root'
 })
 export class UserService {
-
     readonly url = `${environment.apiUrl}/User`;
 
     constructor(private http: HttpClient) { }
