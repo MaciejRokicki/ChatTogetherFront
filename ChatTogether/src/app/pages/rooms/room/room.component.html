@@ -13,7 +13,7 @@
             </div>
             <div *ngIf="outOfMessages">
                 <div class="out-of-messages-content">
-                    <p>To już koniec, dalej już nic nie ma :(</p>
+                    <p>To już wszystkie wiadomości :(</p>
                 </div>
             </div>
             <app-message *ngFor="let message of messages" [Message]="message"
