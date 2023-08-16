@@ -9,8 +9,12 @@ A web application that allows you writting group messages in real time. There ar
 #### Other functionalities:
 * Email support - confirmation of new accounts, new password request, email change request. (unavailable, used as a gmail account and has been blocked by Google)
 * Possibility to send an image in a message.
-* Infitnity scroll
-* Pagination in profile/blocked account browser
+* Infitnity scroll.
+* Pagination in profile/blocked account browser.
+* Messages with images are saved on the server machine.
+
+### Used technologies
+Angular, RxJS, .NET, MsSQL (EntityFramework), SignalR.
   
 ### Screenshots
 ![](/../master/Media/1.png)
